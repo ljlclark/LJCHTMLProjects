@@ -3,7 +3,7 @@
 // Object3D.js
 
 // Represents a 3D ojbect.
-class Object3D
+class LJCObject3D
 {
   // AddPath(name, beginPoint, translatePoint, pathItems)
   // CreateFacetPath(name, beginPoint, translatePoint, radius, verticeCount)
@@ -20,7 +20,7 @@ class Object3D
   // Adds a Path.
   AddPath(name, beginPoint, translatePoint, pathItems)
   {
-    let path = new Path(name, beginPoint, translatePoint);
+    let path = new LJCPath(name, beginPoint, translatePoint);
     for (let index = 0; index < pathItems.length; index++)
     {
       path.PathItems.push(pathItems[index]);
@@ -31,7 +31,7 @@ class Object3D
   CreateFacetPath(name, beginPoint, translatePoint, radius, verticeCount)
   {
     let g = this.Graphics;
-    let retValue = new Path(name, beginPoint, translatePoint);
+    let retValue = new LJCPath(name, beginPoint, translatePoint);
     retValue.DoClosePath = true;
 
     let arc = (Math.PI * 2) / verticeCount;
@@ -39,7 +39,7 @@ class Object3D
     for (let index = 0; index < verticeCount - 1; index++)
     {
       let nextPoint = g.Rotate(radius, radians);
-      let pathItem = new PathItem("Line", nextPoint);
+      let pathItem = new LJCPathItem("Line", nextPoint);
       retValue.PathItems.push(pathItem);
       radians += arc;
     }
@@ -92,7 +92,7 @@ class Object3D
 }
 
 // Represents a 3D path.
-class Path
+class LJCPath
 {
   // Translate(point)
   // TranslateAll()
@@ -114,7 +114,7 @@ class Path
   Translate(point)
   {
     let tlPoint = this.TranslatePoint;
-    let retValue = new Point3D(point.X + tlPoint.X, point.Y + tlPoint.Y
+    let retValue = new LJCPoint(point.X + tlPoint.X, point.Y + tlPoint.Y
       , point.Z + tlPoint.Z);
     return retValue;
   }
@@ -140,7 +140,7 @@ class Path
 }
 
 // Represents a 3D Path item.
-class PathItem
+class LJCPathItem
 {
   // Clone()
 
@@ -158,7 +158,7 @@ class PathItem
   // Creates a Clone of this object.
   Clone()
   {
-    let retValue = new PathItem(this.ItemType, this.NextPoint);
+    let retValue = new LJCPathItem(this.ItemType, this.NextPoint);
     retValue.SrokeStyle = this.StrokeStyle;
     retValue.FillStyle = this.FillStyle;
     return retValue;
@@ -166,7 +166,7 @@ class PathItem
 }
 
 // Represents a 3D point.
-class Point3D
+class LJCPoint
 {
   // The Constructor method.
   constructor(x, y, z)

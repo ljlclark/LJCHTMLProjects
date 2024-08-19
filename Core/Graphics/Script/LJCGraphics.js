@@ -125,10 +125,14 @@ class Graphics
   // Animate()
   // BeginPath()
   // ClosePath()
+  // Fill(fillStyle = "")
+  // GetPointRadius(point)
+  // GetRadius(adjacent, opposite)
+  // GetRotation(opposite, radius)
   // MoveTo(point)
   // Rotate(radius, radians)
+  // Square(value)
   // Stroke(strokeStyle = "")
-  // Fill(fillStyle = "")
 
   // 
   Animate()
@@ -166,6 +170,42 @@ class Graphics
     this.Context.closePath();
   }
 
+  // Show the fill path.
+  Fill(fillStyle = "")
+  {
+    fillStyle = this.#GetFillStyle(fillStyle);
+    this.Context.fill();
+  }
+
+  // Get the radius for a point.
+  GetPointRadius(point)
+  {
+    // Get the xy radius.
+    let retValue = g.GetRadius(point.X, point.Y);
+
+    if (point.Z != 0)
+    {
+      // xy radius is adjacent for xyz radius.
+      retValue = g.GetRadius(retValue, point.Z);
+    }
+    return retValue;
+  }
+
+  // Get the radius.
+  GetRadius(adjacent, opposite)
+  {
+    let sides = this.Square(adjacent) + this.Square(opposite);
+    let retValue = Math.sqrt(sides);
+    return retValue;
+  }
+
+  // Get the radians of the angle.
+  GetRotation(opposite, radius)
+  {
+    let retValue = Math.asin(opposite / radius);
+    return retValue;
+  }
+
   // Move start point.
   MoveTo(point)
   {
@@ -175,9 +215,19 @@ class Graphics
   // Create a rotated point.
   Rotate(radius, radians)
   {
+    // cos(radians) = a/h
+    // Multiply both sides by h.
+    // h * cos(radians) = a
     let x = radius * Math.cos(radians);
     let y = radius * Math.sin(radians);
-    let retValue = new Point3D(Math.round(x), Math.round(y), 0);
+    let retValue = new LJCPoint(Math.round(x), Math.round(y), 0);
+    return retValue;
+  }
+
+  // Squares a value.
+  Square(value)
+  {
+    let retValue = Math.pow(value, 2);
     return retValue;
   }
 
@@ -186,13 +236,6 @@ class Graphics
   {
     strokeStyle = this.#GetStrokeStyle(strokeStyle);
     this.Context.stroke();
-  }
-
-  // Show the fill path.
-  Fill(fillStyle = "")
-  {
-    fillStyle = this.#GetFillStyle(fillStyle);
-    this.Context.fill();
   }
 
   // Gets the default style color.
@@ -234,15 +277,5 @@ class Graphics
       retValue = this.StrokeStyle;
     }
     return retValue;
-  }
-}
-
-class GPoint
-{
-  // The Constructor method.
-  constructor(x, y)
-  {
-    this.X = x;
-    this.Y = y;
   }
 }
