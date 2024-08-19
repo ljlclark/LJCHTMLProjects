@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- CanvasTest.html -->
+<html lang="en">
+<head>
+  <script src="../../Core/Common/Script/LJCCommon.js"></script>
+  <script src="../../Core/Graphics/Script/LJCGraphics.js"></script>
+  <script src="../../Core/Graphics/Script/LJCObject3D.js"></script>
+  <style>
+    .border {
+      border: 1px solid white;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" class="border" height="250" width="500"></canvas>
+  <script>
+    let g = new Graphics(canvas);
+    g.StrokeStyle = "cyan";
+    g.FillStyle = "cyan";
+
+    let object3D1 = new Object3D(g);
+    let name = "Facet1";
+    let radius = 30;
+    let beginPoint = new Point3D(radius, 0, 0);
+    let translatePoint = new Point3D(g.Canvas.width / 2
+      , g.Canvas.height / 2, 0);
+    let vertices = 4;
+    let path = object3D1.CreateFacetPath(name, beginPoint, translatePoint
+      , radius, vertices);
+    object3D1.Paths.push(path);
+
+    object3D1.Show();
+
+
+    //let beginPoint = new GPoint(0, 0);
+    //let endPoint = new GPoint(250, 125);
+    //g.Line(beginPoint, endPoint);
+
+    //let radius = 20;
+    //let verticeCount = 5;
+    //g.FillStyle = "";
+    //g.Polygon(endPoint, radius, verticeCount);
+
+    //// Circle
+    //radius = 30;
+    //endRadians = 360 * g.Radian;
+    //g.Arc(endPoint, radius, endRadians);
+
+    //// Red Circle
+    //// Uses the default beginRadians = 0;
+    //radius = 35;
+    //g.Arc(endPoint, radius, endRadians, null, "red");
+
+    //// Dome Shape
+    //let beginRadians = Math.PI;
+    //radius = 40;
+    //g.Arc(endPoint, radius, endRadians, beginRadians);
+
+    //g.FillStyle = "";
+    //g.Rectangle(endPoint, 50, 25);
+
+    //g.Animate();
+
+    //g.Text("What?", endPoint, null, "white");
+  </script>
+</body>
+</html>
