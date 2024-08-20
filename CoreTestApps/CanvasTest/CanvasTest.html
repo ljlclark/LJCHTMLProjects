@@ -23,10 +23,6 @@
     let object3D1 = new LJCObject3D(g);
     let name = "Facet1";
     let radius = 30;
-    // *** Begin *** Test
-    //let xRadians = g.GetCosRotation(30, radius);
-    //alert(`X Radians: ${xRadians});
-    // *** End   *** Test
     let beginPoint = new LJCPoint(radius, 0, 0);
     beginPoint = g.RotateXY(beginPoint, radius, 45 * g.Radian);
     let translatePoint = new LJCPoint(g.Canvas.width / 2
@@ -35,6 +31,7 @@
     let path = object3D1.CreateFacetPath(name, beginPoint, translatePoint
       , radius, vertices);
     object3D1.Paths.push(path);
+
 
     object3D1.Show();
   </script>
