@@ -63,39 +63,6 @@ class Graphics
     ctx.stroke();
   }
 
-  //// Draw a polygon.
-  //Polygon(centerPoint, radius, verticeCount, strokeStyle = "", fillStyle = "")
-  //{
-  //  let ctx = this.Context;
-  //  strokeStyle = this.#GetStrokeStyle(strokeStyle);
-  //  fillStyle = this.#GetFillStyle(fillStyle);
-
-  //  let arc = (Math.PI * 2) / verticeCount;
-  //  let radians = arc;
-  //  let beginPoint = new GPoint(centerPoint.X + radius, centerPoint.Y);
-  //  ctx.beginPath();
-  //  ctx.moveTo(beginPoint.X, beginPoint.Y); // Add
-  //  for (let index = 0; index < verticeCount - 1; index++)
-  //  {
-  //    let x = radius * Math.cos(radians) + centerPoint.X;
-  //    let y = radius * Math.sin(radians) + centerPoint.Y;
-  //    let sx = Math.round(x);
-  //    let sy = Math.round(y);
-  //    let endPoint = new GPoint(sx, sy);
-  //    this.NextLine(endPoint, strokeStyle);
-  //    radians += arc;
-  //  }
-  //  ctx.closePath();
-
-  //  ctx.strokeStyle = strokeStyle;
-  //  ctx.stroke();
-  //  if (LJC.HasValue(fillStyle))
-  //  {
-  //    ctx.fillStyle = fillStyle;
-  //    ctx.fill();
-  //  }
-  //}
-
   // Draw a rectangle.
   Rectangle(beginPoint, width, height, fillStyle = "")
   {
@@ -123,15 +90,22 @@ class Graphics
   // Other Methods
   // ***************
   // Animate()
+
   // BeginPath()
   // ClosePath()
-  // Fill(fillStyle = "")
+
   // GetPointRadius(point)
   // GetRadius(adjacent, opposite)
-  // GetRotation(opposite, radius)
+
+  // GetCosRotation(adjacent, radius)
+  // GetSinRotation(opposite, radius)
+
   // MoveTo(point)
-  // Rotate(radius, radians)
+  // RotateXY(point, radius, radians)
+  // RotateYZ(point, radius, radians)
   // Square(value)
+
+  // Fill(fillStyle = "")
   // Stroke(strokeStyle = "")
 
   // 
@@ -158,23 +132,16 @@ class Graphics
     }
   }
 
-  // 
+  // Performs the Ctx.beginPath() method.
   BeginPath()
   {
     this.Context.beginPath();
   }
 
-  // Close out the path.
+  // Add the remaining side of the path.
   ClosePath()
   {
     this.Context.closePath();
-  }
-
-  // Show the fill path.
-  Fill(fillStyle = "")
-  {
-    fillStyle = this.#GetFillStyle(fillStyle);
-    this.Context.fill();
   }
 
   // Get the radius for a point.
@@ -199,8 +166,15 @@ class Graphics
     return retValue;
   }
 
-  // Get the radians of the angle.
-  GetRotation(opposite, radius)
+  // Get the radians of an angle with sides.
+  GetCosRotation(adjacent, radius)
+  {
+    let retValue = Math.acos(adjacent / radius);
+    return retValue;
+  }
+
+  // Get the radians of an angle with sides.
+  GetSinRotation(opposite, radius)
   {
     let retValue = Math.asin(opposite / radius);
     return retValue;
@@ -213,14 +187,23 @@ class Graphics
   }
 
   // Create a rotated point.
-  Rotate(radius, radians)
+  RotateXY(point, radius, radians)
   {
     // cos(radians) = a/h
     // Multiply both sides by h.
     // h * cos(radians) = a
     let x = radius * Math.cos(radians);
     let y = radius * Math.sin(radians);
-    let retValue = new LJCPoint(Math.round(x), Math.round(y), 0);
+    let retValue = new LJCPoint(Math.round(x), Math.round(y), point.Z);
+    return retValue;
+  }
+  
+  // Create a rotated point.
+  RotateYZ(point, radius, radians)
+  {
+    let z = radius * Math.cos(radians);
+    let y = radius * Math.sin(radians);
+    let retValue = new LJCPoint(point.X, Math.round(y), Math.round(z));
     return retValue;
   }
 
@@ -236,6 +219,13 @@ class Graphics
   {
     strokeStyle = this.#GetStrokeStyle(strokeStyle);
     this.Context.stroke();
+  }
+
+  // Show the fill path.
+  Fill(fillStyle = "")
+  {
+    fillStyle = this.#GetFillStyle(fillStyle);
+    this.Context.fill();
   }
 
   // Gets the default style color.

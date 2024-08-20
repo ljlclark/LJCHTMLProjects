@@ -23,7 +23,12 @@
     let object3D1 = new LJCObject3D(g);
     let name = "Facet1";
     let radius = 30;
+    // *** Begin *** Test
+    //let xRadians = g.GetCosRotation(30, radius);
+    //alert(`X Radians: ${xRadians});
+    // *** End   *** Test
     let beginPoint = new LJCPoint(radius, 0, 0);
+    beginPoint = g.RotateXY(beginPoint, radius, 45 * g.Radian);
     let translatePoint = new LJCPoint(g.Canvas.width / 2
       , g.Canvas.height / 2, 0);
     let vertices = 4;
@@ -32,38 +37,6 @@
     object3D1.Paths.push(path);
 
     object3D1.Show();
-
-
-    //let beginPoint = new GPoint(0, 0);
-    //let endPoint = new GPoint(250, 125);
-    //g.Line(beginPoint, endPoint);
-
-    //let radius = 20;
-    //let verticeCount = 5;
-    //g.FillStyle = "";
-    //g.Polygon(endPoint, radius, verticeCount);
-
-    //// Circle
-    //radius = 30;
-    //endRadians = 360 * g.Radian;
-    //g.Arc(endPoint, radius, endRadians);
-
-    //// Red Circle
-    //// Uses the default beginRadians = 0;
-    //radius = 35;
-    //g.Arc(endPoint, radius, endRadians, null, "red");
-
-    //// Dome Shape
-    //let beginRadians = Math.PI;
-    //radius = 40;
-    //g.Arc(endPoint, radius, endRadians, beginRadians);
-
-    //g.FillStyle = "";
-    //g.Rectangle(endPoint, 50, 25);
-
-    //g.Animate();
-
-    //g.Text("What?", endPoint, null, "white");
   </script>
 </body>
 </html>

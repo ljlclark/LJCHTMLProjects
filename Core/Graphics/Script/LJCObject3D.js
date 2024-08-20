@@ -35,10 +35,12 @@ class LJCObject3D
     retValue.DoClosePath = true;
 
     let arc = (Math.PI * 2) / verticeCount;
-    let radians = arc;
+    let beginRadians = g.GetCosRotation(beginPoint.X, radius);
+    let radians = arc + beginRadians;
+    let nextPoint = beginPoint.Clone();
     for (let index = 0; index < verticeCount - 1; index++)
     {
-      let nextPoint = g.Rotate(radius, radians);
+      nextPoint = g.RotateXY(nextPoint, radius, radians);
       let pathItem = new LJCPathItem("Line", nextPoint);
       retValue.PathItems.push(pathItem);
       radians += arc;
@@ -174,5 +176,12 @@ class LJCPoint
     this.X = x;
     this.Y = y;
     this.Z = z;
+  }
+
+  // Creates a Clone of this object.
+  Clone()
+  {
+    let retValue = new LJCPoint(this.X, this.Y, this.Z);
+    return retValue;
   }
 }
