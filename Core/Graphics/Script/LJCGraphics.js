@@ -1,9 +1,10 @@
 // Copyright(c) Lester J.Clark and Contributors. -- >
 // Licensed under the MIT License.-- >
-// Graphics.js
+// LJCGraphics.js
 
-// 
-class Graphics
+// Provides graphics methods.
+// ***************
+class LJCGraphics
 {
   // The Constructor method.
   constructor(canvas)
@@ -11,14 +12,16 @@ class Graphics
     this.Canvas = canvas;
     this.Context = canvas.getContext("2d");
     this.Radian = Math.PI / 180;
-    this.StrokeStyle = this.#GetDefaultStyle(this.Canvas, "");
     this.FillStyle = this.#GetDefaultStyle(this.Canvas, "");
+    this.StrokeStyle = this.#GetDefaultStyle(this.Canvas, "");
+
+    // Animation Values
     this.X = 0;
     this.PrevX = 0;
   }
 
   // Draw Methods
-  // ***************
+  // ---------------
   // Arc(centerPoint, radius, endRadians, beginRadians = 0, strokeStyle = "")
   // Line(beginPoint, endPoint, strokeStyle = "")
   // NextLine(endPoint, strokeStyle = "")
@@ -88,27 +91,37 @@ class Graphics
   }
 
   // Other Methods
-  // ***************
+  // ---------------
   // Animate()
 
+  // Path Methods
+  // ---------------
   // BeginPath()
   // ClosePath()
+  // MoveTo(point)
+  // Square(value)
 
+  // Get Radius Methods
+  // ---------------
   // GetPointRadius(point)
   // GetRadius(adjacent, opposite)
 
+  // Get Ratation Methods
+  // ---------------
   // GetCosRotation(adjacent, radius)
   // GetSinRotation(opposite, radius)
 
-  // MoveTo(point)
+  // Rotate Methods
+  // ---------------
   // RotateXY(point, radius, radians)
   // RotateYZ(point, radius, radians)
-  // Square(value)
 
+  // Fill and Stroke Methods
+  // ---------------
   // Fill(fillStyle = "")
   // Stroke(strokeStyle = "")
 
-  // 
+  // Test Animation
   Animate()
   {
     let ctx = this.Context;
@@ -142,6 +155,19 @@ class Graphics
   ClosePath()
   {
     this.Context.closePath();
+  }
+
+  // Move start point.
+  MoveTo(point)
+  {
+    this.Context.moveTo(point.X, point.Y);
+  }
+
+  // Squares a value.
+  Square(value)
+  {
+    let retValue = Math.pow(value, 2);
+    return retValue;
   }
 
   // Get the radius for a point.
@@ -180,12 +206,6 @@ class Graphics
     return retValue;
   }
 
-  // Move start point.
-  MoveTo(point)
-  {
-    this.Context.moveTo(point.X, point.Y);
-  }
-
   // Create a rotated point.
   RotateXY(point, radius, radians)
   {
@@ -204,13 +224,6 @@ class Graphics
     let z = radius * Math.cos(radians);
     let y = radius * Math.sin(radians);
     let retValue = new LJCPoint(point.X, Math.round(y), Math.round(z));
-    return retValue;
-  }
-
-  // Squares a value.
-  Square(value)
-  {
-    let retValue = Math.pow(value, 2);
     return retValue;
   }
 
