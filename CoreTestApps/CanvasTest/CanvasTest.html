@@ -5,6 +5,7 @@
 <html lang="en">
 <head>
   <script src="../../Core/Common/Script/LJCCommon.js"></script>
+  <script src="../../Core/Graphics/Script/LJCGroup.js"></script>
   <script src="../../Core/Graphics/Script/LJCGraphics.js"></script>
   <script src="../../Core/Graphics/Script/LJCObject3D.js"></script>
   <style>
@@ -20,11 +21,9 @@
     g.StrokeStyle = "cyan";
     g.FillStyle = "cyan";
 
-    let translatePoint = new LJCPoint(g.Canvas.width / 2
-      , g.Canvas.height / 2, 0);
-    let radius = 30;
-    let square = LJCObject3D.CreateSquare(g, "Facet1", translatePoint, radius);
-    square.Show();
+    let cubeGroup = new LJCGroup("CubeGroup", g);
+    cubeGroup.AddCube("Cube", 30);
+    cubeGroup.Show();
   </script>
 </body>
 </html>

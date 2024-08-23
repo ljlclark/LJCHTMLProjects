@@ -2,133 +2,82 @@
 // Licensed under the MIT License.-- >
 // LJCObject3D.js
 
-// Represents a group of objects.
-class LJCGroup
-{
-  // static CreateCube()
-  // Show()
-
-  // Creates a cube.
-  static CreateCube(graphics, objectName, translatePoint, facetRadius)
-  {
-    let retValue = new LJCGroup(objectName);
-
-    let object3D = new LJCObject3D(objectName, graphics);
-
-    let name = "Front";
-    let path = object3D.CreatePath(name, translatePoint, radius, vertices);
-    path.Move(0, 0, racetRadius * -1);
-    object3D.Paths.push(path);
-    retValue.Objects.push(object3D);
-
-    name = "Back";
-    object3D = object3D.Clone();
-    object3D.Name = name;
-    path = object3D.Paths[0];
-    path.Name = name;
-    path.Move(0, 0, facetRadius * 2);
-    retValue.Objects.push(object3D);
-
-    name = "Left";
-    object3D = object3D.Clone();
-    object3D.Name = name;
-    path = object3D.Paths[0];
-    path.Name = name;
-    path.Move(0, 0, facetRadius * -1);
-    path.RotateXZ(180 * g.Radian);
-    path.Move(facetRadius * -1, 0, 0);
-    retValue.Objects.push(object3D);
-
-    name = "Right";
-    object3D = object3D.Clone();
-    object3D.Name = name;
-    path = object3D.Paths[0];
-    path.Name = name;
-    path.Move(facetRadius * 2, 0, 0);
-    retValue.Objects.push(object3D);
-
-    name = "Top";
-    object3D = object3D.Clone();
-    object3D.Name = name;
-    path = object3D.Paths[0];
-    path.Name = name;
-    path.Move(facetRadius, 0, o);
-    path.RotateXZ(180 * g.Radian);
-    path.RotateYZ(180 * g.Radian);
-    path.Move(0, facetRadius * -1, 0);
-    retValue.Objects.push(object3D);
-
-    name = "Bottom";
-    object3D = object3D.Clone();
-    object3D.Name = name;
-    path = object3D.Paths[0];
-    path.Name = name;
-    path.Move(facetRadius * 2, 0, 0);
-    retValue.Objects.push(object3D);
-  }
-
-  // The Constructor method.
-  constructor(name, graphics)
-  {
-    this.Graphics = graphics;
-    this.Name = name;
-    this.Objects = [];
-  }
-
-  // Shows the group.
-  Show()
-  {
-    for (let index = 0; index < this.Objects.length; index++)
-    {
-      let object3D = this.Objects[index];
-      object3D.Show(this.Graphics);
-    }
-  }
-}
-
 // Represents a 3D ojbect.
 // ***************
 class LJCObject3D
 {
+  // Static Methods
+  // ---------------
   // static CreateSquare(graphics, name, translationPoint, radius)
-  // AddPath(name, beginPoint, translatePoint, pathItems)
-  // CreateFacet(name, beginPoint, translatePoint, radius, verticeCount)
-  // Show()
 
-  // 
-  static CreateSquare(graphics, name, translationPoint, radius)
+  // Creates a Square path.
+  static CreateSquare(graphics, name, translatePoint, radius)
   {
-    let retValue = new LJCObject3D(name, graphics);
+    let object3D = new LJCObject3D(name, graphics);
     let verticeCount = 4;
-    let path = retValue.CreatePath(name, translatePoint, radius, verticeCount);
-    retValue.Paths.push(path);
+    let retValue = object3D.CreatePath(name, translatePoint, radius, verticeCount);
     return retValue;
   }
 
   // The Constructor method.
-  constructor(name, graphics)
+  constructor(name, graphics, translatePoint)
   {
     this.Graphics = graphics;
     this.Name = name;
+    this.TranslatePoint = translatePoint;
     this.Paths = [];
+  }
+
+  // Methods
+  // ---------------
+  // Clone()
+  // AddPath(name, beginPoint, translatePoint, pathItems)
+  // CreateFacet(name, beginPoint, translatePoint, radius, verticeCount)
+  // Show()
+
+  // Creates a Clone of this object.
+  Clone()
+  {
+    let retObject3D = new LJCObject3D(this.Name
+      , this.Graphics);
+    let paths = this.Paths;
+    for (let index = 0; index < paths.length; index++)
+    {
+      let path = paths[index];
+      retObject3D.Paths.push(path.Clone());
+    }
+    return retObject3D;
   }
 
   // Adds a Path.
   AddPath(name, beginPoint, translatePoint, pathItems)
   {
-    let path = new LJCPath(name, beginPoint, translatePoint);
+    let g = this.Graphics;
+    let path = new LJCPath(g, name, beginPoint
+      , translatePoint);
     for (let index = 0; index < pathItems.length; index++)
     {
       path.PathItems.push(pathItems[index]);
     }
+    this.Paths.push(path);
+  }
+
+  // Creates a Square path.
+  AddSquare(name, radius)
+  {
+    let verticeCount = 4;
+    let retPath = this.CreatePath(name, this.TranslatePoint
+      , radius, verticeCount);
+    this.Paths.push(retPath);
+    return retPath;
   }
 
   // Creates a Polygon path.
   CreateFacet(name, beginPoint, translatePoint, radius, verticeCount)
   {
     let g = this.Graphics;
-    let retValue = new LJCPath(name, beginPoint, translatePoint);
-    retValue.DoClosePath = true;
+    let retPath = new LJCPath(g, name, beginPoint, translatePoint);
+    retPath.DoClosePath = true;
 
     let arc = (Math.PI * 2) / verticeCount;
     let beginRadians = g.GetCosRotation(beginPoint.X, radius);
@@ -136,22 +85,23 @@ class LJCObject3D
     let nextPoint = beginPoint.Clone();
     for (let index = 0; index < verticeCount - 1; index++)
     {
-      nextPoint = g.RotateXY(nextPoint, radius, radians);
+      nextPoint.RotateXY(radians);
       let pathItem = new LJCPathItem(g, "Line", nextPoint, translatePoint);
-      retValue.PathItems.push(pathItem);
+      retPath.PathItems.push(pathItem);
       radians += arc;
     }
-    return retValue;
+    return retPath;
   }
 
   // Creates a Facet based on the radius. 
   CreatePath(name, translatePoint, radius, verticeCount)
   {
-    let beginPoint = new LJCPoint(radius, 0, 0);
-    beginPoint = g.RotateXY(beginPoint, radius, 45 * g.Radian);
-    let retValue = this.CreateFacet(name, beginPoint, translatePoint
-      , radius, verticeCount);
-    return retValue;
+    let x = radius;
+    let beginPoint = new LJCPoint(x, 0, 0, radius);
+    beginPoint.RotateXY(45 * g.Radian);
+    let retPath = this.CreateFacet(name, beginPoint
+      , translatePoint, radius, verticeCount);
+    return retPath;
   }
 
   // Moves the object.
@@ -179,27 +129,51 @@ class LJCObject3D
 // ***************
 class LJCPath
 {
-  // RotateXY(radians);
-  // Show(graphics)
-  // SetTranslatePoint(point)
-
   #ScreenBeginPoint;
   #TranslatePoint;
 
   // The Constructor method.
-  constructor(name, beginPoint, translatePoint)
+  constructor(graphics, name, beginPoint, translatePoint)
   {
+    // *** Next Statement *** Add
+    this.Graphics = graphics;
+    this.Name = name;
     this.BeginPoint = beginPoint;
     this.DoClosePath = false;
-    this.Name = name;
     this.PathItems = [];
     this.#ScreenBeginPoint = beginPoint;
     this.SetTranslatePoint(translatePoint);
   }
 
+  // Methods
+  // ---------------
+  // RotateXY(radians);
+  // RotateXZ(radians);
+  // RotateZY(radians);
+  // Show(graphics)
+  // SetTranslatePoint(point)
+
+
+  // Creates a Clone of this object.
+  Clone()
+  {
+    let beginPoint = this.BeginPoint.Clone();
+    let translatePoint = this.#TranslatePoint.Clone();
+    let retPath = new LJCPath(g, this.Name, beginPoint
+      , translatePoint);
+    for (let index = 0; index < this.PathItems.length; index++)
+    {
+      let pathItem = this.PathItems[index];
+      retPath.PathItems.push(pathItem.Clone());
+    }
+    return retPath;
+  }
+
   // Moves the path.
   Move(x, y, z)
   {
+    // *** Next Statement *** Add
+    this.BeginPoint.Move(x, y, z);
     for (let index = 0; index < this.PathItems.length; index++)
     {
       let pathItem = this.PathItems[index];
@@ -211,10 +185,42 @@ class LJCPath
   // Rotate on the XY axis.
   RotateXY(radians)
   {
+    let g = this.Graphics;
+
+    // *** Next Statement *** Add
+    g.RotateXY(this.BeginPoint, radians);
     for (let index = 0; index < this.PathItems.length; index++)
     {
       let pathItem = this.PathItems[index];
       pathItem.RotateXY(radians);
+    }
+  }
+
+  // Rotate on the XY axis.
+  RotateXZ(radians)
+  {
+    let g = this.Graphics;
+
+    // *** Next Statement *** Add
+    this.BeginPoint.RotateXZ(radians);
+    for (let index = 0; index < this.PathItems.length; index++)
+    {
+      let pathItem = this.PathItems[index];
+      pathItem.RotateXZ(radians);
+    }
+  }
+
+  // Rotate on the XY axis.
+  RotateZY(radians)
+  {
+    let g = this.Graphics;
+
+    // *** Next Statement *** Add
+    g.RotateZY(this.BeginPoint, radians);
+    for (let index = 0; index < this.PathItems.length; index++)
+    {
+      let pathItem = this.PathItems[index];
+      pathItem.RotateZY(radians);
     }
   }
 
@@ -297,10 +303,6 @@ class LJCPath
 // ***************
 class LJCPathItem
 {
-  // Clone()
-  // RotateXY(radians)
-  // SetTranslatePoint(point)
-
   #Point;
   #ScreenPoint;
   #TranslatePoint;
@@ -319,14 +321,25 @@ class LJCPathItem
     this.StrokeStyle = "";
   }
 
+  // Methods
+  // ---------------
+  // Clone()
+  // Move(x, y, z)
+  // RotateXY(radians)
+  // RotateXZ(radians)
+  // RotateZY(radians)
+  // SetTranslatePoint(point)
+
   // Creates a Clone of this object.
   Clone()
   {
-    let retValue = new LJCPathItem(this.Graphics, this.ItemType, this.#Point
-      , this.#TranslatePoint);
-    retValue.SrokeStyle = this.StrokeStyle;
-    retValue.FillStyle = this.FillStyle;
-    return retValue;
+    let point = this.#Point.Clone();
+    let translatePoint = this.#TranslatePoint.Clone();
+    let retPathItem = new LJCPathItem(this.Graphics, this.ItemType, point
+      , translatePoint);
+    retPathItem.FillStyle = this.FillStyle;
+    retPathItem.SrokeStyle = this.StrokeStyle;
+    return retPathItem;
   }
 
   // Moves the item next point.
@@ -341,9 +354,28 @@ class LJCPathItem
   {
     let g = this.Graphics;
     let point = this.#Point;
-    let radius = this.Radius;
 
-    this.NextPoint = g.RotateXY(point, radius, radians);
+    this.NextPoint = point.RotateXY(radians);
+    this.#Translate();
+  }
+
+  // Rotate on the XY axis.
+  RotateXZ(radians)
+  {
+    let g = this.Graphics;
+    let point = this.#Point;
+
+    this.NextPoint = point.RotateXZ(radians);
+    this.#Translate();
+  }
+
+  // Rotate on the XY axis.
+  RotateZY(radians)
+  {
+    let g = this.Graphics;
+    let point = this.#Point;
+
+    this.NextPoint = point.RotateZY(radians);
     this.#Translate();
   }
 
@@ -360,12 +392,13 @@ class LJCPathItem
     let point = this.#Point;
     let tPoint = this.#TranslatePoint;
 
-    if (tPoint != null)
+    if (point != null
+      && tPoint != null)
     {
       let sx = point.X + tPoint.X;
       let sy = point.Y + tPoint.Y;
       let sz = point.Z + tPoint.Z;
-      this.#ScreenPoint = new LJCPoint(sx, sy, sz);
+      this.#ScreenPoint = new LJCPoint(sx, sy, sz, point.Radius);
     }
   }
 
@@ -396,17 +429,28 @@ class LJCPathItem
 class LJCPoint
 {
   // The Constructor method.
-  constructor(x, y, z)
+  constructor(x, y, z, radius, rotation = 0)
   {
     this.X = x;
     this.Y = y;
     this.Z = z;
+    this.Radius = radius;
+    this.Rotation = rotation;
   }
+
+  // Methods
+  // ---------------
+  // Clone()
+  // Move(x, y, z)
+  // RotateXY(rotation)
+  // RotateXZ(rotation)
+  // RotateZY(rotation)
 
   // Creates a Clone of this object.
   Clone()
   {
-    let retValue = new LJCPoint(this.X, this.Y, this.Z);
+    let retValue = new LJCPoint(this.X, this.Y
+      , this.Z, this.Radius);
     return retValue;
   }
 
@@ -415,6 +459,42 @@ class LJCPoint
   {
     this.X += x;
     this.Y += y;
-    thie.Z += z;
+    this.Z += z;
+  }
+
+  // Create a rotated point.
+  RotateXY(rotation)
+  {
+    // cos(radians) = a/h
+    // Multiply both sides by h.
+    // h * cos(radians) = a
+    this.Rotation += rotation;
+    let x = this.Radius * Math.cos(this.Rotation);
+    let y = this.Radius * Math.sin(this.Rotation);
+    this.X = Math.round(x);
+    this.Y = Math.round(y);
+  }
+
+  // Create a rotated point.
+  RotateXZ(rotation)
+  {
+    // cos(radians) = a/h
+    // Multiply both sides by h.
+    // h * cos(radians) = a
+    this.Rotation += rotation;
+    let x = this.Radius * Math.cos(this.Rotation);
+    let z = this.Radius * Math.sin(this.Rotation);
+    this.X = Math.round(x);
+    this.Z = Math.round(z);
+  }
+
+  // Create a rotated point.
+  RotateZY(rotation)
+  {
+    this.Rotation += rotation;
+    let z = this.Radius * Math.cos(this.Rotation);
+    let y = this.Radius * Math.sin(this.Rotation);
+    this.Z = Math.round(z);
+    this.Y = Math.round(y);
   }
 }

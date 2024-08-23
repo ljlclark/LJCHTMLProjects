@@ -106,15 +106,10 @@ class LJCGraphics
   // GetPointRadius(point)
   // GetRadius(adjacent, opposite)
 
-  // Get Ratation Methods
+  // Get Rotation Methods
   // ---------------
   // GetCosRotation(adjacent, radius)
   // GetSinRotation(opposite, radius)
-
-  // Rotate Methods
-  // ---------------
-  // RotateXY(point, radius, radians)
-  // RotateYZ(point, radius, radians)
 
   // Fill and Stroke Methods
   // ---------------
@@ -203,27 +198,6 @@ class LJCGraphics
   GetSinRotation(opposite, radius)
   {
     let retValue = Math.asin(opposite / radius);
-    return retValue;
-  }
-
-  // Create a rotated point.
-  RotateXY(point, radius, radians)
-  {
-    // cos(radians) = a/h
-    // Multiply both sides by h.
-    // h * cos(radians) = a
-    let x = radius * Math.cos(radians);
-    let y = radius * Math.sin(radians);
-    let retValue = new LJCPoint(Math.round(x), Math.round(y), point.Z);
-    return retValue;
-  }
-  
-  // Create a rotated point.
-  RotateYZ(point, radius, radians)
-  {
-    let z = radius * Math.cos(radians);
-    let y = radius * Math.sin(radians);
-    let retValue = new LJCPoint(point.X, Math.round(y), Math.round(z));
     return retValue;
   }
 
