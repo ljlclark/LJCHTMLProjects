@@ -17,11 +17,11 @@
 <body>
   <canvas id="canvas" class="border" height="250" width="500"></canvas>
   <script>
-    let g = new LJCGraphics(canvas);
-    g.StrokeStyle = "cyan";
-    g.FillStyle = "cyan";
+    let gLJCGraphics = new LJCGraphics(canvas);
+    gLJCGraphics.StrokeStyle = "cyan";
+    gLJCGraphics.FillStyle = "cyan";
 
-    let cubeGroup = new LJCGroup("CubeGroup", g);
+    let cubeGroup = new LJCGroup("CubeGroup");
     cubeGroup.AddCube("Cube", 30);
     cubeGroup.Show();
   </script>

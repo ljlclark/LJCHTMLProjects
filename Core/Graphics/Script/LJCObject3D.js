@@ -8,21 +8,20 @@ class LJCObject3D
 {
   // Static Methods
   // ---------------
-  // static CreateSquare(graphics, name, translationPoint, radius)
+  // static CreateSquare(name, translationPoint, radius)
 
   // Creates a Square path.
   static CreateSquare(graphics, name, translatePoint, radius)
   {
-    let object3D = new LJCObject3D(name, graphics);
+    let object3D = new LJCObject3D(name);
     let verticeCount = 4;
     let retValue = object3D.CreatePath(name, translatePoint, radius, verticeCount);
     return retValue;
   }
 
   // The Constructor method.
-  constructor(name, graphics, translatePoint)
+  constructor(name, translatePoint)
   {
-    this.Graphics = graphics;
     this.Name = name;
     this.TranslatePoint = translatePoint;
     this.Paths = [];
@@ -38,8 +37,7 @@ class LJCObject3D
   // Creates a Clone of this object.
   Clone()
   {
-    let retObject3D = new LJCObject3D(this.Name
-      , this.Graphics);
+    let retObject3D = new LJCObject3D(this.Name);
     let paths = this.Paths;
     for (let index = 0; index < paths.length; index++)
     {
@@ -52,8 +50,7 @@ class LJCObject3D
   // Adds a Path.
   AddPath(name, beginPoint, translatePoint, pathItems)
   {
-    let g = this.Graphics;
-    let path = new LJCPath(g, name, beginPoint
+    let path = new LJCPath(name, beginPoint
       , translatePoint);
     for (let index = 0; index < pathItems.length; index++)
     {
@@ -73,20 +70,24 @@ class LJCObject3D
   }
 
   // Creates a Polygon path.
-  CreateFacet(name, beginPoint, translatePoint, radius, verticeCount)
+  CreateFacet(name, beginPoint, translatePoint
+    , radius, verticeCount)
   {
-    let g = this.Graphics;
-    let retPath = new LJCPath(g, name, beginPoint, translatePoint);
+    let g = gLJCGraphics;
+
+    let retPath = new LJCPath(name, beginPoint, translatePoint);
     retPath.DoClosePath = true;
 
     let arc = (Math.PI * 2) / verticeCount;
     let beginRadians = g.GetCosRotation(beginPoint.X, radius);
     let radians = arc + beginRadians;
-    let nextPoint = beginPoint.Clone();
+    let point = beginPoint.Clone();
     for (let index = 0; index < verticeCount - 1; index++)
     {
+      // *** Next Statement *** Add
+      let nextPoint = point.Clone();
       nextPoint.RotateXY(radians);
-      let pathItem = new LJCPathItem(g, "Line", nextPoint, translatePoint);
+      let pathItem = new LJCPathItem("Line", nextPoint, translatePoint);
       retPath.PathItems.push(pathItem);
       radians += arc;
     }
@@ -96,6 +97,8 @@ class LJCObject3D
   // Creates a Facet based on the radius. 
   CreatePath(name, translatePoint, radius, verticeCount)
   {
+    let g = gLJCGraphics;
+
     let x = radius;
     let beginPoint = new LJCPoint(x, 0, 0, radius);
     beginPoint.RotateXY(45 * g.Radian);
@@ -120,7 +123,7 @@ class LJCObject3D
     for (let index = 0; index < this.Paths.length; index++)
     {
       let path = this.Paths[index];
-      path.Show(this.Graphics);
+      path.Show();
     }
   }
 }
@@ -133,10 +136,8 @@ class LJCPath
   #TranslatePoint;
 
   // The Constructor method.
-  constructor(graphics, name, beginPoint, translatePoint)
+  constructor(name, beginPoint, translatePoint)
   {
-    // *** Next Statement *** Add
-    this.Graphics = graphics;
     this.Name = name;
     this.BeginPoint = beginPoint;
     this.DoClosePath = false;
@@ -150,7 +151,7 @@ class LJCPath
   // RotateXY(radians);
   // RotateXZ(radians);
   // RotateZY(radians);
-  // Show(graphics)
+  // Show()
   // SetTranslatePoint(point)
 
 
@@ -159,7 +160,7 @@ class LJCPath
   {
     let beginPoint = this.BeginPoint.Clone();
     let translatePoint = this.#TranslatePoint.Clone();
-    let retPath = new LJCPath(g, this.Name, beginPoint
+    let retPath = new LJCPath(this.Name, beginPoint
       , translatePoint);
     for (let index = 0; index < this.PathItems.length; index++)
     {
@@ -185,7 +186,7 @@ class LJCPath
   // Rotate on the XY axis.
   RotateXY(radians)
   {
-    let g = this.Graphics;
+    let g = gLJCGraphics;
 
     // *** Next Statement *** Add
     g.RotateXY(this.BeginPoint, radians);
@@ -199,8 +200,6 @@ class LJCPath
   // Rotate on the XY axis.
   RotateXZ(radians)
   {
-    let g = this.Graphics;
-
     // *** Next Statement *** Add
     this.BeginPoint.RotateXZ(radians);
     for (let index = 0; index < this.PathItems.length; index++)
@@ -213,8 +212,6 @@ class LJCPath
   // Rotate on the XY axis.
   RotateZY(radians)
   {
-    let g = this.Graphics;
-
     // *** Next Statement *** Add
     g.RotateZY(this.BeginPoint, radians);
     for (let index = 0; index < this.PathItems.length; index++)
@@ -225,9 +222,9 @@ class LJCPath
   }
 
   // Display the Path.
-  Show(graphics)
+  Show()
   {
-    let g = graphics;
+    let g = gLJCGraphics;
     let pathItems = this.PathItems;
 
     g.BeginPath();
@@ -252,7 +249,7 @@ class LJCPath
     }
     if (this.DoClosePath)
     {
-      g.ClosePath();
+      gLJCGraphics.ClosePath();
     }
     g.Stroke();
   }
@@ -308,9 +305,8 @@ class LJCPathItem
   #TranslatePoint;
 
   // The Constructor method.
-  constructor(graphics, itemType, nextPoint, translatePoint)
+  constructor(itemType, nextPoint, translatePoint)
   {
-    this.Graphics = graphics;
     // ItemType: Arc, Line, Rectangle
     this.ItemType = itemType;
     this.#Point = nextPoint;
@@ -335,7 +331,7 @@ class LJCPathItem
   {
     let point = this.#Point.Clone();
     let translatePoint = this.#TranslatePoint.Clone();
-    let retPathItem = new LJCPathItem(this.Graphics, this.ItemType, point
+    let retPathItem = new LJCPathItem(this.ItemType, point
       , translatePoint);
     retPathItem.FillStyle = this.FillStyle;
     retPathItem.SrokeStyle = this.StrokeStyle;
@@ -352,7 +348,6 @@ class LJCPathItem
   // Rotate on the XY axis.
   RotateXY(radians)
   {
-    let g = this.Graphics;
     let point = this.#Point;
 
     this.NextPoint = point.RotateXY(radians);
@@ -362,7 +357,6 @@ class LJCPathItem
   // Rotate on the XY axis.
   RotateXZ(radians)
   {
-    let g = this.Graphics;
     let point = this.#Point;
 
     this.NextPoint = point.RotateXZ(radians);
@@ -372,7 +366,6 @@ class LJCPathItem
   // Rotate on the XY axis.
   RotateZY(radians)
   {
-    let g = this.Graphics;
     let point = this.#Point;
 
     this.NextPoint = point.RotateZY(radians);
@@ -468,7 +461,8 @@ class LJCPoint
     // cos(radians) = a/h
     // Multiply both sides by h.
     // h * cos(radians) = a
-    this.Rotation += rotation;
+    //this.Rotation += rotation;
+    this.Rotation = rotation;
     let x = this.Radius * Math.cos(this.Rotation);
     let y = this.Radius * Math.sin(this.Rotation);
     this.X = Math.round(x);
@@ -481,7 +475,8 @@ class LJCPoint
     // cos(radians) = a/h
     // Multiply both sides by h.
     // h * cos(radians) = a
-    this.Rotation += rotation;
+    //this.Rotation += rotation;
+    this.Rotation = rotation;
     let x = this.Radius * Math.cos(this.Rotation);
     let z = this.Radius * Math.sin(this.Rotation);
     this.X = Math.round(x);
@@ -491,7 +486,8 @@ class LJCPoint
   // Create a rotated point.
   RotateZY(rotation)
   {
-    this.Rotation += rotation;
+    //this.Rotation += rotation;
+    this.Rotation = rotation;
     let z = this.Radius * Math.cos(this.Rotation);
     let y = this.Radius * Math.sin(this.Rotation);
     this.Z = Math.round(z);
