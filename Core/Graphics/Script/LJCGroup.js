@@ -5,9 +5,6 @@
 // Represents a group of objects.
 class LJCGroup
 {
-  // CreateCube()
-  // Show()
-
   // The Constructor method.
   constructor(name)
   {
@@ -19,35 +16,35 @@ class LJCGroup
   }
 
   // Creates a cube.
-  AddCube(objectName, facetRadius)
+  AddCube(facetRadius)
   {
     let g = gLJCGraphics;
 
-    let object3D = new LJCObject3D(objectName
-      , this.TranslatePoint);
-
     let name = "Front";
+    let object3D = new LJCObject3D(name
+      , this.TranslatePoint);
     let square = object3D.AddSquare(name, facetRadius);
     square.Move(0, 0, facetRadius * -1);
     this.Objects.push(object3D);
 
-    //name = "Back";
-    //object3D = object3D.Clone();
-    //object3D.Name = name;
-    //square = object3D.Paths[0];
-    //square.Name = name;
-    //square.Move(0, 0, facetRadius * 2);
-    //this.Objects.push(object3D);
+    name = "Back";
+    object3D = object3D.Clone();
+    object3D.Name = name;
+    square = object3D.Paths[0];
+    square.Name = name;
+    square.Move(0, 0, facetRadius * 2);
+    this.Objects.push(object3D);
 
-    //name = "Left";
-    //object3D = object3D.Clone();
-    //object3D.Name = name;
-    //square = object3D.Paths[0];
-    //square.Name = name;
-    //square.Move(0, 0,  facetRadius * -1);
-    //square.RotateXZ(180 * g.Radian);
-    //square.Move(facetRadius * -1, 0, 0);
-    //this.Objects.push(object3D);
+    name = "Left";
+    object3D = object3D.Clone();
+    object3D.Name = name;
+    square = object3D.Paths[0];
+    square.Name = name;
+    square.Move(0, 0, facetRadius * -1);
+    // Debug
+    square.RotateXZ(180 * g.Radian);
+    square.Move(facetRadius * -1, 0, 0);
+    this.Objects.push(object3D);
 
     //name = "Right";
     //object3D = object3D.Clone();

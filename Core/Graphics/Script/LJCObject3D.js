@@ -2,13 +2,16 @@
 // Licensed under the MIT License.-- >
 // LJCObject3D.js
 
+// LJCPath - Represents a 3D path.
+// LJCPathItem - Represents a 3D Path item.
+// LJCPoint - Represents a 3D point.
+
 // Represents a 3D ojbect.
 // ***************
 class LJCObject3D
 {
   // Static Methods
   // ---------------
-  // static CreateSquare(name, translationPoint, radius)
 
   // Creates a Square path.
   static CreateSquare(graphics, name, translatePoint, radius)
@@ -31,7 +34,10 @@ class LJCObject3D
   // ---------------
   // Clone()
   // AddPath(name, beginPoint, translatePoint, pathItems)
+  // AddSquare(name, radius)
   // CreateFacet(name, beginPoint, translatePoint, radius, verticeCount)
+  // CreatePath(name, translatePoint, radius, verticeCount)
+  // Move(x, y, z)
   // Show()
 
   // Creates a Clone of this object.
@@ -148,12 +154,13 @@ class LJCPath
 
   // Methods
   // ---------------
+  // Clone();
+  // Move(x, y, z)
   // RotateXY(radians);
   // RotateXZ(radians);
   // RotateZY(radians);
   // Show()
   // SetTranslatePoint(point)
-
 
   // Creates a Clone of this object.
   Clone()

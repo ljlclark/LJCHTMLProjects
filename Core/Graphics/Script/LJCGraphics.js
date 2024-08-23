@@ -38,7 +38,7 @@ class LJCGraphics
     ctx.arc(centerPoint.X, centerPoint.Y, radius, beginRadians, endRadians);
 
     ctx.strokeStyle = strokeStyle;
-    ctx.stroke();
+    //ctx.stroke();
   }
 
   // Draw a line from beginPoint to endPoint.
@@ -51,7 +51,7 @@ class LJCGraphics
     ctx.lineTo(endPoint.X, endPoint.Y);
 
     ctx.strokeStyle = strokeStyle;
-    ctx.stroke();
+    //ctx.stroke();
   }
 
   // Draw a line from the previous end point to the provided endPoint.
@@ -63,7 +63,7 @@ class LJCGraphics
     ctx.lineTo(endPoint.X, endPoint.Y);
 
     ctx.strokeStyle = strokeStyle;
-    ctx.stroke();
+    //ctx.stroke();
   }
 
   // Draw a rectangle.
@@ -201,18 +201,18 @@ class LJCGraphics
     return retValue;
   }
 
-  // Show the line path.
-  Stroke(strokeStyle = "")
-  {
-    strokeStyle = this.#GetStrokeStyle(strokeStyle);
-    this.Context.stroke();
-  }
-
   // Show the fill path.
   Fill(fillStyle = "")
   {
     fillStyle = this.#GetFillStyle(fillStyle);
     this.Context.fill();
+  }
+
+  // Show the line path.
+  Stroke(strokeStyle = "")
+  {
+    strokeStyle = this.#GetStrokeStyle(strokeStyle);
+    this.Context.stroke();
   }
 
   // Gets the default style color.
