@@ -16,15 +16,17 @@ class LJCGroup
   }
 
   // Creates a cube.
-  AddCube(facetRadius)
+  AddCube(radius)
   {
     let g = gLJCGraphics;
 
     let name = "Front";
     let object3D = new LJCObject3D(name
       , this.TranslatePoint);
-    let square = object3D.AddSquare(name, facetRadius);
-    square.Move(0, 0, facetRadius * -1);
+    let square = object3D.CreateFacet(name, radius
+      , 4);
+    square.Move(0, 0, square.PathRadius * -1);
+    object3D.Paths.push(square);
     this.Objects.push(object3D);
 
     name = "Back";
@@ -32,7 +34,7 @@ class LJCGroup
     object3D.Name = name;
     square = object3D.Paths[0];
     square.Name = name;
-    square.Move(0, 0, facetRadius * 2);
+    square.Move(0, 0, square.Radius * 2);
     this.Objects.push(object3D);
 
     name = "Left";
@@ -40,38 +42,37 @@ class LJCGroup
     object3D.Name = name;
     square = object3D.Paths[0];
     square.Name = name;
-    square.Move(0, 0, facetRadius * -1);
-    // Debug
-    square.RotateXZ(180 * g.Radian);
-    square.Move(facetRadius * -1, 0, 0);
+    square.Move(0, 0, square.Radius * -1);
+    square.RotateXZ(square.Arc);
+    square.Move(square.Radius * -1, 0, 0);
     this.Objects.push(object3D);
 
-    //name = "Right";
-    //object3D = object3D.Clone();
-    //object3D.Name = name;
-    //square = object3D.Paths[0];
-    //square.Name = name;
-    //square.Move(facetRadius * 2, 0, 0);
-    //this.Objects.push(object3D);
+    name = "Right";
+    object3D = object3D.Clone();
+    object3D.Name = name;
+    square = object3D.Paths[0];
+    square.Name = name;
+    square.Move(square.Radius * 2, 0, 0);
+    this.Objects.push(object3D);
 
-    //name = "Top";
-    //object3D = object3D.Clone();
-    //object3D.Name = name;
-    //square = object3D.Paths[0];
-    //square.Name = name;
-    //square.Move(facetRadius * -1, 0, 0);
-    //square.RotateXZ(180 * g.Radian);
-    //square.RotateZY(180 * g.Radian);
-    //square.Move(0, facetRadius * -1, 0);
-    //this.Objects.push(object3D);
+    name = "Top";
+    object3D = object3D.Clone();
+    object3D.Name = name;
+    square = object3D.Paths[0];
+    square.Name = name;
+    square.Move(square.Radius * -1, 0, 0);
+    square.RotateXZ(square.Arc);
+    square.RotateZY(square.Arc);
+    square.Move(0, square.Radius * -1, 0);
+    this.Objects.push(object3D);
 
-    //name = "Bottom";
-    //object3D = object3D.Clone();
-    //object3D.Name = name;
-    //square = object3D.Paths[0];
-    //square.Name = name;
-    //square.Move(facetRadius * 2, 0, 0);
-    //this.Objects.push(object3D);
+    name = "Bottom";
+    object3D = object3D.Clone();
+    object3D.Name = name;
+    square = object3D.Paths[0];
+    square.Name = name;
+    square.Move(square.Radius * 2, 0, 0);
+    this.Objects.push(object3D);
   }
 
   // Shows the group.

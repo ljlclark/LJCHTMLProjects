@@ -33,10 +33,7 @@ class LJCObject3D
   // Methods
   // ---------------
   // Clone()
-  // AddPath(name, beginPoint, translatePoint, pathItems)
-  // AddSquare(name, radius)
-  // CreateFacet(name, beginPoint, translatePoint, radius, verticeCount)
-  // CreatePath(name, translatePoint, radius, verticeCount)
+  // CreateFacet(name, beginPoint, radius, verticeCount)
   // Move(x, y, z)
   // Show()
 
@@ -53,63 +50,39 @@ class LJCObject3D
     return retObject3D;
   }
 
-  // Adds a Path.
-  AddPath(name, beginPoint, translatePoint, pathItems)
-  {
-    let path = new LJCPath(name, beginPoint
-      , translatePoint);
-    for (let index = 0; index < pathItems.length; index++)
-    {
-      path.PathItems.push(pathItems[index]);
-    }
-    this.Paths.push(path);
-  }
-
-  // Creates a Square path.
-  AddSquare(name, radius)
-  {
-    let verticeCount = 4;
-    let retPath = this.CreatePath(name, this.TranslatePoint
-      , radius, verticeCount);
-    this.Paths.push(retPath);
-    return retPath;
-  }
-
   // Creates a Polygon path.
-  CreateFacet(name, beginPoint, translatePoint
-    , radius, verticeCount)
+  CreateFacet(name, radius, verticeCount)
   {
     let g = gLJCGraphics;
 
-    let retPath = new LJCPath(name, beginPoint, translatePoint);
+    // Create the path.
+    let x = radius;
+    let beginPoint = new LJCPoint(x, 0, 0, radius);
+    let retPath = new LJCPath(name, beginPoint
+      , this.TranslatePoint);
     retPath.DoClosePath = true;
 
-    let arc = (Math.PI * 2) / verticeCount;
-    let beginRadians = g.GetCosRotation(beginPoint.X, radius);
+    // Rotate half of arc to make right line
+    // parallel to y axis.
+    retPath.Arc = (Math.PI * 2) / verticeCount;
+    let arc = retPath.Arc;
+    let beginRotate = arc / 2;
+    beginPoint.RotateXY(beginRotate);
+    retPath.Radius = beginPoint.X;
+
+    let beginRadians = g.GetCosRotation(beginPoint.X
+      , radius);
     let radians = arc + beginRadians;
     let point = beginPoint.Clone();
     for (let index = 0; index < verticeCount - 1; index++)
     {
-      // *** Next Statement *** Add
       let nextPoint = point.Clone();
       nextPoint.RotateXY(radians);
-      let pathItem = new LJCPathItem("Line", nextPoint, translatePoint);
+      let pathItem = new LJCPathItem("Line", nextPoint
+        , this.TranslatePoint);
       retPath.PathItems.push(pathItem);
       radians += arc;
     }
-    return retPath;
-  }
-
-  // Creates a Facet based on the radius. 
-  CreatePath(name, translatePoint, radius, verticeCount)
-  {
-    let g = gLJCGraphics;
-
-    let x = radius;
-    let beginPoint = new LJCPoint(x, 0, 0, radius);
-    beginPoint.RotateXY(45 * g.Radian);
-    let retPath = this.CreateFacet(name, beginPoint
-      , translatePoint, radius, verticeCount);
     return retPath;
   }
 
@@ -145,9 +118,11 @@ class LJCPath
   constructor(name, beginPoint, translatePoint)
   {
     this.Name = name;
+    this.Arc = 0;
     this.BeginPoint = beginPoint;
     this.DoClosePath = false;
     this.PathItems = [];
+    this.Radius = new LJCPoint(0, 0, 0, 0);
     this.#ScreenBeginPoint = beginPoint;
     this.SetTranslatePoint(translatePoint);
   }
@@ -193,10 +168,7 @@ class LJCPath
   // Rotate on the XY axis.
   RotateXY(radians)
   {
-    let g = gLJCGraphics;
-
-    // *** Next Statement *** Add
-    g.RotateXY(this.BeginPoint, radians);
+    this.BeginPoint.RotateXY(radians);
     for (let index = 0; index < this.PathItems.length; index++)
     {
       let pathItem = this.PathItems[index];
@@ -204,10 +176,9 @@ class LJCPath
     }
   }
 
-  // Rotate on the XY axis.
+  // Rotate on the XZ axis.
   RotateXZ(radians)
   {
-    // *** Next Statement *** Add
     this.BeginPoint.RotateXZ(radians);
     for (let index = 0; index < this.PathItems.length; index++)
     {
@@ -216,11 +187,10 @@ class LJCPath
     }
   }
 
-  // Rotate on the XY axis.
+  // Rotate on the ZY axis.
   RotateZY(radians)
   {
-    // *** Next Statement *** Add
-    g.RotateZY(this.BeginPoint, radians);
+    this.BeginPoint.RotateZY(radians);
     for (let index = 0; index < this.PathItems.length; index++)
     {
       let pathItem = this.PathItems[index];
