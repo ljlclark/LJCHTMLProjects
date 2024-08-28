@@ -6,27 +6,18 @@
 // LJCPathItem - Represents a 3D Path item.
 // LJCPoint - Represents a 3D point.
 
-// Represents a 3D ojbect.
+// Represents a 3D object.
 // ***************
 class LJCObject3D
 {
   // Static Methods
   // ---------------
 
-  // Creates a Square path.
-  static CreateSquare(graphics, name, translatePoint, radius)
-  {
-    let object3D = new LJCObject3D(name);
-    let verticeCount = 4;
-    let retValue = object3D.CreatePath(name, translatePoint, radius, verticeCount);
-    return retValue;
-  }
-
   // The Constructor method.
-  constructor(name, translatePoint)
+  //constructor(name)
+  constructor(name)
   {
     this.Name = name;
-    this.TranslatePoint = translatePoint;
     this.Paths = [];
   }
 
@@ -41,6 +32,7 @@ class LJCObject3D
   Clone()
   {
     let retObject3D = new LJCObject3D(this.Name);
+
     let paths = this.Paths;
     for (let index = 0; index < paths.length; index++)
     {
@@ -54,32 +46,29 @@ class LJCObject3D
   CreateFacet(name, radius, verticeCount)
   {
     let g = gLJCGraphics;
+    let retPath = null;
 
     // Create the path.
     let x = radius;
     let beginPoint = new LJCPoint(x, 0, 0, radius);
-    let retPath = new LJCPath(name, beginPoint
-      , this.TranslatePoint);
+    retPath = new LJCPath(name, beginPoint);
     retPath.DoClosePath = true;
 
     // Rotate half of arc to make right line
     // parallel to y axis.
     retPath.Arc = (Math.PI * 2) / verticeCount;
     let arc = retPath.Arc;
-    let beginRotate = arc / 2;
-    beginPoint.RotateXY(beginRotate);
-    retPath.Radius = beginPoint.X;
+    let beginRadians = arc / 2;
+    beginPoint.RotateXY(beginRadians);
+    retPath.PathRadius = beginPoint.X;
 
-    let beginRadians = g.GetCosRotation(beginPoint.X
-      , radius);
     let radians = arc + beginRadians;
     let point = beginPoint.Clone();
     for (let index = 0; index < verticeCount - 1; index++)
     {
       let nextPoint = point.Clone();
       nextPoint.RotateXY(radians);
-      let pathItem = new LJCPathItem("Line", nextPoint
-        , this.TranslatePoint);
+      let pathItem = new LJCPathItem("Line", nextPoint);
       retPath.PathItems.push(pathItem);
       radians += arc;
     }
@@ -105,6 +94,19 @@ class LJCObject3D
       path.Show();
     }
   }
+
+  // Sets the screen points.
+  Translate()
+  {
+    if (gGroup.TranslatePoint != null)
+    {
+      for (let index = 0; index < this.Paths.length; index++)
+      {
+        let path = this.Paths[index];
+        path.Translate();
+      }
+    }
+  }
 }
 
 // Represents a 3D path.
@@ -112,19 +114,18 @@ class LJCObject3D
 class LJCPath
 {
   #ScreenBeginPoint;
-  #TranslatePoint;
 
   // The Constructor method.
-  constructor(name, beginPoint, translatePoint)
+  constructor(name, beginPoint)
   {
     this.Name = name;
     this.Arc = 0;
     this.BeginPoint = beginPoint;
     this.DoClosePath = false;
     this.PathItems = [];
-    this.Radius = new LJCPoint(0, 0, 0, 0);
+    this.PathRadius = new LJCPoint(0, 0, 0, 0);
     this.#ScreenBeginPoint = beginPoint;
-    this.SetTranslatePoint(translatePoint);
+    this.Translate();
   }
 
   // Methods
@@ -135,15 +136,16 @@ class LJCPath
   // RotateXZ(radians);
   // RotateZY(radians);
   // Show()
-  // SetTranslatePoint(point)
+  // Translate()
 
   // Creates a Clone of this object.
   Clone()
   {
     let beginPoint = this.BeginPoint.Clone();
-    let translatePoint = this.#TranslatePoint.Clone();
-    let retPath = new LJCPath(this.Name, beginPoint
-      , translatePoint);
+    let retPath = new LJCPath(this.Name, beginPoint);
+    retPath.Arc = this.Arc;
+    retPath.DoClosePath = this.DoClosePath;
+    retPath.PathRadius = this.PathRadius;
     for (let index = 0; index < this.PathItems.length; index++)
     {
       let pathItem = this.PathItems[index];
@@ -155,14 +157,13 @@ class LJCPath
   // Moves the path.
   Move(x, y, z)
   {
-    // *** Next Statement *** Add
     this.BeginPoint.Move(x, y, z);
     for (let index = 0; index < this.PathItems.length; index++)
     {
       let pathItem = this.PathItems[index];
       pathItem.Move(x, y, z);
     }
-    this.#Translate();
+    this.Translate();
   }
 
   // Rotate on the XY axis.
@@ -174,6 +175,7 @@ class LJCPath
       let pathItem = this.PathItems[index];
       pathItem.RotateXY(radians);
     }
+    this.Translate();
   }
 
   // Rotate on the XZ axis.
@@ -185,6 +187,7 @@ class LJCPath
       let pathItem = this.PathItems[index];
       pathItem.RotateXZ(radians);
     }
+    this.Translate();
   }
 
   // Rotate on the ZY axis.
@@ -196,6 +199,7 @@ class LJCPath
       let pathItem = this.PathItems[index];
       pathItem.RotateZY(radians);
     }
+    this.Translate();
   }
 
   // Display the Path.
@@ -231,30 +235,17 @@ class LJCPath
     g.Stroke();
   }
 
-  // Sets the Translate point and screen points.
-  SetTranslatePoint(point)
-  {
-    this.#TranslatePoint = point;
-    this.#Translate();
-    for (let index = 0; index < this.PathItems.length; index++)
-    {
-      let pathItem = this.PathItems[index];
-      pathItem.SetTranslatePoint(this.#TranslatePoint);
-    }
-  }
-
   // Sets the screen points.
-  #Translate()
+  Translate()
   {
-    let point = this.BeginPoint;
-    let tPoint = this.#TranslatePoint;
-
-    if (tPoint != null)
+    if (gGroup.TranslatePoint != null)
     {
-      let sx = point.X + tPoint.X;
-      let sy = point.Y + tPoint.Y;
-      let sz = point.Z + tPoint.Z;
-      this.#ScreenBeginPoint = new LJCPoint(sx, sy, sz);
+      this.#ScreenBeginPoint = this.BeginPoint.GetScreenPoint();
+      for (let index = 0; index < this.PathItems.length; index++)
+      {
+        let pathItem = this.PathItems[index];
+        pathItem.Translate();
+      }
     }
   }
 
@@ -262,13 +253,6 @@ class LJCPath
   getScreenBeginPoint()
   {
     let retValue = this.#ScreenBeginPoint;
-    return retValue;
-  }
-
-  // Gets the TranslationPoint value.
-  getTranslatePoint()
-  {
-    let retValue = this.#TranslatePoint;
     return retValue;
   }
 }
@@ -279,16 +263,15 @@ class LJCPathItem
 {
   #Point;
   #ScreenPoint;
-  #TranslatePoint;
 
   // The Constructor method.
-  constructor(itemType, nextPoint, translatePoint)
+  constructor(itemType, nextPoint)
   {
     // ItemType: Arc, Line, Rectangle
     this.ItemType = itemType;
     this.#Point = nextPoint;
-    this.#ScreenPoint = this.#Point;
-    this.SetTranslatePoint(translatePoint);
+    this.#ScreenPoint = nextPoint;
+    this.Translate();
 
     this.FillStyle = "";
     this.StrokeStyle = "";
@@ -301,15 +284,13 @@ class LJCPathItem
   // RotateXY(radians)
   // RotateXZ(radians)
   // RotateZY(radians)
-  // SetTranslatePoint(point)
 
   // Creates a Clone of this object.
   Clone()
   {
     let point = this.#Point.Clone();
-    let translatePoint = this.#TranslatePoint.Clone();
-    let retPathItem = new LJCPathItem(this.ItemType, point
-      , translatePoint);
+    let retPathItem = new LJCPathItem(this.ItemType
+      , point);
     retPathItem.FillStyle = this.FillStyle;
     retPathItem.SrokeStyle = this.StrokeStyle;
     return retPathItem;
@@ -319,57 +300,34 @@ class LJCPathItem
   Move(x, y, z)
   {
     this.#Point.Move(x, y, z);
-    this.#Translate();
+    this.Translate();
   }
 
   // Rotate on the XY axis.
   RotateXY(radians)
   {
-    let point = this.#Point;
-
-    this.NextPoint = point.RotateXY(radians);
-    this.#Translate();
+    this.#Point.RotateXY(radians);
+    this.Translate();
   }
 
   // Rotate on the XY axis.
   RotateXZ(radians)
   {
-    let point = this.#Point;
-
-    this.NextPoint = point.RotateXZ(radians);
-    this.#Translate();
+    this.#Point.RotateXZ(radians);
+    this.Translate();
   }
 
   // Rotate on the XY axis.
   RotateZY(radians)
   {
-    let point = this.#Point;
-
-    this.NextPoint = point.RotateZY(radians);
-    this.#Translate();
-  }
-
-  // Sets the Translate point and screen points.
-  SetTranslatePoint(point)
-  {
-    this.#TranslatePoint = point;
-    this.#Translate();
+    this.#Point.RotateZY(radians);
+    this.Translate();
   }
 
   // Sets the screen points.
-  #Translate()
+  Translate()
   {
-    let point = this.#Point;
-    let tPoint = this.#TranslatePoint;
-
-    if (point != null
-      && tPoint != null)
-    {
-      let sx = point.X + tPoint.X;
-      let sy = point.Y + tPoint.Y;
-      let sz = point.Z + tPoint.Z;
-      this.#ScreenPoint = new LJCPoint(sx, sy, sz, point.Radius);
-    }
+    this.#ScreenPoint = this.#Point.GetScreenPoint();
   }
 
   // Gets the Point value.
@@ -383,13 +341,6 @@ class LJCPathItem
   getScreenPoint()
   {
     let retValue = this.#ScreenPoint;
-    return retValue;
-  }
-
-  // Gets the TranslationPoint value.
-  getTranslatePoint()
-  {
-    let retValue = this.#TranslatePoint;
     return retValue;
   }
 }
@@ -421,6 +372,7 @@ class LJCPoint
   {
     let retValue = new LJCPoint(this.X, this.Y
       , this.Z, this.Radius);
+    retValue.Rotation = this.Rotation;
     return retValue;
   }
 
@@ -469,5 +421,22 @@ class LJCPoint
     let y = this.Radius * Math.sin(this.Rotation);
     this.Z = Math.round(z);
     this.Y = Math.round(y);
+  }
+
+  // 
+  GetScreenPoint()
+  {
+    let tPoint = gGroup.TranslatePoint;
+    let retValue = null;
+
+    if (tPoint != null)
+    {
+      let sx = this.X + tPoint.X;
+      let sy = this.Y + tPoint.Y;
+      sx = Math.round(sx);
+      sy = Math.round(sy);
+      retValue = new LJCPoint(sx, sy, 0, 0);
+    }
+    return retValue;
   }
 }
