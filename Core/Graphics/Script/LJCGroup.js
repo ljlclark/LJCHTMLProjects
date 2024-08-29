@@ -11,7 +11,7 @@ class LJCGroup
     this.Name = name;
     let canvas = gLJCGraphics.Canvas;
     this.TranslatePoint = new LJCPoint(canvas.width / 2
-      , canvas.height / 2, 0);
+      , canvas.height / 2, 90);
     this.Objects3D = [];
   }
 
@@ -21,7 +21,7 @@ class LJCGroup
     let g = gLJCGraphics;
 
     let name = "Front";
-    let object3D = new LJCObject3D(name);
+    let object3D = new LJC3DObject(name);
     let square = object3D.CreateFacet(name, radius
       , 4);
     square.Move(0, 0, square.PathRadius * -1);

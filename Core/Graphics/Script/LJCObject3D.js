@@ -1,6 +1,6 @@
 // Copyright(c) Lester J.Clark and Contributors. -- >
 // Licensed under the MIT License.-- >
-// LJCObject3D.js
+// LJC3DObject.js
 
 // LJCPath - Represents a 3D path.
 // LJCPathItem - Represents a 3D Path item.
@@ -8,7 +8,7 @@
 
 // Represents a 3D object.
 // ***************
-class LJCObject3D
+class LJC3DObject
 {
   // Static Methods
   // ---------------
@@ -31,7 +31,7 @@ class LJCObject3D
   // Creates a Clone of this object.
   Clone()
   {
-    let retObject3D = new LJCObject3D(this.Name);
+    let retObject3D = new LJC3DObject(this.Name);
 
     let paths = this.Paths;
     for (let index = 0; index < paths.length; index++)
@@ -240,7 +240,8 @@ class LJCPath
   {
     if (gGroup.TranslatePoint != null)
     {
-      this.#ScreenBeginPoint = this.BeginPoint.GetScreenPoint();
+      this.#ScreenBeginPoint = this.BeginPoint.Clone();
+      this.#ScreenBeginPoint.Translate();
       for (let index = 0; index < this.PathItems.length; index++)
       {
         let pathItem = this.PathItems[index];
@@ -327,7 +328,8 @@ class LJCPathItem
   // Sets the screen points.
   Translate()
   {
-    this.#ScreenPoint = this.#Point.GetScreenPoint();
+    this.#ScreenPoint = this.#Point.Clone();
+    this.#ScreenPoint.Translate();
   }
 
   // Gets the Point value.
@@ -390,7 +392,6 @@ class LJCPoint
     // cos(radians) = a/h
     // Multiply both sides by h.
     // h * cos(radians) = a
-    //this.Rotation += rotation;
     this.Rotation = rotation;
     let x = this.Radius * Math.cos(this.Rotation);
     let y = this.Radius * Math.sin(this.Rotation);
@@ -404,7 +405,6 @@ class LJCPoint
     // cos(radians) = a/h
     // Multiply both sides by h.
     // h * cos(radians) = a
-    //this.Rotation += rotation;
     this.Rotation = rotation;
     let x = this.Radius * Math.cos(this.Rotation);
     let z = this.Radius * Math.sin(this.Rotation);
@@ -415,7 +415,6 @@ class LJCPoint
   // Create a rotated point.
   RotateZY(rotation)
   {
-    //this.Rotation += rotation;
     this.Rotation = rotation;
     let z = this.Radius * Math.cos(this.Rotation);
     let y = this.Radius * Math.sin(this.Rotation);
@@ -424,19 +423,26 @@ class LJCPoint
   }
 
   // 
-  GetScreenPoint()
+  Translate()
   {
     let tPoint = gGroup.TranslatePoint;
-    let retValue = null;
 
     if (tPoint != null)
     {
-      let sx = this.X + tPoint.X;
-      let sy = this.Y + tPoint.Y;
-      sx = Math.round(sx);
-      sy = Math.round(sy);
-      retValue = new LJCPoint(sx, sy, 0, 0);
+      // Perspective
+      // a/b = c/d (multiply by d)
+      // ad / b = c (multiple by b)
+      // ad = bc (divide by a)
+      // d = bc / a
+      let a = tPoint.Z + this.Z;
+      let sx = this.X * tPoint.Z / a;
+      let sy = this.Y * tPoint.Z / a;
+
+      // Translate (move) to screen.
+      sx = sx + tPoint.X;
+      sy = sy + tPoint.Y;
+      this.X = Math.round(sx);
+      this.Y = Math.round(sy);
     }
-    return retValue;
   }
 }
