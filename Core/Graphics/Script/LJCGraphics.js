@@ -38,7 +38,6 @@ class LJCGraphics
     ctx.arc(centerPoint.X, centerPoint.Y, radius, beginRadians, endRadians);
 
     ctx.strokeStyle = strokeStyle;
-    //ctx.stroke();
   }
 
   // Draw a line from beginPoint to endPoint.
@@ -51,7 +50,6 @@ class LJCGraphics
     ctx.lineTo(endPoint.X, endPoint.Y);
 
     ctx.strokeStyle = strokeStyle;
-    //ctx.stroke();
   }
 
   // Draw a line from the previous end point to the provided endPoint.
@@ -63,7 +61,6 @@ class LJCGraphics
     ctx.lineTo(endPoint.X, endPoint.Y);
 
     ctx.strokeStyle = strokeStyle;
-    //ctx.stroke();
   }
 
   // Draw a rectangle.
@@ -188,15 +185,17 @@ class LJCGraphics
   }
 
   // Get the radians of an angle with sides.
-  GetCosRotation(adjacent, radius)
+  GetCosRotation(adjacent, opposite)
   {
+    let radius = this.GetRadius(adjacent, opposite);
     let retValue = Math.acos(adjacent / radius);
     return retValue;
   }
 
   // Get the radians of an angle with sides.
-  GetSinRotation(opposite, radius)
+  GetSinRotation(adjacent, opposite)
   {
+    let radius = this.GetRadius(adjacent, opposite);
     let retValue = Math.asin(opposite / radius);
     return retValue;
   }
