@@ -20,63 +20,54 @@ class LJCGroup
   {
     let g = gLJCGraphics;
 
+    let cube = new LJCMesh("Cube");
+    this.Meshes.push(cube);
+
     let name = "Front";
-    let facet = new LJCMesh(name);
-    let square = facet.CreateFacet(name, radius
+    let square = cube.CreateFacet(name, radius
       , 4);
     square.Move(0, 0, -square.PathRadius);
-    facet.Paths.push(square);
-    this.Meshes.push(facet);
+    cube.Paths.push(square);
 
     name = "Back";
-    facet = facet.Clone();
-    facet.Name = name;
-    square = facet.Paths[0];
+    square = square.Clone();
     square.Name = name;
     square.Move(0, 0, square.PathRadius * 2);
-    this.Meshes.push(facet);
+    cube.Paths.push(square);
 
     name = "Left";
-    facet = facet.Clone();
-    facet.Name = name;
-    square = facet.Paths[0];
+    square = square.Clone();
     square.Name = name;
     // Move back to xyz center.
     square.Move(0, 0, -square.PathRadius);
     // Rotate counterclockwise.
-    square.RotateXZ(square.Arc);
+    square.AddRotateXZ(square.Arc);
     // Move to left of cube.
     square.Move(-square.PathRadius, 0, 0);
-    this.Meshes.push(facet);
+    cube.Paths.push(square);
 
     name = "Right";
-    facet = facet.Clone();
-    facet.Name = name;
-    square = facet.Paths[0];
+    square = square.Clone();
     square.Name = name;
     square.Move(square.PathRadius * 2, 0, 0);
-    this.Meshes.push(facet);
+    cube.Paths.push(square);
 
     name = "Top";
-    facet = facet.Clone();
-    facet.Name = name;
-    square = facet.Paths[0];
+    square = square.Clone();
     square.Name = name;
     square.Move(square.PathRadius * -1, 0, 0);
     // Rotate counterclockwise.
-    square.RotateXZ(square.Arc);
+    square.AddRotateXZ(square.Arc);
     // Rotate clockwise.
-    square.RotateZY(square.Arc);
+    square.AddRotateZY(square.Arc);
     square.Move(0, square.PathRadius * -1, 0);
-    this.Meshes.push(facet);
+    cube.Paths.push(square);
 
     name = "Bottom";
-    facet = facet.Clone();
-    facet.Name = name;
-    square = facet.Paths[0];
+    square = square.Clone();
     square.Name = name;
     square.Move(square.PathRadius * 2, 0, 0);
-    this.Meshes.push(facet);
+    cube.Paths.push(square);
   }
 
   // 

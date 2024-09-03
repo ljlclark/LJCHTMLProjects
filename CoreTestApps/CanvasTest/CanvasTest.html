@@ -6,6 +6,9 @@
 <head>
   <script src="../../Core/Common/Script/LJCCommon.js"></script>
   <script src="../../Core/Graphics/Script/LJCGraphics.js"></script>
+  <script src="../../Core/Graphics/Script/LJCPoint.js"></script>
+  <script src="../../Core/Graphics/Script/LJCPathPoint.js"></script>
+  <script src="../../Core/Graphics/Script/LJCPath.js"></script>
   <script src="../../Core/Graphics/Script/LJCMesh.js"></script>
   <script src="../../Core/Graphics/Script/LJCGroup.js"></script>
   <style>
@@ -24,6 +27,16 @@
     let gGroup = new LJCGroup("Cube");
     gGroup.AddCube(30);
     gGroup.Show();
+    let cube = gGroup.Meshes[0];
+
+    let rotateXY = 15 * gLJCGraphics.Radian;
+    // Debug
+    cube.AddRotateXY(rotateXY);
+    gGroup.Show();
+
+    cube.RotateXY = rotateXY;
+    cube.AnimateActive = true;
+    //cube.Animate();
   </script>
 </body>
 </html>
