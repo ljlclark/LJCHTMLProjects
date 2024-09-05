@@ -29,14 +29,12 @@
     gGroup.Show();
     let cube = gGroup.Meshes[0];
 
-    let rotateXY = 15 * gLJCGraphics.Radian;
-    // Debug
-    cube.AddRotateXY(rotateXY);
-    gGroup.Show();
-
+    let rotateXY = 5 * gLJCGraphics.Radian;
+    //cube.AddRotateXY(rotateXY);
+    //gGroup.Show();
     cube.RotateXY = rotateXY;
     cube.AnimateActive = true;
-    //cube.Animate();
+    cube.Animate();
   </script>
 </body>
 </html>

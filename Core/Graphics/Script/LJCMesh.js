@@ -13,7 +13,7 @@ class LJCMesh
     let g = gLJCGraphics;
 
     this.MoveValue = 0;
-    this.RotateXY = 0; // 1 * g.Radian;
+    this.RotateXY = 5 * g.Radian;
     this.RotateXZ = 0;
     this.RotateZY = 0;
     this.AnimateActive = false;
@@ -49,7 +49,6 @@ class LJCMesh
 
     if (this.AnimateActive)
     {
-
       let rect = this.GetMeshRectangle();
       ctx.clearRect(rect.Left - 1, rect.Top - 1
         , rect.Width + 2, rect.Height + 2);
@@ -80,6 +79,7 @@ class LJCMesh
     // Rotate half of arc to make right line
     // parallel to y axis.
     retPath.Arc = (Math.PI * 2) / verticeCount;
+    // 45d = 1.57079
     let arc = retPath.Arc;
     let beginRadians = arc / 2;
     beginPoint.RotateXY(beginRadians);

@@ -185,11 +185,63 @@ class LJCGraphics
   }
 
   // Get the radians of an angle with sides.
-  GetCosRotation(adjacent, opposite)
+  GetRotation(adjacent, opposite)
   {
+    let radian = gLJCGraphics.Radian;
     let radius = this.GetRadius(adjacent, opposite);
-    let retValue = Math.acos(adjacent / radius);
-    return retValue;
+    let retRotation = Math.acos(adjacent / radius);
+
+    // Quadrant III
+    if (adjacent < 0
+      && opposite < 0)
+    {
+      retRotation += 90 * radian;
+    }
+
+    // Quadrant IV
+    if (adjacent > 0
+      && opposite < 0)
+    {
+      retRotation += 270 * radian;
+    }
+    return retRotation;
+  }
+
+  // Get the radians of an angle with sides.
+  GetXRotation(adjacent, opposite)
+  {
+    let radian = gLJCGraphics.Radian;
+    let retRotation = Math.atan2(opposite, adjacent);
+
+    // Not Quandrant I
+    if (adjacent < 0
+      || opposite < 0)
+    {
+      retRotation = Math.atan2(Math.abs(opposite)
+        , Math.abs(adjacent));
+    }
+
+    // Quadrant II
+    if (adjacent < 0
+      && opposite > 0)
+    {
+      retRotation += 90 * radian;
+    }
+
+    // Quadrant III
+    if (adjacent < 0
+      && opposite < 0)
+    {
+      retRotation += 180 * radian;
+    }
+
+    // Quadrant IV
+    if (adjacent > 0
+      && opposite < 0)
+    {
+      retRotation += 270 * radian;
+    }
+    return retRotation;
   }
 
   // Get the radians of an angle with sides.
@@ -197,6 +249,14 @@ class LJCGraphics
   {
     let radius = this.GetRadius(adjacent, opposite);
     let retValue = Math.asin(opposite / radius);
+    if (adjacent <= 0)
+    {
+      retValue += 180 * gLJCGraphics.Radian;
+      if (opposite > 0)
+      {
+        retValue += 90 * gLJCGraphics.Radian;
+      }
+    }
     return retValue;
   }
 

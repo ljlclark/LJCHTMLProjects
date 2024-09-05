@@ -23,6 +23,7 @@ class LJCGroup
     let cube = new LJCMesh("Cube");
     this.Meshes.push(cube);
 
+    this.IsShow = true;
     let name = "Front";
     let square = cube.CreateFacet(name, radius
       , 4);
@@ -56,17 +57,15 @@ class LJCGroup
     square = square.Clone();
     square.Name = name;
     square.Move(square.PathRadius * -1, 0, 0);
-    // Rotate counterclockwise.
-    square.AddRotateXZ(square.Arc);
     // Rotate clockwise.
-    square.AddRotateZY(square.Arc);
+    square.AddRotateXY(square.Arc);
     square.Move(0, square.PathRadius * -1, 0);
     cube.Paths.push(square);
 
     name = "Bottom";
     square = square.Clone();
     square.Name = name;
-    square.Move(square.PathRadius * 2, 0, 0);
+    square.Move(0, square.PathRadius * 2, 0);
     cube.Paths.push(square);
   }
 
