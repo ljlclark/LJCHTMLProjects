@@ -191,14 +191,28 @@ class LJCGraphics
     let radius = this.GetRadius(adjacent, opposite);
     let retRotation = Math.acos(adjacent / radius);
 
+    // Quadrant I
+    // <= 1.57079  // to 90d
+    // adjacent >= 0 && opposite > 0
+
+    // Quadrant II
+    // <= 3.14159  // to 180d
+    // adjacent < 0 && opposite > 0
+
     // Quadrant III
-    if (adjacent < 0
+    // <= 4.71239  // to 270d
+    if (adjacent <= 0
       && opposite < 0)
     {
       retRotation += 90 * radian;
+      if (0 == adjacent)
+      {
+        retRotation += 90 * radian;
+      }
     }
 
     // Quadrant IV
+    // < 6.28318  // to 359d
     if (adjacent > 0
       && opposite < 0)
     {
@@ -208,7 +222,7 @@ class LJCGraphics
   }
 
   // Get the radians of an angle with sides.
-  GetXRotation(adjacent, opposite)
+  GetTanRotation(adjacent, opposite)
   {
     let radian = gLJCGraphics.Radian;
     let retRotation = Math.atan2(opposite, adjacent);
@@ -245,19 +259,40 @@ class LJCGraphics
   }
 
   // Get the radians of an angle with sides.
-  GetSinRotation(adjacent, opposite)
+  GetSRotation(adjacent, opposite)
   {
+    let radian = gLJCGraphics.Radian;
     let radius = this.GetRadius(adjacent, opposite);
-    let retValue = Math.asin(opposite / radius);
-    if (adjacent <= 0)
+    let retRotation = Math.asin(opposite / radius);
+
+    // Quadrant I
+    // <= 1.57079  // to 90d
+    // adjacent >= 0 && opposite > 0
+
+    // Quadrant II
+    // <= 3.14159  // to 180d
+    // adjacent < 0 && opposite > 0
+
+    // Quadrant III
+    // <= 4.71239  // to 270d
+    if (adjacent <= 0
+      && opposite < 0)
     {
-      retValue += 180 * gLJCGraphics.Radian;
-      if (opposite > 0)
+      retRotation += 90 * radian;
+      if (0 == adjacent)
       {
-        retValue += 90 * gLJCGraphics.Radian;
+        retRotation += 90 * radian;
       }
     }
-    return retValue;
+
+    // Quadrant IV
+    // < 6.28318  // to 359d
+    if (adjacent > 0
+      && opposite < 0)
+    {
+      retRotation += 270 * radian;
+    }
+    return retRotation;
   }
 
   // Show the fill path.

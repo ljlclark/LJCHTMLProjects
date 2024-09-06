@@ -18,12 +18,10 @@ class LJCGroup
   // Creates a cube.
   AddCube(radius)
   {
-    let g = gLJCGraphics;
-
+    this.#Test();
     let cube = new LJCMesh("Cube");
     this.Meshes.push(cube);
 
-    this.IsShow = true;
     let name = "Front";
     let square = cube.CreateFacet(name, radius
       , 4);
@@ -87,5 +85,38 @@ class LJCGroup
       let mesh = this.Meshes[index];
       mesh.Show();
     }
+  }
+
+  #Test()
+  {
+    let g = gLJCGraphics;
+
+    // Quadrant I
+    // 0.00000
+    let rotation = g.GetRotation(21, 0);
+    // <= 1.57079  // to 90d
+    // adjacent >= 0 && opposite > 0
+    rotation = g.GetRotation(1, 21);
+    // 1.57079
+    rotation = g.GetRotation(0, 21);
+
+    // Quadrant II
+    // > 1.57079 to 3.14159 to 180d
+    // adjacent < 0 && opposite > 0
+    rotation = g.GetRotation(-1, 21);
+    // 3.14159
+    rotation = g.GetRotation(-21, 0);
+
+    // Quadrant III
+    // > 3.14159 to 4.71239 to 270d
+    // adjacent <= 0 && opposite < 0
+    rotation = g.GetRotation(-21, -1);
+    // 4.71239
+    rotation = g.GetRotation(0, -21);
+
+    // Quadrant IV
+    // > 4.71239 < 6.28318 to 359d
+    // adjacent > 0 && opposite < 0
+    rotation = g.GetRotation(21, -1);
   }
 }

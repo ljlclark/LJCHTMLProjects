@@ -16,7 +16,6 @@ class LJCMesh
     this.RotateXY = 5 * g.Radian;
     this.RotateXZ = 0;
     this.RotateZY = 0;
-    this.AnimateActive = false;
     this.Name = name;
     this.Paths = [];
   }
@@ -47,22 +46,19 @@ class LJCMesh
   {
     let ctx = gLJCGraphics.Context;
 
-    if (this.AnimateActive)
-    {
-      let rect = this.GetMeshRectangle();
-      ctx.clearRect(rect.Left - 1, rect.Top - 1
-        , rect.Width + 2, rect.Height + 2);
-      ctx.strokeStyle = this.strokeStyle;
+    let rect = this.GetMeshRectangle();
+    ctx.clearRect(rect.Left - 1, rect.Top - 1
+      , rect.Width + 2, rect.Height + 2);
+    ctx.strokeStyle = this.strokeStyle;
 
-      // Debug
-      this.AddRotateXY(this.RotateXY);
-      //this.AddRotateXZ(this.RotateXZ);
-      //this.AddRotateZY(this.RotateZY);
-      //this.AddMove(this.MoveValue);
-      this.Show();
+    // Debug
+    this.AddRotateXY(this.RotateXY);
+    //this.AddRotateXZ(this.RotateXZ);
+    //this.AddRotateZY(this.RotateZY);
+    //this.AddMove(this.MoveValue);
+    this.Show();
 
-      requestAnimationFrame(this.Animate.bind(this));
-    }
+    requestAnimationFrame(this.Animate.bind(this));
   }
 
   // Creates a Polygon path.
