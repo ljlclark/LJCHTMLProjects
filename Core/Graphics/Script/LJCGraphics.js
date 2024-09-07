@@ -207,6 +207,7 @@ class LJCGraphics
       retRotation += 90 * radian;
       if (0 == adjacent)
       {
+        // Move up to 270d
         retRotation += 90 * radian;
       }
     }
@@ -250,43 +251,6 @@ class LJCGraphics
     }
 
     // Quadrant IV
-    if (adjacent > 0
-      && opposite < 0)
-    {
-      retRotation += 270 * radian;
-    }
-    return retRotation;
-  }
-
-  // Get the radians of an angle with sides.
-  GetSRotation(adjacent, opposite)
-  {
-    let radian = gLJCGraphics.Radian;
-    let radius = this.GetRadius(adjacent, opposite);
-    let retRotation = Math.asin(opposite / radius);
-
-    // Quadrant I
-    // <= 1.57079  // to 90d
-    // adjacent >= 0 && opposite > 0
-
-    // Quadrant II
-    // <= 3.14159  // to 180d
-    // adjacent < 0 && opposite > 0
-
-    // Quadrant III
-    // <= 4.71239  // to 270d
-    if (adjacent <= 0
-      && opposite < 0)
-    {
-      retRotation += 90 * radian;
-      if (0 == adjacent)
-      {
-        retRotation += 90 * radian;
-      }
-    }
-
-    // Quadrant IV
-    // < 6.28318  // to 359d
     if (adjacent > 0
       && opposite < 0)
     {

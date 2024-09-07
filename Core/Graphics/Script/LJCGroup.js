@@ -87,36 +87,59 @@ class LJCGroup
     }
   }
 
+  #Compare(expected, actual)
+  {
+    if (expected != actual)
+    {
+      alert(`Expected: ${expected} is ${actual}`);
+    }
+  }
+
   #Test()
   {
     let g = gLJCGraphics;
 
     // Quadrant I
-    // 0.00000
     let rotation = g.GetRotation(21, 0);
+    this.#Compare(0, rotation);
+
     // <= 1.57079  // to 90d
     // adjacent >= 0 && opposite > 0
     rotation = g.GetRotation(1, 21);
-    // 1.57079
+    rotation = rotation.toFixed(5);
+    this.#Compare(1.52321, rotation);
+
     rotation = g.GetRotation(0, 21);
+    rotation = rotation.toFixed(5);
+    this.#Compare(1.57080, rotation);
 
     // Quadrant II
     // > 1.57079 to 3.14159 to 180d
     // adjacent < 0 && opposite > 0
     rotation = g.GetRotation(-1, 21);
-    // 3.14159
+    rotation = rotation.toFixed(5);
+    this.#Compare(1.61838, rotation);
+
     rotation = g.GetRotation(-21, 0);
+    rotation = rotation.toFixed(5);
+    this.#Compare(3.14159, rotation);
 
     // Quadrant III
     // > 3.14159 to 4.71239 to 270d
     // adjacent <= 0 && opposite < 0
     rotation = g.GetRotation(-21, -1);
-    // 4.71239
+    rotation = rotation.toFixed(5);
+    this.#Compare(4.66481, rotation);
+
     rotation = g.GetRotation(0, -21);
+    rotation = rotation.toFixed(5);
+    this.#Compare(4.71239, rotation);
 
     // Quadrant IV
     // > 4.71239 < 6.28318 to 359d
     // adjacent > 0 && opposite < 0
     rotation = g.GetRotation(21, -1);
+    rotation = rotation.toFixed(5);
+    this.#Compare(4.75997, rotation);
   }
 }
