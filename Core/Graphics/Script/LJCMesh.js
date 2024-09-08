@@ -13,9 +13,9 @@ class LJCMesh
     let g = gLJCGraphics;
 
     this.MoveValue = 0;
-    this.RotateXY = 5 * g.Radian;
-    this.RotateXZ = 0;
-    this.RotateZY = 0;
+    this.AddXY = 5 * g.Radian;
+    this.AddXZ = 0;
+    this.AddZY = 0;
     this.Name = name;
     this.Paths = [];
     this.PrevRect;
@@ -45,7 +45,8 @@ class LJCMesh
   // Test Animation
   Animate()
   {
-    let ctx = gLJCGraphics.Context;
+    let g = gLJCGraphics;
+    let ctx = g.Context;
 
     if (this.PrevRect != null)
     {
@@ -55,11 +56,9 @@ class LJCMesh
     }
     ctx.strokeStyle = this.strokeStyle;
 
-    // Debug
-    this.AddRotateXY(this.RotateXY);
-    //this.AddRotateXZ(this.RotateXZ);
-    //this.AddRotateZY(this.RotateZY);
-    //this.AddMove(this.MoveValue);
+    this.AddRotateXY(this.AddXY);
+    // *** Next Statement *** Add
+    //this.RotateXZ(45 * g.Radian);
     this.PrevRect = this.GetMeshRectangle();
     this.Show();
 
@@ -84,7 +83,6 @@ class LJCMesh
     let arc = retPath.Arc;
     let beginRadians = arc / 2;
     beginPoint.RotateXY(beginRadians);
-    // *** Next Statement *** Add
     retPath.Translate();
     retPath.PathRadius = beginPoint.X;
 
@@ -195,6 +193,36 @@ class LJCMesh
     {
       let path = this.Paths[index];
       path.AddRotateZY(addRadians);
+    }
+  }
+
+  // Rotation on the XY plane.
+  RotateXY(radians)
+  {
+    for (let index = 0; index < this.Paths.length; index++)
+    {
+      let path = this.Paths[index];
+      path.RotateXY(radians);
+    }
+  }
+
+  // Add rotation on the XZ plane.
+  RotateXZ(radians)
+  {
+    for (let index = 0; index < this.Paths.length; index++)
+    {
+      let path = this.Paths[index];
+      path.RotateXZ(radians);
+    }
+  }
+
+  // rotation on the ZY plane.
+  RotateZY(radians)
+  {
+    for (let index = 0; index < this.Paths.length; index++)
+    {
+      let path = this.Paths[index];
+      path.RotateZY(radians);
     }
   }
 

@@ -75,12 +75,8 @@ class LJCPath
       point = pathPoint.getPoint().Clone();
       rotation = g.GetRotation(point.X
         , point.Y);
-      // **
-      let degrees = rotation / g.Radian;
       rotation += addRadians;
-      degrees = rotation / g.Radian;
       pathPoint.RotateXY(rotation);
-      // **
     }
     this.Translate();
   }
@@ -125,6 +121,48 @@ class LJCPath
         , point.Y);
       rotation += addRadians;
       pathPoint.RotateZY(rotation);
+    }
+    this.Translate();
+  }
+
+  // Rotation on the XY plane.
+  RotateXY(radians)
+  {
+    let g = gLJCGraphics;
+
+    this.BeginPoint.RotateXY(radians);
+    for (let index = 0; index < this.PathPoints.length; index++)
+    {
+      let pathPoint = this.PathPoints[index];
+      pathPoint.RotateXY(radians);
+    }
+    this.Translate();
+  }
+
+  // Rotation on the XZ plane.
+  RotateXZ(radians)
+  {
+    let g = gLJCGraphics;
+
+    this.BeginPoint.RotateXZ(radians);
+    for (let index = 0; index < this.PathPoints.length; index++)
+    {
+      let pathPoint = this.PathPoints[index];
+      pathPoint.RotateXZ(radians);
+    }
+    this.Translate();
+  }
+
+  // Rotation on the ZY plane.
+  RotateZY(radians)
+  {
+    let g = gLJCGraphics;
+
+    this.BeginPoint.RotateZY(radians);
+    for (let index = 0; index < this.PathPoints.length; index++)
+    {
+      let pathPoint = this.PathPoints[index];
+      pathPoint.RotateZY(radians);
     }
     this.Translate();
   }
