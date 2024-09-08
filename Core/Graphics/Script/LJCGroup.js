@@ -34,37 +34,37 @@ class LJCGroup
     square.Move(0, 0, square.PathRadius * 2);
     cube.Paths.push(square);
 
-  //  name = "Left";
-  //  square = square.Clone();
-  //  square.Name = name;
-  //  // Move back to xyz center.
-  //  square.Move(0, 0, -square.PathRadius);
-  //  // Rotate counterclockwise.
-  //  square.AddRotateXZ(square.Arc);
-  //  // Move to left of cube.
-  //  square.Move(-square.PathRadius, 0, 0);
-  //  cube.Paths.push(square);
+    name = "Left";
+    square = square.Clone();
+    square.Name = name;
+    // Move back to xyz center.
+    square.Move(0, 0, -square.PathRadius);
+    // Rotate counterclockwise.
+    square.AddRotateXZ(square.Arc);
+    // Move to left of cube.
+    square.Move(-square.PathRadius, 0, 0);
+    cube.Paths.push(square);
 
-  //  name = "Right";
-  //  square = square.Clone();
-  //  square.Name = name;
-  //  square.Move(square.PathRadius * 2, 0, 0);
-  //  cube.Paths.push(square);
+    name = "Right";
+    square = square.Clone();
+    square.Name = name;
+    square.Move(square.PathRadius * 2, 0, 0);
+    cube.Paths.push(square);
 
-  //  name = "Top";
-  //  square = square.Clone();
-  //  square.Name = name;
-  //  square.Move(square.PathRadius * -1, 0, 0);
-  //  // Rotate clockwise.
-  //  square.AddRotateXY(square.Arc);
-  //  square.Move(0, square.PathRadius * -1, 0);
-  //  cube.Paths.push(square);
+    name = "Top";
+    square = square.Clone();
+    square.Name = name;
+    square.Move(square.PathRadius * -1, 0, 0);
+    // Rotate clockwise.
+    square.AddRotateXY(square.Arc);
+    square.Move(0, square.PathRadius * -1, 0);
+    cube.Paths.push(square);
 
-  //  name = "Bottom";
-  //  square = square.Clone();
-  //  square.Name = name;
-  //  square.Move(0, square.PathRadius * 2, 0);
-  //  cube.Paths.push(square);
+    name = "Bottom";
+    square = square.Clone();
+    square.Name = name;
+    square.Move(0, square.PathRadius * 2, 0);
+    cube.Paths.push(square);
   }
 
   // 

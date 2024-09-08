@@ -108,55 +108,47 @@ class LJCMesh
     let retRectangle = { Left: 0, Top: 0, Width: 0, Height: 0 };
     retRectangle.Left = tPoint.X;
     retRectangle.Top = tPoint.Y;
+    let largest = { X: tPoint.X, Y: tPoint.Y };
 
     for (let index = 0; index < this.Paths.length; index++)
     {
       let path = this.Paths[index];
       let point = path.getScreenBeginPoint();
-      if (point.X < tPoint.X)
-      {
-        retRectangle.Left = point.X;
-      }
-
-      if (point.Y < tPoint.Y)
-      {
-        retRectangle.Top = point.Y;
-      }
+      this.#SetRectangle(point, retRectangle, largest);
 
       for (let pointIndex = 0; pointIndex < path.PathPoints.length; pointIndex++)
       {
         let pathPoint = path.PathPoints[pointIndex];
         let point = pathPoint.getScreenPoint();
-        if (point.X < retRectangle.Left)
-        {
-          retRectangle.Left = point.X;
-        }
-
-        if (point.Y < retRectangle.Top)
-        {
-          retRectangle.Top = point.Y;
-        }
-
-        if (point.X > retRectangle.Left)
-        {
-          let width = point.X - retRectangle.Left;
-          if (width > retRectangle.Width)
-          {
-            retRectangle.Width = width;
-          }
-        }
-
-        if (point.Y > retRectangle.Top)
-        {
-          let height = point.Y - retRectangle.Top;
-          if (height > retRectangle.Height)
-          {
-            retRectangle.Height = height;
-          }
-        }
+        this.#SetRectangle(point, retRectangle, largest);
       }
+      retRectangle.Width = largest.X - retRectangle.Left;
+      retRectangle.Height = largest.Y - retRectangle.Top;
     }
     return retRectangle;
+  }
+
+  #SetRectangle(point, rectangle, largest)
+  {
+    if (point.X < rectangle.Left)
+    {
+      rectangle.Left = point.X;
+    }
+
+    if (point.Y < rectangle.Top)
+    {
+      rectangle.Top = point.Y;
+    }
+
+    if (point.X > largest.X)
+    {
+      largest.X = point.X;
+    }
+
+    if (point.Y > largest.Y)
+    {
+      largest.Y = point.Y;
+    }
   }
 
   // Moves the object.
