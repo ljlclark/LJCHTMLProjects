@@ -75,8 +75,12 @@ class LJCPath
       point = pathPoint.getPoint().Clone();
       rotation = g.GetRotation(point.X
         , point.Y);
+      // **
+      let degrees = rotation / g.Radian;
       rotation += addRadians;
+      degrees = rotation / g.Radian;
       pathPoint.RotateXY(rotation);
+      // **
     }
     this.Translate();
   }

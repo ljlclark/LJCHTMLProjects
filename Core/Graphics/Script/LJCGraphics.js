@@ -188,74 +188,36 @@ class LJCGraphics
   GetRotation(adjacent, opposite)
   {
     let radian = gLJCGraphics.Radian;
-    let radius = this.GetRadius(adjacent, opposite);
-    let retRotation = Math.acos(adjacent / radius);
-
-    // Quadrant I
-    // <= 1.57079  // to 90d
-    // adjacent >= 0 && opposite > 0
-
-    // Quadrant II
-    // <= 3.14159  // to 180d
-    // adjacent < 0 && opposite > 0
-
-    // Quadrant III
-    // <= 4.71239  // to 270d
-    if (adjacent <= 0
-      && opposite < 0)
-    {
-      retRotation += 90 * radian;
-      if (0 == adjacent)
-      {
-        // Move up to 270d
-        retRotation += 90 * radian;
-      }
-    }
-
-    // Quadrant IV
-    // < 6.28318  // to 359d
-    if (adjacent > 0
-      && opposite < 0)
-    {
-      retRotation += 270 * radian;
-    }
-    return retRotation;
-  }
-
-  // Get the radians of an angle with sides.
-  GetTanRotation(adjacent, opposite)
-  {
-    let radian = gLJCGraphics.Radian;
     let retRotation = Math.atan2(opposite, adjacent);
+    if (retRotation < 0)
+    {
+      retRotation = Math.abs(retRotation);
+    }
+    let degrees = retRotation / radian;
 
-    // Not Quandrant I
-    if (adjacent < 0
-      || opposite < 0)
+    // Not Quandrant I or II.
+    if (opposite < 0)
     {
       retRotation = Math.atan2(Math.abs(opposite)
         , Math.abs(adjacent));
     }
 
-    // Quadrant II
-    if (adjacent < 0
-      && opposite > 0)
-    {
-      retRotation += 90 * radian;
-    }
-
     // Quadrant III
-    if (adjacent < 0
+    if (adjacent <= 0
       && opposite < 0)
     {
       retRotation += 180 * radian;
     }
+    degrees = retRotation / radian;
 
     // Quadrant IV
     if (adjacent > 0
       && opposite < 0)
     {
-      retRotation += 270 * radian;
+      //retRotation += 270 * radian;
+      retRotation = Math.PI * 2 - retRotation;
     }
+    degrees = retRotation / radian;
     return retRotation;
   }
 

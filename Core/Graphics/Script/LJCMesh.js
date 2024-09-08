@@ -18,6 +18,7 @@ class LJCMesh
     this.RotateZY = 0;
     this.Name = name;
     this.Paths = [];
+    this.PrevRect;
   }
 
   // Methods
@@ -46,9 +47,12 @@ class LJCMesh
   {
     let ctx = gLJCGraphics.Context;
 
-    let rect = this.GetMeshRectangle();
-    ctx.clearRect(rect.Left - 1, rect.Top - 1
-      , rect.Width + 2, rect.Height + 2);
+    if (this.PrevRect != null)
+    {
+      let rect = this.PrevRect;
+      ctx.clearRect(rect.Left - 1, rect.Top - 1
+        , rect.Width + 2, rect.Height + 2);
+    }
     ctx.strokeStyle = this.strokeStyle;
 
     // Debug
@@ -56,6 +60,7 @@ class LJCMesh
     //this.AddRotateXZ(this.RotateXZ);
     //this.AddRotateZY(this.RotateZY);
     //this.AddMove(this.MoveValue);
+    this.PrevRect = this.GetMeshRectangle();
     this.Show();
 
     requestAnimationFrame(this.Animate.bind(this));
@@ -79,6 +84,8 @@ class LJCMesh
     let arc = retPath.Arc;
     let beginRadians = arc / 2;
     beginPoint.RotateXY(beginRadians);
+    // *** Next Statement *** Add
+    retPath.Translate();
     retPath.PathRadius = beginPoint.X;
 
     let radians = arc + beginRadians;
@@ -97,18 +104,21 @@ class LJCMesh
   // Gets the mesh area rectangle.
   GetMeshRectangle()
   {
+    let tPoint = gGroup.TranslatePoint;
     let retRectangle = { Left: 0, Top: 0, Width: 0, Height: 0 };
+    retRectangle.Left = tPoint.X;
+    retRectangle.Top = tPoint.Y;
 
     for (let index = 0; index < this.Paths.length; index++)
     {
       let path = this.Paths[index];
-      let pathPoint = path.PathPoints[0];
-      let point = pathPoint.getScreenPoint();
-      if (0 == retRectangle.Left)
+      let point = path.getScreenBeginPoint();
+      if (point.X < tPoint.X)
       {
         retRectangle.Left = point.X;
       }
-      if (0 == retRectangle.Top)
+
+      if (point.Y < tPoint.Y)
       {
         retRectangle.Top = point.Y;
       }

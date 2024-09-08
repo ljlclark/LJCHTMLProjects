@@ -34,37 +34,37 @@ class LJCGroup
     square.Move(0, 0, square.PathRadius * 2);
     cube.Paths.push(square);
 
-    name = "Left";
-    square = square.Clone();
-    square.Name = name;
-    // Move back to xyz center.
-    square.Move(0, 0, -square.PathRadius);
-    // Rotate counterclockwise.
-    square.AddRotateXZ(square.Arc);
-    // Move to left of cube.
-    square.Move(-square.PathRadius, 0, 0);
-    cube.Paths.push(square);
+  //  name = "Left";
+  //  square = square.Clone();
+  //  square.Name = name;
+  //  // Move back to xyz center.
+  //  square.Move(0, 0, -square.PathRadius);
+  //  // Rotate counterclockwise.
+  //  square.AddRotateXZ(square.Arc);
+  //  // Move to left of cube.
+  //  square.Move(-square.PathRadius, 0, 0);
+  //  cube.Paths.push(square);
 
-    name = "Right";
-    square = square.Clone();
-    square.Name = name;
-    square.Move(square.PathRadius * 2, 0, 0);
-    cube.Paths.push(square);
+  //  name = "Right";
+  //  square = square.Clone();
+  //  square.Name = name;
+  //  square.Move(square.PathRadius * 2, 0, 0);
+  //  cube.Paths.push(square);
 
-    name = "Top";
-    square = square.Clone();
-    square.Name = name;
-    square.Move(square.PathRadius * -1, 0, 0);
-    // Rotate clockwise.
-    square.AddRotateXY(square.Arc);
-    square.Move(0, square.PathRadius * -1, 0);
-    cube.Paths.push(square);
+  //  name = "Top";
+  //  square = square.Clone();
+  //  square.Name = name;
+  //  square.Move(square.PathRadius * -1, 0, 0);
+  //  // Rotate clockwise.
+  //  square.AddRotateXY(square.Arc);
+  //  square.Move(0, square.PathRadius * -1, 0);
+  //  cube.Paths.push(square);
 
-    name = "Bottom";
-    square = square.Clone();
-    square.Name = name;
-    square.Move(0, square.PathRadius * 2, 0);
-    cube.Paths.push(square);
+  //  name = "Bottom";
+  //  square = square.Clone();
+  //  square.Name = name;
+  //  square.Move(0, square.PathRadius * 2, 0);
+  //  cube.Paths.push(square);
   }
 
   // 
@@ -104,42 +104,35 @@ class LJCGroup
     this.#Compare(0, rotation);
 
     // <= 1.57079  // to 90d
-    // adjacent >= 0 && opposite > 0
     rotation = g.GetRotation(1, 21);
     rotation = rotation.toFixed(5);
     this.#Compare(1.52321, rotation);
 
+    // Quadrant II
     rotation = g.GetRotation(0, 21);
     rotation = rotation.toFixed(5);
     this.#Compare(1.57080, rotation);
 
-    // Quadrant II
-    // > 1.57079 to 3.14159 to 180d
-    // adjacent < 0 && opposite > 0
     rotation = g.GetRotation(-1, 21);
     rotation = rotation.toFixed(5);
     this.#Compare(1.61838, rotation);
 
+    // Quadrant III
     rotation = g.GetRotation(-21, 0);
     rotation = rotation.toFixed(5);
     this.#Compare(3.14159, rotation);
 
-    // Quadrant III
-    // > 3.14159 to 4.71239 to 270d
-    // adjacent <= 0 && opposite < 0
     rotation = g.GetRotation(-21, -1);
     rotation = rotation.toFixed(5);
-    this.#Compare(4.66481, rotation);
+    this.#Compare(3.18918, rotation);
 
+    // Quadrant IV
     rotation = g.GetRotation(0, -21);
     rotation = rotation.toFixed(5);
     this.#Compare(4.71239, rotation);
 
-    // Quadrant IV
-    // > 4.71239 < 6.28318 to 359d
-    // adjacent > 0 && opposite < 0
     rotation = g.GetRotation(21, -1);
     rotation = rotation.toFixed(5);
-    this.#Compare(4.75997, rotation);
+    this.#Compare(6.23560, rotation);
   }
 }
