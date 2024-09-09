@@ -22,13 +22,9 @@ class LJCPathPoint
     this.StrokeStyle = "";
   }
 
-  // Methods
+  // Data Methods
   // ---------------
   // Clone()
-  // Move(x, y, z)
-  // RotateXY(radians)
-  // RotateXZ(radians)
-  // RotateZY(radians)
 
   // Creates a Clone of this object.
   Clone()
@@ -40,6 +36,14 @@ class LJCPathPoint
     retPathPoint.SrokeStyle = this.StrokeStyle;
     return retPathPoint;
   }
+
+  // Class Methods
+  // ---------------
+  // Move(x, y, z)
+  // RotateXY(radians)
+  // RotateXZ(radians)
+  // RotateZY(radians)
+  // Translate()
 
   // Moves the next point.
   Move(x, y, z)
@@ -75,6 +79,11 @@ class LJCPathPoint
     this.#ScreenPoint = this.#Point.Clone();
     this.#ScreenPoint.Translate();
   }
+
+  // Getters and Setters
+  // ---------------
+  // getPoint()
+  // getScreenPoint()
 
   // Gets the Point value.
   getPoint()

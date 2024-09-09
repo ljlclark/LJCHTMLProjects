@@ -91,28 +91,6 @@ class LJCGraphics
   // ---------------
   // Animate()
 
-  // Path Methods
-  // ---------------
-  // BeginPath()
-  // ClosePath()
-  // MoveTo(point)
-  // Square(value)
-
-  // Get Radius Methods
-  // ---------------
-  // GetPointRadius(point)
-  // GetRadius(adjacent, opposite)
-
-  // Get Rotation Methods
-  // ---------------
-  // GetCosRotation(adjacent, radius)
-  // GetSinRotation(opposite, radius)
-
-  // Fill and Stroke Methods
-  // ---------------
-  // Fill(fillStyle = "")
-  // Stroke(strokeStyle = "")
-
   // Test Animation
   Animate()
   {
@@ -136,6 +114,13 @@ class LJCGraphics
       requestAnimationFrame(this.Animate.bind(this));
     }
   }
+
+  // Path Methods
+  // ---------------
+  // BeginPath()
+  // ClosePath()
+  // MoveTo(point)
+  // Square(value)
 
   // Performs the Ctx.beginPath() method.
   BeginPath()
@@ -162,6 +147,11 @@ class LJCGraphics
     return retValue;
   }
 
+  // Get Radius Methods
+  // ---------------
+  // GetPointRadius(point)
+  // GetRadius(adjacent, opposite)
+
   // Get the radius for a point.
   GetPointRadius(point)
   {
@@ -183,6 +173,10 @@ class LJCGraphics
     let retValue = Math.sqrt(sides);
     return retValue;
   }
+
+  // Get Rotation Methods
+  // ---------------
+  // GetRotation(adjacent, opposite)
 
   // Get the radians of an angle with sides.
   GetRotation(adjacent, opposite)
@@ -220,6 +214,11 @@ class LJCGraphics
     degrees = retRotation / radian;
     return retRotation;
   }
+
+  // Fill and Stroke Methods
+  // ---------------
+  // Fill(fillStyle = "")
+  // Stroke(strokeStyle = "")
 
   // Show the fill path.
   Fill(fillStyle = "")

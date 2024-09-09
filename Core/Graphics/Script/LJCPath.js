@@ -21,15 +21,9 @@ class LJCPath
     this.Translate();
   }
 
-  // Methods
+  // Data Methods
   // ---------------
   // Clone();
-  // Move(x, y, z)
-  // RotateXY(radians);
-  // RotateXZ(radians);
-  // RotateZY(radians);
-  // Show()
-  // Translate()
 
   // Creates a Clone of this object.
   Clone()
@@ -46,6 +40,18 @@ class LJCPath
     }
     return retPath;
   }
+
+  // Class Methods
+  // ---------------
+  // Move(x, y, z)
+  // AddRotateXY(addRadians);
+  // AddRotateXZ(addRadians);
+  // AddRotateZY(addRadians);
+  // RotateXY(radians);
+  // RotateXZ(radians);
+  // RotateZY(radians);
+  // Show()
+  // Translate()
 
   // Moves the path.
   Move(x, y, z)
@@ -214,6 +220,10 @@ class LJCPath
       }
     }
   }
+
+  // Getters and Setters
+  // ---------------
+  // getScreenBeginPoint()
 
   // Gets the ScreenBeginPoint value.
   getScreenBeginPoint()

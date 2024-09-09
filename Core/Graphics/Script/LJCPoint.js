@@ -16,13 +16,9 @@ class LJCPoint
     //this.Rotation = rotation;
   }
 
-  // Methods
+  // Data Methods
   // ---------------
   // Clone()
-  // Move(x, y, z)
-  // RotateXY(rotation)
-  // RotateXZ(rotation)
-  // RotateZY(rotation)
 
   // Creates a Clone of this object.
   Clone()
@@ -32,6 +28,14 @@ class LJCPoint
     //retValue.Rotation = this.Rotation;
     return retValue;
   }
+
+  // Class Methods
+  // ---------------
+  // Move(x, y, z)
+  // RotateXY(rotation)
+  // RotateXZ(rotation)
+  // RotateZY(rotation)
+  // Translate()
 
   // Moves the point.
   Move(x, y, z)

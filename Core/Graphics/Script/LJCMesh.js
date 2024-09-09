@@ -21,12 +21,9 @@ class LJCMesh
     this.PrevRect;
   }
 
-  // Methods
+  // Data Methods
   // ---------------
   // Clone()
-  // CreateFacet(name, beginPoint, radius, verticeCount)
-  // Move(x, y, z)
-  // Show()
 
   // Creates a Clone of this object.
   Clone()
@@ -42,6 +39,22 @@ class LJCMesh
     return retMesh;
   }
 
+  // Class Methods
+  // ---------------
+  // Animate()
+  // CreateFacet(name, beginPoint, radius, verticeCount)
+  // GetMeshRectangle()
+  // AddMove(x, y, z)
+  // AddRotateXY(addRadians)
+  // AddRotateXZ(addRadians)
+  // AddRotateZY(addRadians)
+  // Move(x, y, z)
+  // RotateXY(radians)
+  // RotateXZ(radians)
+  // RotateZY(radians)
+  // Show()
+  // Translate()
+
   // Test Animation
   Animate()
   {
@@ -56,11 +69,17 @@ class LJCMesh
     }
     ctx.strokeStyle = this.strokeStyle;
 
+    // Main Rotation
     this.AddRotateXY(this.AddXY);
-    // *** Next Statement *** Add
-    //this.RotateXZ(45 * g.Radian);
-    this.PrevRect = this.GetMeshRectangle();
-    this.Show();
+
+    // Tip Angle
+    let rotate = 20 * g.Radian;
+    let mesh = this.Clone();
+    mesh.AddRotateXZ(rotate);
+    mesh.AddRotateZY(rotate);
+
+    this.PrevRect = mesh.GetMeshRectangle();
+    mesh.Show();
 
     requestAnimationFrame(this.Animate.bind(this));
   }
@@ -79,7 +98,6 @@ class LJCMesh
     // Rotate half of arc to make right line
     // parallel to y axis.
     retPath.Arc = (Math.PI * 2) / verticeCount;
-    // 45d = 1.57079
     let arc = retPath.Arc;
     let beginRadians = arc / 2;
     beginPoint.RotateXY(beginRadians);
@@ -126,6 +144,7 @@ class LJCMesh
     return retRectangle;
   }
 
+  // Set the rectangle values.
   #SetRectangle(point, rectangle, largest)
   {
     if (point.X < rectangle.Left)
@@ -196,6 +215,16 @@ class LJCMesh
     }
   }
 
+  // Moves the object.
+  Move(x, y, z)
+  {
+    for (let index = 0; index < this.Paths.length; index++)
+    {
+      let path = this.Paths[index];
+      path.Move(x, y, z);
+    }
+  }
+
   // Rotation on the XY plane.
   RotateXY(radians)
   {
@@ -223,16 +252,6 @@ class LJCMesh
     {
       let path = this.Paths[index];
       path.RotateZY(radians);
-    }
-  }
-
-  // Moves the object.
-  Move(x, y, z)
-  {
-    for (let index = 0; index < this.Paths.length; index++)
-    {
-      let path = this.Paths[index];
-      path.Move(x, y, z);
     }
   }
 
