@@ -80,38 +80,37 @@ class LJCMesh
     }
     //ctx.strokeStyle = this.strokeStyle;
 
-    // Main Rotation accumulates.
     let mesh = null;
     let base = back;
 
     // Testing
     //let rotate = "XY";
-    //let rotate = "XYTip";
-    let rotate = "XZ";
+    let rotate = "XYTip";
+    //let rotate = "XZ";
     //let rotate = "ZY";
     switch (rotate)
     {
       case "XY":
         // "negative" = Clockwise
-        // "positive" = Counter
+        // "positive" = Clockwise
         this.AddRotateXY(this.AddXY);
         base = back;
         mesh = this.Clone();
         break;
 
       case "XYTip":
-        // Counter
+        // Main Rotation accumulates.
+        // Clockwise
         this.AddRotateXY(this.AddXY);
         base = back;
-
         // Tip Angle is one time.
         mesh = this.Clone();
+        // "negative" = Clockwise
+        // "positive" = Counter
+        mesh.AddRotateZY(-55 * g.Radian);
         // "negative" = Counter
         // "positive" = Clockwise
-        mesh.AddRotateZY(55 * g.Radian);
-        // "negative" = Counter
-        // "positive" = Clockwise
-        mesh.AddRotateXZ(5 * g.Radian);
+        mesh.AddRotateXZ(-5 * g.Radian);
         break;
 
       case "XZ":
@@ -123,8 +122,8 @@ class LJCMesh
         break;
 
       case "ZY":
-        // "negative" = Counter
-        // "positive" = Clockwise
+        // "negative" = Clockwise
+        // "positive" = Counter
         this.AddRotateZY(this.AddXY);
         base = left;
         mesh = this.Clone();
@@ -146,7 +145,7 @@ class LJCMesh
   }
 
   // Creates a Polygon path.
-  CreateFacet(name, radius, verticeCount)
+  CreateFace(name, radius, verticeCount)
   {
     let retPath = null;
 
@@ -181,7 +180,7 @@ class LJCMesh
   // Gets the mesh area rectangle.
   GetMeshRectangle()
   {
-    let tPoint = gGroup.TranslatePoint;
+    let tPoint = gScene.TranslatePoint;
     let retRectangle = { Left: 0, Top: 0, Width: 0, Height: 0 };
     retRectangle.Left = tPoint.X;
     retRectangle.Top = tPoint.Y;
@@ -329,7 +328,7 @@ class LJCMesh
   // Sets the screen points.
   Translate()
   {
-    if (gGroup.TranslatePoint != null)
+    if (gScene.TranslatePoint != null)
     {
       for (let index = 0; index < this.Paths.length; index++)
       {

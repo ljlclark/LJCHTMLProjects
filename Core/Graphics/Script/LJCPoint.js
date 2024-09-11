@@ -90,18 +90,28 @@ class LJCPoint
   // 
   Translate()
   {
-    let tPoint = gGroup.TranslatePoint;
+    let tPoint = gScene.TranslatePoint;
 
     if (tPoint != null)
     {
       // Perspective
+      // Adjusted in relationship to view.
+      // a = point adjacent length
+      // b = point opposite length
+      // c = view adjacent length (viewZ)
+      // d = calculated view opposite length
       // a/b = c/d (multiply by d)
       // ad / b = c (multiple by b)
       // ad = bc (divide by a)  // cross multiply
       // d = bc / a
-      let a = tPoint.Z + this.Z;
-      let sx = this.X * tPoint.Z / a;
-      let sy = this.Y * tPoint.Z / a;
+
+      let viewZ = tPoint.Z;
+      // Z negative toward viewer
+      //let a = viewZ + this.Z;
+      // Z positive toward viewer
+      let a = viewZ - this.Z;
+      let sx = this.X * viewZ / a;
+      let sy = this.Y * viewZ / a;
 
       // Translate (move) to screen.
       sx = sx + tPoint.X;

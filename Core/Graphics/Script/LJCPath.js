@@ -222,7 +222,7 @@ class LJCPath
   // Sets the screen points.
   Translate()
   {
-    if (gGroup.TranslatePoint != null)
+    if (gScene.TranslatePoint != null)
     {
       this.#ScreenBeginPoint = this.BeginPoint.Clone();
       this.#ScreenBeginPoint.Translate();
