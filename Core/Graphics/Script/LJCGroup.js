@@ -22,25 +22,55 @@ class LJCGroup
     let cube = new LJCMesh("Cube");
     this.Meshes.push(cube);
 
+    // Testing
+    //let ZViewer = "negative";
+    let ZViewer = "positive";
+
     let name = "Front";
     let square = cube.CreateFacet(name, radius
       , 4);
-    square.Move(0, 0, -square.PathRadius);
+    switch (ZViewer)
+    {
+      case "negative":
+        square.Move(0, 0, -square.PathRadius);
+        break;
+      case "positive":
+        square.Move(0, 0, square.PathRadius);
+        break;
+    }
     cube.Paths.push(square);
 
     name = "Back";
     square = square.Clone();
     square.Name = name;
-    square.Move(0, 0, square.PathRadius * 2);
+    switch (ZViewer)
+    {
+      case "negative":
+        square.Move(0, 0, square.PathRadius * 2);
+        break;
+      case "positive":
+        square.Move(0, 0, square.PathRadius * -2);
+        break;
+    }
     cube.Paths.push(square);
 
     name = "Left";
     square = square.Clone();
     square.Name = name;
     // Move back to xyz center.
-    square.Move(0, 0, -square.PathRadius);
-    // Rotate counterclockwise.
-    square.AddRotateXZ(square.Arc);
+    switch (ZViewer)
+    {
+      case "negative":
+        square.Move(0, 0, -square.PathRadius);
+        // Rotate counterclockwise.
+        square.AddRotateXZ(square.Arc);
+        break;
+      case "positive":
+        square.Move(0, 0, square.PathRadius);
+        // Rotate clockwise.
+        square.AddRotateXZ(square.Arc);
+        break;
+    }
     // Move to left of cube.
     square.Move(-square.PathRadius, 0, 0);
     cube.Paths.push(square);
@@ -55,8 +85,17 @@ class LJCGroup
     square = square.Clone();
     square.Name = name;
     square.Move(square.PathRadius * -1, 0, 0);
-    // Rotate clockwise.
-    square.AddRotateXY(square.Arc);
+    switch (ZViewer)
+    {
+      case "negative":
+        // Rotate clockwise.
+        square.AddRotateXY(square.Arc);
+        break;
+      case "positive":
+        // Rotate Counterclockwise.
+        square.AddRotateXY(square.Arc);
+        break;
+    }
     square.Move(0, square.PathRadius * -1, 0);
     cube.Paths.push(square);
 

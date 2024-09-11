@@ -147,36 +147,36 @@ class LJCGraphics
     return retValue;
   }
 
-  // Get Radius Methods
+  // Get Radius and Rotation Methods
   // ---------------
-  // GetPointRadius(point)
-  // GetRadius(adjacent, opposite)
+  // Get3DRadius(point)
+  // Get2DRadius(adjacent, opposite)
 
   // Get the radius for a point.
-  GetPointRadius(point)
+  Get3DRadius(point)
   {
-    // Get the xy radius.
-    let retValue = g.GetRadius(point.X, point.Y);
-
-    if (point.Z != 0)
-    {
-      // xy radius is adjacent for xyz radius.
-      retValue = g.GetRadius(retValue, point.Z);
-    }
-    return retValue;
-  }
-
-  // Get the radius.
-  GetRadius(adjacent, opposite)
-  {
-    let sides = this.Square(adjacent) + this.Square(opposite);
+    //// Get the xy radius.
+    //let retValue = this.Get2DRadius(point.X, point.Y);
+    //if (point.Z != 0)
+    //{
+    //  // xy radius is adjacent for xyz radius.
+    //  retValue = this.Get2DRadius(retValue, point.Z);
+    //}
+    let sides = this.Square(point.X);
+    sides += this.Square(point.Y);
+    sides += this.Square(point.Z);
     let retValue = Math.sqrt(sides);
     return retValue;
   }
 
-  // Get Rotation Methods
-  // ---------------
-  // GetRotation(adjacent, opposite)
+  // Get the radius.
+  Get2DRadius(adjacent, opposite)
+  {
+    let sides = this.Square(adjacent)
+    sides += this.Square(opposite);
+    let retValue = Math.sqrt(sides);
+    return retValue;
+  }
 
   // Get the radians of an angle with sides.
   GetRotation(adjacent, opposite)

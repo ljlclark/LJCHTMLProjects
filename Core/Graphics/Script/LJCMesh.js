@@ -16,6 +16,7 @@ class LJCMesh
     this.AddXY = 5 * g.Radian;
     this.AddXZ = 0;
     this.AddZY = 0;
+    this.CloseType = "None";
     this.Name = name;
     this.Paths = [];
     this.PrevRect;
@@ -55,11 +56,21 @@ class LJCMesh
   // Show()
   // Translate()
 
+  XYRotation()
+  {
+  }
+
   // Test Animation
   Animate()
   {
     let g = gLJCGraphics;
     let ctx = g.Context;
+    let front = 0;
+    let back = 1;
+    let left = 2;
+    let right = 3;
+    let top = 4;
+    let bottom = 5;
 
     if (this.PrevRect != null)
     {
@@ -67,16 +78,66 @@ class LJCMesh
       ctx.clearRect(rect.Left - 1, rect.Top - 1
         , rect.Width + 2, rect.Height + 2);
     }
-    ctx.strokeStyle = this.strokeStyle;
+    //ctx.strokeStyle = this.strokeStyle;
 
-    // Main Rotation
-    this.AddRotateXY(this.AddXY);
+    // Main Rotation accumulates.
+    let mesh = null;
+    let base = back;
 
-    // Tip Angle
-    let rotate = 20 * g.Radian;
-    let mesh = this.Clone();
-    mesh.AddRotateXZ(rotate);
-    mesh.AddRotateZY(rotate);
+    // Testing
+    //let rotate = "XY";
+    //let rotate = "XYTip";
+    let rotate = "XZ";
+    //let rotate = "ZY";
+    switch (rotate)
+    {
+      case "XY":
+        // "negative" = Clockwise
+        // "positive" = Counter
+        this.AddRotateXY(this.AddXY);
+        base = back;
+        mesh = this.Clone();
+        break;
+
+      case "XYTip":
+        // Counter
+        this.AddRotateXY(this.AddXY);
+        base = back;
+
+        // Tip Angle is one time.
+        mesh = this.Clone();
+        // "negative" = Counter
+        // "positive" = Clockwise
+        mesh.AddRotateZY(55 * g.Radian);
+        // "negative" = Counter
+        // "positive" = Clockwise
+        mesh.AddRotateXZ(5 * g.Radian);
+        break;
+
+      case "XZ":
+        // "negative" = Counter
+        // "positive" = Clockwise
+        this.AddRotateXZ(this.AddXY);
+        base = bottom;
+        mesh = this.Clone();
+        break;
+
+      case "ZY":
+        // "negative" = Counter
+        // "positive" = Clockwise
+        this.AddRotateZY(this.AddXY);
+        base = left;
+        mesh = this.Clone();
+        break;
+    }
+
+    // Fill Base
+    ctx.fillStyle = "cyan";
+    let path = mesh.Paths[base];
+    // Debug
+    path.FillStyle = "cyan";
+    path.CloseType = "Fill";
+    path.Show();
 
     this.PrevRect = mesh.GetMeshRectangle();
     mesh.Show();
@@ -93,7 +154,7 @@ class LJCMesh
     let x = radius;
     let beginPoint = new LJCPoint(x, 0, 0, radius);
     retPath = new LJCPath(name, beginPoint);
-    retPath.DoClosePath = true;
+    retPath.CloseType = "Close";
 
     // Rotate half of arc to make right line
     // parallel to y axis.

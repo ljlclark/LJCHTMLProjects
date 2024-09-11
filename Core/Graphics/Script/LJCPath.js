@@ -14,10 +14,14 @@ class LJCPath
     this.Name = name;
     this.Arc = 0;
     this.BeginPoint = beginPoint;
-    this.DoClosePath = false;
+    this.CloseType = "Close";
+    // *** Next Statement *** Add
+    this.FillStyle = "";
     this.PathPoints = [];
     this.PathRadius = new LJCPoint(0, 0, 0, 0);
     this.#ScreenBeginPoint = beginPoint;
+    // *** Next Statement *** Add
+    this.StrokeStyle = "";
     this.Translate();
   }
 
@@ -31,13 +35,15 @@ class LJCPath
     let beginPoint = this.BeginPoint.Clone();
     let retPath = new LJCPath(this.Name, beginPoint);
     retPath.Arc = this.Arc;
-    retPath.DoClosePath = this.DoClosePath;
+    retPath.CloseType = this.CloseType;
+    retPath.FillStyle = this.FillStyle;
     retPath.PathRadius = this.PathRadius;
     for (let index = 0; index < this.PathPoints.length; index++)
     {
       let pathPoint = this.PathPoints[index];
       retPath.PathPoints.push(pathPoint.Clone());
     }
+    retPath.SrokeStyle = this.StrokeStyle;
     return retPath;
   }
 
@@ -199,9 +205,16 @@ class LJCPath
           break;
       }
     }
-    if (this.DoClosePath)
+    switch (this.CloseType.toLowerCase())
     {
-      gLJCGraphics.ClosePath();
+      case "close":
+        g.ClosePath();
+        break;
+      case "fill":
+        // *** Next Statement *** Add
+        g.Context.fillStyle = this.FillStyle;
+        g.Context.fill();
+        break;
     }
     g.Stroke();
   }

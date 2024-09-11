@@ -53,7 +53,7 @@ class LJCPoint
     // cos(radians) = a/h
     // Multiply both sides by h.
     // h * cos(radians) = a
-    let radius = g.GetRadius(this.X, this.Y);
+    let radius = g.Get2DRadius(this.X, this.Y);
     //this.Rotation = rotation;
     let x = radius * Math.cos(rotation);
     let y = radius * Math.sin(rotation);
@@ -66,7 +66,7 @@ class LJCPoint
   {
     let g = gLJCGraphics;
 
-    let radius = g.GetRadius(this.X, this.Z);
+    let radius = g.Get2DRadius(this.X, this.Z);
     //this.Rotation = rotation;
     let x = radius * Math.cos(rotation);
     let z = radius * Math.sin(rotation);
@@ -79,7 +79,7 @@ class LJCPoint
   {
     let g = gLJCGraphics;
 
-    let radius = g.GetRadius(this.Z, this.Y);
+    let radius = g.Get2DRadius(this.Z, this.Y);
     //this.Rotation = rotation;
     let z = radius * Math.cos(rotation);
     let y = radius * Math.sin(rotation);
