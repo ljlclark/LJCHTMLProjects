@@ -38,9 +38,8 @@ class LJCPath
     retPath.CloseType = this.CloseType;
     retPath.FillStyle = this.FillStyle;
     retPath.PathRadius = this.PathRadius;
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       retPath.PathPoints.push(pathPoint.Clone());
     }
     retPath.SrokeStyle = this.StrokeStyle;
@@ -63,9 +62,8 @@ class LJCPath
   Move(x, y, z)
   {
     this.BeginPoint.Move(x, y, z);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       pathPoint.Move(x, y, z);
     }
     this.Translate();
@@ -81,9 +79,8 @@ class LJCPath
       , point.Y);
     rotation += addRadians;
     this.BeginPoint.RotateXY(rotation);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       point = pathPoint.getPoint().Clone();
       rotation = g.GetRotation(point.X
         , point.Y);
@@ -103,9 +100,8 @@ class LJCPath
       , point.Z);
     rotation += addRadians;
     this.BeginPoint.RotateXZ(rotation);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       point = pathPoint.getPoint();
       rotation = g.GetRotation(point.X
         , point.Z);
@@ -125,9 +121,8 @@ class LJCPath
       , point.Y);
     rotation += addRadians;
     this.BeginPoint.RotateZY(rotation);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       point = pathPoint.getPoint();
       rotation = g.GetRotation(point.Z
         , point.Y);
@@ -143,9 +138,8 @@ class LJCPath
     let g = gLJCGraphics;
 
     this.BeginPoint.RotateXY(radians);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       pathPoint.RotateXY(radians);
     }
     this.Translate();
@@ -157,9 +151,8 @@ class LJCPath
     let g = gLJCGraphics;
 
     this.BeginPoint.RotateXZ(radians);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       pathPoint.RotateXZ(radians);
     }
     this.Translate();
@@ -171,9 +164,8 @@ class LJCPath
     let g = gLJCGraphics;
 
     this.BeginPoint.RotateZY(radians);
-    for (let index = 0; index < this.PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = this.PathPoints[index];
       pathPoint.RotateZY(radians);
     }
     this.Translate();
@@ -188,9 +180,8 @@ class LJCPath
     g.BeginPath();
     let beginPoint = this.#ScreenBeginPoint;
     g.MoveTo(beginPoint);
-    for (let index = 0; index < PathPoints.length; index++)
+    for (let pathPoint of this.PathPoints)
     {
-      let pathPoint = PathPoints[index];
       switch (pathPoint.ItemType.toLowerCase())
       {
         case "arc":
@@ -226,9 +217,8 @@ class LJCPath
     {
       this.#ScreenBeginPoint = this.BeginPoint.Clone();
       this.#ScreenBeginPoint.Translate();
-      for (let index = 0; index < this.PathPoints.length; index++)
+      for (let pathPoint of this.PathPoints)
       {
-        let pathPoint = this.PathPoints[index];
         pathPoint.Translate();
       }
     }

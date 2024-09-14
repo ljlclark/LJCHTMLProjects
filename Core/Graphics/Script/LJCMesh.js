@@ -31,10 +31,8 @@ class LJCMesh
   {
     let retMesh = new LJCMesh(this.Name);
 
-    let paths = this.Paths;
-    for (let index = 0; index < paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = paths[index];
       retMesh.Paths.push(path.Clone());
     }
     return retMesh;
@@ -186,15 +184,13 @@ class LJCMesh
     retRectangle.Top = tPoint.Y;
     let largest = { X: tPoint.X, Y: tPoint.Y };
 
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       let point = path.getScreenBeginPoint();
       this.#SetRectangle(point, retRectangle, largest);
 
-      for (let pointIndex = 0; pointIndex < path.PathPoints.length; pointIndex++)
+      for (let pathPoint of path.PathPoints)
       {
-        let pathPoint = path.PathPoints[pointIndex];
         let point = pathPoint.getScreenPoint();
         this.#SetRectangle(point, retRectangle, largest);
       }
@@ -234,9 +230,8 @@ class LJCMesh
     for (let index = 0; index < this.Paths.length; index++)
     {
       let path = this.Paths[index];
-      for (let pointIndex = 0; pointIndex < path.PathPoints.length; pointIndex++)
+      for (let point of path.PathPoints)
       {
-        let point = path.PathPoints[pointIndex];
         let newX = point.getScreenPoint().X + x;
         let newY = point.getScreenPoint().Y + y;
         let newZ = point.getScreenPoint().Z + z;
@@ -248,9 +243,8 @@ class LJCMesh
   // Add rotation on the XY plane.
   AddRotateXY(addRadians)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.AddRotateXY(addRadians);
     }
   }
@@ -258,9 +252,8 @@ class LJCMesh
   // Add rotation on the XZ plane.
   AddRotateXZ(addRadians)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.AddRotateXZ(addRadians);
     }
   }
@@ -268,9 +261,8 @@ class LJCMesh
   // Add rotation on the ZY plane.
   AddRotateZY(addRadians)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.AddRotateZY(addRadians);
     }
   }
@@ -278,9 +270,8 @@ class LJCMesh
   // Moves the object.
   Move(x, y, z)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.Move(x, y, z);
     }
   }
@@ -288,9 +279,8 @@ class LJCMesh
   // Rotation on the XY plane.
   RotateXY(radians)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.RotateXY(radians);
     }
   }
@@ -298,9 +288,8 @@ class LJCMesh
   // Add rotation on the XZ plane.
   RotateXZ(radians)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.RotateXZ(radians);
     }
   }
@@ -308,9 +297,8 @@ class LJCMesh
   // rotation on the ZY plane.
   RotateZY(radians)
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.RotateZY(radians);
     }
   }
@@ -318,9 +306,8 @@ class LJCMesh
   // Shows the object.
   Show()
   {
-    for (let index = 0; index < this.Paths.length; index++)
+    for (let path of this.Paths)
     {
-      let path = this.Paths[index];
       path.Show();
     }
   }
@@ -330,9 +317,8 @@ class LJCMesh
   {
     if (gScene.TranslatePoint != null)
     {
-      for (let index = 0; index < this.Paths.length; index++)
+      for (let path of this.Paths)
       {
-        let path = this.Paths[index];
         path.Translate();
       }
     }

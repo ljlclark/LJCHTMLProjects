@@ -109,9 +109,8 @@ class LJCScene
   // 
   Translate()
   {
-    for (let index = 0; index < this.Meshes.length; index++)
+    for (let mesh of this.Meshes)
     {
-      let mesh = this.Meshes[index];
       mesh.Translate();
     }
   }
@@ -119,9 +118,8 @@ class LJCScene
   // Shows the group.
   Show()
   {
-    for (let index = 0; index < this.Meshes.length; index++)
+    for (let mesh of this.Meshes)
     {
-      let mesh = this.Meshes[index];
       mesh.Show();
     }
   }

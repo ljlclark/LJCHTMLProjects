@@ -100,15 +100,28 @@ class LJCPoint
       // b = point opposite length
       // c = view adjacent length (viewZ)
       // d = calculated view opposite length
+
+      // Simplify equation
       // a/b = c/d (multiply by d)
       // ad / b = c (multiple by b)
-      // ad = bc (divide by a)  // cross multiply
+      // ad = bc (divide by a)  // cross multiply equation
       // d = bc / a
 
+      // Example
+      // c = viewZ = tPoint.Z = 90;
+      // a = adjacent = Z = (-20)
+      // a = 90 - (-20) = 110
+      // b = opposite = 21
+      // a/b = 110 / 21 = 5.23809
+      // d = bc / a
+      // d = 21 * 90 / 110 = 17.181818
+      // c/d = 5.23809
+
+      // Perspective
       let viewZ = tPoint.Z;
-      // Z negative toward viewer
+      // Z negative toward screen
       //let a = viewZ + this.Z;
-      // Z positive toward viewer
+      // Z positive toward screen
       let a = viewZ - this.Z;
       let sx = this.X * viewZ / a;
       let sy = this.Y * viewZ / a;
