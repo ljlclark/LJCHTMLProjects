@@ -14,10 +14,6 @@ class LJCGraphics
     this.Radian = Math.PI / 180;
     this.FillStyle = this.#GetDefaultStyle(this.Canvas, "");
     this.StrokeStyle = this.#GetDefaultStyle(this.Canvas, "");
-
-    // Animation Values
-    this.X = 0;
-    this.PrevX = 0;
   }
 
   // Draw Methods
@@ -87,34 +83,6 @@ class LJCGraphics
     ctx.fillText(text, beginPoint.X, beginPoint.Y);
   }
 
-  // Other Methods
-  // ---------------
-  // Animate()
-
-  // Test Animation
-  Animate()
-  {
-    let ctx = this.Context;
-
-    let y = 100;
-    let width = 50;
-    let height = 50;
-
-    ctx.clearRect(this.PrevX - 1, y - 1, width + 1, height + 2);
-    ctx.strokeStyle = this.strokeStyle;
-
-    ctx.strokeRect(this.X, y, width, height);
-    ctx.fillStyle = 'red';
-    ctx.fillRect(this.X, y, width, height);
-
-    this.PrevX = this.X;
-    this.X += 2;
-    if (this.X < this.Canvas.width - 50)
-    {
-      requestAnimationFrame(this.Animate.bind(this));
-    }
-  }
-
   // Path Methods
   // ---------------
   // BeginPath()
@@ -151,59 +119,56 @@ class LJCGraphics
   // ---------------
   // CrossProduct(point1, point2)
   // Get3DRadius(point)
-  // Get2DRadius(adjacent, opposite)
+  // GetRadius(adjacent, opposite)
   // GetRotation(adjacent, opposite)
 
   // Get the cross product of two vectors.
   CrossProduct(point1, point2)
   {
-    // Make it look like a standard equation.
     let a = point1;
     let b = point2;
+    let retResult = new LJCPoint();
 
-    let result = new LJCPoint();
-    result.X = a.Y * b.Z - a.Z * b.Y;
-    result.Y = -(a.X * b.Z - a.Z * b.X);
-    result.Z = a.X * b.Y - a.Y * b.X;
-    return result;
+    retResult.X = a.Y * b.Z - a.Z * b.Y;
+    retResult.Y = a.Z * b.X - a.X * b.Z;
+    retResult.Z = a.X * b.Y - a.Y * b.X;
+    return retResult;
   }
 
-  // Get the radius for a point.
+  // Get the radius with a point.
   Get3DRadius(point)
   {
-    //// Get the xy radius.
-    //let retValue = this.Get2DRadius(point.X, point.Y);
-    //if (point.Z != 0)
-    //{
-    //  // xy radius is adjacent for xyz radius.
-    //  retValue = this.Get2DRadius(retValue, point.Z);
-    //}
+    let retRadius = 0.0;
+
     let sides = this.Square(point.X);
     sides += this.Square(point.Y);
     sides += this.Square(point.Z);
-    let retValue = Math.sqrt(sides);
-    return retValue;
+    retRadius = Math.sqrt(sides);
+    return retRadius;
   }
 
-  // Get the radius.
-  Get2DRadius(adjacent, opposite)
+  // Get the radius with sides.
+  GetRadius(adjacent, opposite)
   {
-    let sides = this.Square(adjacent)
+    let retRadius = 0.0;
+
+    let sides = this.Square(adjacent);
     sides += this.Square(opposite);
-    let retValue = Math.sqrt(sides);
-    return retValue;
+    retRadius = Math.sqrt(sides);
+    return retRadius;
   }
 
   // Get the radians of an angle with sides.
   GetRotation(adjacent, opposite)
   {
+    let retRotation = 0.0;
     let radian = gLJCGraphics.Radian;
-    let retRotation = Math.atan2(opposite, adjacent);
+
+    retRotation = Math.atan2(opposite, adjacent);
     if (retRotation < 0)
     {
       retRotation = Math.abs(retRotation);
     }
-    let degrees = retRotation / radian;
 
     // Not Quandrant I or II.
     if (opposite < 0)
@@ -218,16 +183,13 @@ class LJCGraphics
     {
       retRotation += 180 * radian;
     }
-    degrees = retRotation / radian;
 
     // Quadrant IV
     if (adjacent > 0
       && opposite < 0)
     {
-      //retRotation += 270 * radian;
       retRotation = Math.PI * 2 - retRotation;
     }
-    degrees = retRotation / radian;
     return retRotation;
   }
 
@@ -253,41 +215,41 @@ class LJCGraphics
   // Gets the default style color.
   #GetDefaultStyle(eItem, style)
   {
-    let retValue = style;
+    let retStyle = style;
 
     if (!LJC.HasValue(style))
     {
-      retValue = "black";
+      retStyle = "black";
       let backColor = LJC.ElementStyle(eItem, "background-color");
       if ("rgba(0, 0, 0, 0)" == backColor)
       {
-        retValue = "white";
+        retStyle = "white";
       }
     }
-    return retValue;
+    return retStyle;
   }
 
   // Get provided style or class Style.
   #GetFillStyle(fillStyle)
   {
-    let retValue = fillStyle;
+    let retStyle = fillStyle;
 
-    if (!LJC.HasValue(fillStyle))
+    if (!LJC.HasStyle(fillStyle))
     {
-      retValue = this.FillStyle;
+      retStyle = this.FillStyle;
     }
-    return retValue;
+    return retStyle;
   }
 
   // Get provided style or class Style.
   #GetStrokeStyle(strokeStyle)
   {
-    let retValue = strokeStyle;
+    let retStyle = strokeStyle;
 
     if (!LJC.HasValue(strokeStyle))
     {
-      retValue = this.StrokeStyle;
+      retStyle = this.StrokeStyle;
     }
-    return retValue;
+    return retStyle;
   }
 }
