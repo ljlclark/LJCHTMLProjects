@@ -7,7 +7,7 @@
 class LJCPoint
 {
   // The Constructor method.
-  constructor(x, y, z, radius, rotation = 0)
+  constructor(x = 0, y = 0, z = 0, radius = 0, rotation = 0)
   {
     this.X = x;
     this.Y = y;

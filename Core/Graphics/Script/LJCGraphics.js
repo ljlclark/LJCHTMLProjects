@@ -149,8 +149,24 @@ class LJCGraphics
 
   // Get Radius and Rotation Methods
   // ---------------
+  // CrossProduct(point1, point2)
   // Get3DRadius(point)
   // Get2DRadius(adjacent, opposite)
+  // GetRotation(adjacent, opposite)
+
+  // Get the cross product of two vectors.
+  CrossProduct(point1, point2)
+  {
+    // Make it look like a standard equation.
+    let a = point1;
+    let b = point2;
+
+    let result = new LJCPoint();
+    result.X = a.Y * b.Z - a.Z * b.Y;
+    result.Y = -(a.X * b.Z - a.Z * b.X);
+    result.Z = a.X * b.Y - a.Y * b.X;
+    return result;
+  }
 
   // Get the radius for a point.
   Get3DRadius(point)

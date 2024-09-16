@@ -172,6 +172,28 @@ class LJCMesh
       retPath.PathPoints.push(pathPoint);
       radians += arc;
     }
+
+    // Get Cross Product
+    let g = gLJCGraphics;
+    if (retPath.PathPoints.length > 1)
+    {
+      let point1 = beginPoint;
+      let point2 = retPath.PathPoints[0].getPoint();
+      let point3 = retPath.PathPoints[1].getPoint();
+
+      let pointa = new LJCPoint();
+      pointa.X = point2.X - point1.X;
+      pointa.Y = point2.Y - point1.Y;
+      pointa.Z = point2.Z - point1.Z;
+
+      let pointb = new LJCPoint();
+      pointb.X = point3.X - point2.X;
+      pointb.Y = point3.Y - point2.Y;
+      pointb.Z = point3.Z - point2.Z;
+
+      let xProduct = g.CrossProduct(pointa, pointb);
+      let normal = xProduct;
+    }
     return retPath;
   }
 

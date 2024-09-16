@@ -1,6 +1,6 @@
 // Copyright(c) Lester J.Clark and Contributors. -- >
 // Licensed under the MIT License.-- >
-// LJCGroup.js
+// LJCScene.js
 
 // Represents a group of objects.
 class LJCScene
