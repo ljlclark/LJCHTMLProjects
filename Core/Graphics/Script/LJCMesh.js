@@ -89,8 +89,7 @@ class LJCMesh
     switch (rotate)
     {
       case "XY":
-        // "negative" = Clockwise
-        // "positive" = Clockwise
+        // Rotate clockwise
         this.AddRotateXY(this.AddXY);
         base = back;
         mesh = this.Clone();
@@ -98,30 +97,26 @@ class LJCMesh
 
       case "XYTip":
         // Main Rotation accumulates.
-        // Clockwise
+        // Rotate clockwise
         this.AddRotateXY(this.AddXY);
         base = back;
         // Tip Angle is one time.
         mesh = this.Clone();
-        // "negative" = Clockwise
-        // "positive" = Counter
+        // Rotate counter
         mesh.AddRotateZY(-55 * g.Radian);
-        // "negative" = Counter
-        // "positive" = Clockwise
+        // Rotate clockwise
         mesh.AddRotateXZ(-5 * g.Radian);
         break;
 
       case "XZ":
-        // "negative" = Counter
-        // "positive" = Clockwise
+        // Rotate clockwise
         this.AddRotateXZ(this.AddXY);
         base = bottom;
         mesh = this.Clone();
         break;
 
       case "ZY":
-        // "negative" = Clockwise
-        // "positive" = Counter
+        // Rotate counter
         this.AddRotateZY(this.AddXY);
         base = left;
         mesh = this.Clone();
@@ -174,27 +169,35 @@ class LJCMesh
     }
 
     // Get Cross Product
-    let g = gLJCGraphics;
+    retPath.Normal = new LJCPoint(0, 0, 100);
     if (retPath.PathPoints.length > 1)
     {
       let point1 = beginPoint;
       let point2 = retPath.PathPoints[0].getPoint();
       let point3 = retPath.PathPoints[1].getPoint();
-
-      let pointa = new LJCPoint();
-      pointa.X = point2.X - point1.X;
-      pointa.Y = point2.Y - point1.Y;
-      pointa.Z = point2.Z - point1.Z;
-
-      let pointb = new LJCPoint();
-      pointb.X = point3.X - point2.X;
-      pointb.Y = point3.Y - point2.Y;
-      pointb.Z = point3.Z - point2.Z;
-
-      let xProduct = g.CrossProduct(pointa, pointb);
-      let normal = xProduct;
+      let xProduct = this.GetCrossProduct(point1, point2, point3);
     }
     return retPath;
+  }
+
+  // Get the cross product of two vectors.
+  GetCrossProduct(point1, point2, point3)
+  {
+    let g = gLJCGraphics;
+    let retProduct = null;
+
+    let pointa = new LJCPoint();
+    pointa.X = point2.X - point1.X;
+    pointa.Y = point2.Y - point1.Y;
+    pointa.Z = point2.Z - point1.Z;
+
+    let pointb = new LJCPoint();
+    pointb.X = point3.X - point2.X;
+    pointb.Y = point3.Y - point2.Y;
+    pointb.Z = point3.Z - point2.Z;
+
+    retProduct = g.CrossProduct(pointa, pointb);
+    return retProduct;
   }
 
   // Gets the mesh area rectangle.

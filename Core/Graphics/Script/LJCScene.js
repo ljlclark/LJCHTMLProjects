@@ -22,87 +22,47 @@ class LJCScene
     let cube = new LJCMesh("Cube");
     this.Meshes.push(cube);
 
-    // Testing
-    //let ZViewer = "negative";
-    let ZViewer = "positive";
-
-    let name = "Front";
-    let square = cube.CreateFace(name, radius
+    let base = cube.CreateFace("Base", radius
       , 4);
-    switch (ZViewer)
-    {
-      case "negative":
-        square.Move(0, 0, -square.PathRadius);
-        break;
-      case "positive":
-        square.Move(0, 0, square.PathRadius);
-        break;
-    }
+
+    let square = base.Clone();
+    square.Name = "Front";
+    square.Move(0, 0, square.PathRadius);
     cube.Paths.push(square);
 
-    name = "Back";
-    square = square.Clone();
-    square.Name = name;
-    switch (ZViewer)
-    {
-      case "negative":
-        square.Move(0, 0, square.PathRadius * 2);
-        break;
-      case "positive":
-        square.Move(0, 0, square.PathRadius * -2);
-        break;
-    }
+    square = base.Clone();
+    square.Name = "Back";
+    // Rotate clockwise.
+    square.AddRotateXZ(square.Arc * 2);
+    square.Move(0, 0, -square.PathRadius);
     cube.Paths.push(square);
 
-    name = "Left";
-    square = square.Clone();
-    square.Name = name;
-    // Move back to xyz center.
-    switch (ZViewer)
-    {
-      case "negative":
-        square.Move(0, 0, -square.PathRadius);
-        // Rotate counterclockwise.
-        square.AddRotateXZ(square.Arc);
-        break;
-      case "positive":
-        square.Move(0, 0, square.PathRadius);
-        // Rotate clockwise.
-        square.AddRotateXZ(square.Arc);
-        break;
-    }
-    // Move to left of cube.
+    square = base.Clone();
+    square.Name = "Left";
+    // Rotate clockwise.
+    square.AddRotateXZ(square.Arc);
     square.Move(-square.PathRadius, 0, 0);
     cube.Paths.push(square);
 
-    name = "Right";
-    square = square.Clone();
-    square.Name = name;
-    square.Move(square.PathRadius * 2, 0, 0);
+    square = base.Clone();
+    square.Name = "Right";
+    // Rotate counter.
+    square.AddRotateXZ(-square.Arc);
+    square.Move(square.PathRadius, 0, 0);
     cube.Paths.push(square);
 
-    name = "Top";
-    square = square.Clone();
-    square.Name = name;
-    square.Move(square.PathRadius * -1, 0, 0);
-    switch (ZViewer)
-    {
-      case "negative":
-        // Rotate clockwise.
-        square.AddRotateXY(square.Arc);
-        break;
-      case "positive":
-        // Rotate Counterclockwise.
-        square.AddRotateXY(square.Arc);
-        break;
-    }
+    square = base.Clone();
+    square.Name = "Top";
+    // Rotate clockwise.
+    square.AddRotateZY(-square.Arc);
     square.Move(0, square.PathRadius * -1, 0);
     cube.Paths.push(square);
 
-    name = "Bottom";
-    square = square.Clone();
-    square.Name = name;
-    square.Move(0, square.PathRadius * 2, 0);
+    square = base.Clone();
+    square.Name = "Bottom";
+    // Rotate counter.
+    square.AddRotateZY(square.Arc);
+    square.Move(0, square.PathRadius, 0);
     cube.Paths.push(square);
   }
 

@@ -19,6 +19,7 @@ class LJCPath
     this.FillStyle = "";
     this.PathPoints = [];
     this.PathRadius = new LJCPoint(0, 0, 0, 0);
+    this.Normal = null;
     this.#ScreenBeginPoint = beginPoint;
     // *** Next Statement *** Add
     this.StrokeStyle = "";
@@ -42,6 +43,7 @@ class LJCPath
     {
       retPath.PathPoints.push(pathPoint.Clone());
     }
+    retPath.Normal = this.Normal;
     retPath.SrokeStyle = this.StrokeStyle;
     return retPath;
   }
@@ -138,6 +140,7 @@ class LJCPath
     let g = gLJCGraphics;
 
     this.BeginPoint.RotateXY(radians);
+    this.Normal.RotateXY(radians);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.RotateXY(radians);
@@ -151,6 +154,7 @@ class LJCPath
     let g = gLJCGraphics;
 
     this.BeginPoint.RotateXZ(radians);
+    this.Normal.RotateXZ(radians);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.RotateXZ(radians);
@@ -164,6 +168,7 @@ class LJCPath
     let g = gLJCGraphics;
 
     this.BeginPoint.RotateZY(radians);
+    this.Normal.RotateZY(radians);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.RotateZY(radians);
@@ -177,37 +182,40 @@ class LJCPath
     let g = gLJCGraphics;
     let PathPoints = this.PathPoints;
 
-    g.BeginPath();
-    let beginPoint = this.#ScreenBeginPoint;
-    g.MoveTo(beginPoint);
-    for (let pathPoint of this.PathPoints)
+    if (this.Normal.Z > 0)
     {
-      switch (pathPoint.ItemType.toLowerCase())
+      g.BeginPath();
+      let beginPoint = this.#ScreenBeginPoint;
+      g.MoveTo(beginPoint);
+      for (let pathPoint of this.PathPoints)
       {
-        case "arc":
-          break;
+        switch (pathPoint.ItemType.toLowerCase())
+        {
+          case "arc":
+            break;
 
-        case "line":
-          let screenPoint = pathPoint.getScreenPoint();
-          g.NextLine(screenPoint, pathPoint.StrokeStyle);
-          break;
+          case "line":
+            let screenPoint = pathPoint.getScreenPoint();
+            g.NextLine(screenPoint, pathPoint.StrokeStyle);
+            break;
 
-        case "rectangle":
+          case "rectangle":
+            break;
+        }
+      }
+      switch (this.CloseType.toLowerCase())
+      {
+        case "close":
+          g.ClosePath();
+          break;
+        case "fill":
+          // *** Next Statement *** Add
+          g.Context.fillStyle = this.FillStyle;
+          g.Context.fill();
           break;
       }
+      g.Stroke();
     }
-    switch (this.CloseType.toLowerCase())
-    {
-      case "close":
-        g.ClosePath();
-        break;
-      case "fill":
-        // *** Next Statement *** Add
-        g.Context.fillStyle = this.FillStyle;
-        g.Context.fill();
-        break;
-    }
-    g.Stroke();
   }
 
   // Sets the screen points.
