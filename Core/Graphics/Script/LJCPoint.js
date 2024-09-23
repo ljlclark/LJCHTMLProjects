@@ -7,13 +7,13 @@
 class LJCPoint
 {
   // The Constructor method.
-  constructor(x = 0, y = 0, z = 0, radius = 0, rotation = 0)
+  constructor(x = 0, y = 0, z = 0, radius = 0)
   {
     this.X = x;
     this.Y = y;
     this.Z = z;
     this.Radius = radius;
-    //this.Rotation = rotation;
+    this.ViewZ = 0;
   }
 
   // Data Methods
@@ -23,10 +23,10 @@ class LJCPoint
   // Creates a Clone of this object.
   Clone()
   {
-    let retValue = new LJCPoint(this.X, this.Y
+    let retPoint = new LJCPoint(this.X, this.Y
       , this.Z, this.Radius);
-    //retValue.Rotation = this.Rotation;
-    return retValue;
+    retPoint.ViewZ = this.ViewZ;
+    return retPoint;
   }
 
   // Class Methods
@@ -48,43 +48,30 @@ class LJCPoint
   // Create a rotated point.
   RotateXY(rotation)
   {
-    let g = gLJCGraphics;
-
-    // cos(radians) = a/h
-    // Multiply both sides by h.
-    // h * cos(radians) = a
-    let radius = g.GetRadius(this.X, this.Y);
-    //this.Rotation = rotation;
-    let x = radius * Math.cos(rotation);
-    let y = radius * Math.sin(rotation);
-    this.X = Math.round(x);
-    this.Y = Math.round(y);
+    let calcPoint = this.#CalcPoint(rotation
+      , this.X, this.Y);
+    this.X = calcPoint.X;
+    this.Y = calcPoint.Y;
   }
+
+
 
   // Create a rotated point.
   RotateXZ(rotation)
   {
-    let g = gLJCGraphics;
-
-    let radius = g.GetRadius(this.X, this.Z);
-    //this.Rotation = rotation;
-    let x = radius * Math.cos(rotation);
-    let z = radius * Math.sin(rotation);
-    this.X = Math.round(x);
-    this.Z = Math.round(z);
+    let calcPoint = this.#CalcPoint(rotation
+      , this.X, this.Z);
+    this.X = calcPoint.X;
+    this.Z = calcPoint.Y;
   }
 
   // Create a rotated point.
   RotateZY(rotation)
   {
-    let g = gLJCGraphics;
-
-    let radius = g.GetRadius(this.Z, this.Y);
-    //this.Rotation = rotation;
-    let z = radius * Math.cos(rotation);
-    let y = radius * Math.sin(rotation);
-    this.Z = Math.round(z);
-    this.Y = Math.round(y);
+    let calcPoint = this.#CalcPoint(rotation
+      , this.Z, this.Y);
+    this.Z = calcPoint.X;
+    this.Y = calcPoint.Y;
   }
 
   // 
@@ -118,10 +105,10 @@ class LJCPoint
       // c/d = 5.23809
 
       // Perspective
-      let viewZ = tPoint.Z;
-      // Z negative toward screen
+      let viewZ = tPoint.ViewZ;
+      // Z negative toward viewer
       //let a = viewZ + this.Z;
-      // Z positive toward screen
+      // Z positive toward viewer
       let a = viewZ - this.Z;
       let sx = this.X * viewZ / a;
       let sy = this.Y * viewZ / a;
@@ -132,5 +119,40 @@ class LJCPoint
       this.X = Math.round(sx);
       this.Y = Math.round(sy);
     }
+  }
+
+  // Compensate for undefined values and rotation.
+  #CalcPoint(rotation, adjacent, opposite)
+  {
+    let g = gLJCGraphics;
+    let retPoint = new LJCPoint();
+
+    // cos(radians) = a/h
+    // Multiply both sides by h.
+    // a = h * cos(radians)
+    let radius = g.GetRadius(adjacent, opposite);
+    retPoint.X = radius * Math.cos(rotation);
+    retPoint.Y = radius * Math.sin(rotation);
+    retPoint.X = this.#GetValue(retPoint.X);
+    retPoint.Y = this.#GetValue(retPoint.Y);
+    return retPoint;
+  }
+
+  // Gets small values as zero.
+  #GetValue(value)
+  {
+    let retValue = value;
+
+    if (value > 0
+      && value < 0.00001)
+    {
+      retValue = 0;
+    }
+    if (value < 0
+      && value > -0.000001)
+    {
+      retValue = -0;
+    }
+    return retValue;
   }
 }

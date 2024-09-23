@@ -15,13 +15,18 @@ class LJCPath
     this.Arc = 0;
     this.BeginPoint = beginPoint;
     this.CloseType = "Close";
-    // *** Next Statement *** Add
+    // *** Add ***
     this.FillStyle = "";
     this.PathPoints = [];
     this.PathRadius = new LJCPoint(0, 0, 0, 0);
-    this.Normal = null;
+    // *** Begin Add ***
+    this.Normal = new LJCPoint();
+    this.NormalTo = new LJCPoint();
+    this.ScreenNormal = null;
+    this.ScreenNormalTo = null;
+    // *** End ***
     this.#ScreenBeginPoint = beginPoint;
-    // *** Next Statement *** Add
+    // *** Add ***
     this.StrokeStyle = "";
     this.Translate();
   }
@@ -38,12 +43,19 @@ class LJCPath
     retPath.Arc = this.Arc;
     retPath.CloseType = this.CloseType;
     retPath.FillStyle = this.FillStyle;
+    // *** Begin Add ***
+    retPath.Normal = this.Normal.Clone();
+    retPath.NormalTo = this.NormalTo.Clone();
+    // *** End ***
     retPath.PathRadius = this.PathRadius;
     for (let pathPoint of this.PathPoints)
     {
       retPath.PathPoints.push(pathPoint.Clone());
     }
-    retPath.Normal = this.Normal;
+    // *** Begin Add ***
+    retPath.ScreenNormal = this.ScreenNormal.Clone();
+    retPath.ScreenNormalTo = this.ScreenNormalTo.Clone();
+    // *** End ***
     retPath.SrokeStyle = this.StrokeStyle;
     return retPath;
   }
@@ -64,6 +76,8 @@ class LJCPath
   Move(x, y, z)
   {
     this.BeginPoint.Move(x, y, z);
+    this.Normal.Move(x, y, z);
+    this.NormalTo.Move(x, y, z);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.Move(x, y, z);
@@ -81,6 +95,8 @@ class LJCPath
       , point.Y);
     rotation += addRadians;
     this.BeginPoint.RotateXY(rotation);
+    this.Normal.RotateXY(rotation);
+    this.NormalTo.RotateXY(rotation);
     for (let pathPoint of this.PathPoints)
     {
       point = pathPoint.getPoint().Clone();
@@ -102,6 +118,8 @@ class LJCPath
       , point.Z);
     rotation += addRadians;
     this.BeginPoint.RotateXZ(rotation);
+    this.Normal.RotateXZ(rotation);
+    this.NormalTo.RotateXZ(rotation);
     for (let pathPoint of this.PathPoints)
     {
       point = pathPoint.getPoint();
@@ -123,6 +141,8 @@ class LJCPath
       , point.Y);
     rotation += addRadians;
     this.BeginPoint.RotateZY(rotation);
+    this.Normal.RotateZY(rotation);
+    this.NormalTo.RotateZY(rotation);
     for (let pathPoint of this.PathPoints)
     {
       point = pathPoint.getPoint();
@@ -141,6 +161,7 @@ class LJCPath
 
     this.BeginPoint.RotateXY(radians);
     this.Normal.RotateXY(radians);
+    this.NormalTo.RotateXY(rotation);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.RotateXY(radians);
@@ -155,6 +176,7 @@ class LJCPath
 
     this.BeginPoint.RotateXZ(radians);
     this.Normal.RotateXZ(radians);
+    this.NormalTo.RotateXZ(radians);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.RotateXZ(radians);
@@ -169,6 +191,7 @@ class LJCPath
 
     this.BeginPoint.RotateZY(radians);
     this.Normal.RotateZY(radians);
+    this.NormalTo.RotateZY(radians);
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.RotateZY(radians);
@@ -180,10 +203,15 @@ class LJCPath
   Show()
   {
     let g = gLJCGraphics;
-    let PathPoints = this.PathPoints;
 
-    if (this.Normal.Z > 0)
-    {
+    // *** Begin Add ***
+    g.Line(this.ScreenNormal, this.ScreenNormalTo
+      , "cyan");
+    g.Stroke();
+    // *** End ***
+
+    //if (this.Normal.Z > 0)
+    //{
       g.BeginPath();
       let beginPoint = this.#ScreenBeginPoint;
       g.MoveTo(beginPoint);
@@ -215,7 +243,7 @@ class LJCPath
           break;
       }
       g.Stroke();
-    }
+    //}
   }
 
   // Sets the screen points.
@@ -223,6 +251,12 @@ class LJCPath
   {
     if (gScene.TranslatePoint != null)
     {
+      // *** Begin Add ***
+      this.ScreenNormal = this.Normal.Clone();
+      this.ScreenNormalTo = this.NormalTo.Clone();
+      this.ScreenNormal.Translate();
+      this.ScreenNormalTo.Translate();
+      // *** End ***
       this.#ScreenBeginPoint = this.BeginPoint.Clone();
       this.#ScreenBeginPoint.Translate();
       for (let pathPoint of this.PathPoints)

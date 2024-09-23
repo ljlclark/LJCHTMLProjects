@@ -234,7 +234,7 @@ class LJCGraphics
   {
     let retStyle = fillStyle;
 
-    if (!LJC.HasStyle(fillStyle))
+    if (!LJC.HasValue(fillStyle))
     {
       retStyle = this.FillStyle;
     }

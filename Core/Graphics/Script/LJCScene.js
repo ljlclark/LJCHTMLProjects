@@ -11,14 +11,22 @@ class LJCScene
     this.Name = name;
     let canvas = gLJCGraphics.Canvas;
     this.TranslatePoint = new LJCPoint(canvas.width / 2
-      , canvas.height / 2, 90);
+      , canvas.height / 2);
+    this.TranslatePoint.ViewZ = 90;
     this.Meshes = [];
   }
+
+  // Class Methods
+  // ---------------
+  // AddCube(radius)
+  // Translate()
+  // Show()
 
   // Creates a cube.
   AddCube(radius)
   {
-    this.#Test();
+    //this.#TestGetRotation();
+    this.#TestGetXY();
     let cube = new LJCMesh("Cube");
     this.Meshes.push(cube);
 
@@ -54,14 +62,16 @@ class LJCScene
     square = base.Clone();
     square.Name = "Top";
     // Rotate clockwise.
-    square.AddRotateZY(-square.Arc);
-    square.Move(0, square.PathRadius * -1, 0);
+    // *** Next Statement *** Change
+    square.AddRotateZY(square.Arc);
+    square.Move(0, -square.PathRadius, 0);
     cube.Paths.push(square);
 
     square = base.Clone();
     square.Name = "Bottom";
     // Rotate counter.
-    square.AddRotateZY(square.Arc);
+    // *** Next Statement *** Change
+    square.AddRotateZY(-square.Arc);
     square.Move(0, square.PathRadius, 0);
     cube.Paths.push(square);
   }
@@ -92,7 +102,93 @@ class LJCScene
     }
   }
 
-  #Test()
+  #TestGetXY()
+  {
+    let g = gLJCGraphics;
+
+    let point = new LJCPoint();
+    let toPoint = point.Clone();
+
+    // Quadrant I
+    point.X = 10;
+    point.Y = 0;
+    let rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += 0;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(10, toPoint.X);
+    this.#Compare(0, toPoint.Y);
+
+    point.X = 0;
+    point.Y = 10;
+    rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += 0;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(0, toPoint.X);
+    this.#Compare(10, toPoint.Y);
+
+    // 90 degrees
+    point.X = 10;
+    point.Y = 0;
+    rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += Math.PI / 2;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(0, toPoint.X);
+    this.#Compare(10, toPoint.Y);
+
+    // 90 degrees
+    point.X = 0;
+    point.Y = 10;
+    rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += Math.PI / 2;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(-10, toPoint.X);
+    this.#Compare(0, toPoint.Y);
+
+    // Quadrant II
+    // 180 degrees
+    point.X = 10;
+    point.Y = 0;
+    rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += Math.PI;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(-10, toPoint.X);
+    this.#Compare(0, toPoint.Y);
+
+    // 180 degrees
+    point.X = 0;
+    point.Y = 10;
+    rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += Math.PI;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(0, toPoint.X);
+    this.#Compare(-10, toPoint.Y);
+
+    // Quadrant III
+    // 270 degrees
+    point.X = 10;
+    point.Y = 0;
+    rotation = g.GetRotation(point.X
+      , point.Y);
+    rotation += Math.PI * 2 - Math.PI / 2;
+    toPoint = point.Clone();
+    toPoint.RotateXY(rotation);
+    this.#Compare(0, toPoint.X);
+    this.#Compare(-10, toPoint.Y);
+  }
+
+  #TestGetRotation()
   {
     let g = gLJCGraphics;
 

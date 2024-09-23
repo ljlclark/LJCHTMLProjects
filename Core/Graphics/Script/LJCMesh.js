@@ -41,7 +41,7 @@ class LJCMesh
   // Class Methods
   // ---------------
   // Animate()
-  // CreateFacet(name, beginPoint, radius, verticeCount)
+  // CreateFace(name, beginPoint, radius, verticeCount)
   // GetMeshRectangle()
   // AddMove(x, y, z)
   // AddRotateXY(addRadians)
@@ -53,10 +53,6 @@ class LJCMesh
   // RotateZY(radians)
   // Show()
   // Translate()
-
-  XYRotation()
-  {
-  }
 
   // Test Animation
   Animate()
@@ -73,8 +69,12 @@ class LJCMesh
     if (this.PrevRect != null)
     {
       let rect = this.PrevRect;
-      ctx.clearRect(rect.Left - 1, rect.Top - 1
-        , rect.Width + 2, rect.Height + 2);
+      let x = 1 + 30;
+      let y = 1 + 30;
+      let width = 2 + x + 35;
+      let height = 2 + y;
+      ctx.clearRect(rect.Left - x, rect.Top - y
+        , rect.Width + width, rect.Height + height);
     }
     //ctx.strokeStyle = this.strokeStyle;
 
@@ -127,11 +127,11 @@ class LJCMesh
     ctx.fillStyle = "cyan";
     let path = mesh.Paths[base];
     // Debug
-    path.FillStyle = "cyan";
-    path.CloseType = "Fill";
-    path.Show();
+    //path.FillStyle = "cyan";
+    //path.CloseType = "Fill";
+    //path.Show();
 
-    this.PrevRect = mesh.GetMeshRectangle();
+    this.PrevRect = mesh.GetRectangle();
     mesh.Show();
 
     requestAnimationFrame(this.Animate.bind(this));
@@ -154,7 +154,6 @@ class LJCMesh
     let arc = retPath.Arc;
     let beginRadians = arc / 2;
     beginPoint.RotateXY(beginRadians);
-    retPath.Translate();
     retPath.PathRadius = beginPoint.X;
 
     let radians = arc + beginRadians;
@@ -168,8 +167,12 @@ class LJCMesh
       radians += arc;
     }
 
+    // *** Begin *** Add
+    retPath.Normal = new LJCPoint();
+    retPath.NormalTo = new LJCPoint(0, 0, 5);
+    // *** End ***
+
     // Get Cross Product
-    retPath.Normal = new LJCPoint(0, 0, 100);
     if (retPath.PathPoints.length > 1)
     {
       let point1 = beginPoint;
@@ -177,6 +180,8 @@ class LJCMesh
       let point3 = retPath.PathPoints[1].getPoint();
       let xProduct = this.GetCrossProduct(point1, point2, point3);
     }
+    // Next Statement *** Add
+    retPath.Translate();
     return retPath;
   }
 
@@ -201,7 +206,7 @@ class LJCMesh
   }
 
   // Gets the mesh area rectangle.
-  GetMeshRectangle()
+  GetRectangle()
   {
     let tPoint = gScene.TranslatePoint;
     let retRectangle = { Left: 0, Top: 0, Width: 0, Height: 0 };
