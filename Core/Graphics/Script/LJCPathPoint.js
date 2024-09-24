@@ -45,6 +45,27 @@ class LJCPathPoint
   // RotateZY(radians)
   // Translate()
 
+  // Create a rotated point.
+  AddRotateXY(addRadians)
+  {
+    this.#Point.AddRotateXY(addRadians);
+    this.Translate();
+  }
+
+  // Create a rotated point.
+  AddRotateXZ(addRadians)
+  {
+    this.#Point.AddRotateXZ(addRadians);
+    this.Translate();
+  }
+
+  // Create a rotated point.
+  AddRotateZY(addRadians)
+  {
+    this.#Point.AddRotateZY(addRadians);
+    this.Translate();
+  }
+
   // Moves the next point.
   Move(x, y, z)
   {

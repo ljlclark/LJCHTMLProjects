@@ -21,6 +21,7 @@ class LJCGraphics
   // Arc(centerPoint, radius, endRadians, beginRadians = 0, strokeStyle = "")
   // Line(beginPoint, endPoint, strokeStyle = "")
   // NextLine(endPoint, strokeStyle = "")
+  // Point(point)
   // Rectangle(beginPoint, width, height, fillStyle = "")
   // Text(text, beginPoint, font = "10px san-serif", fillStyle = "")
 
@@ -32,7 +33,6 @@ class LJCGraphics
 
     ctx.beginPath();
     ctx.arc(centerPoint.X, centerPoint.Y, radius, beginRadians, endRadians);
-
     ctx.strokeStyle = strokeStyle;
   }
 
@@ -44,7 +44,6 @@ class LJCGraphics
 
     ctx.moveTo(beginPoint.X, beginPoint.Y)
     ctx.lineTo(endPoint.X, endPoint.Y);
-
     ctx.strokeStyle = strokeStyle;
   }
 
@@ -55,8 +54,18 @@ class LJCGraphics
     strokeStyle = this.#GetStrokeStyle(strokeStyle);
 
     ctx.lineTo(endPoint.X, endPoint.Y);
-
     ctx.strokeStyle = strokeStyle;
+  }
+
+  // Draw a point.
+  Point(point)
+  {
+    let g = gLJCGraphics;
+    let ctx = g.Context;
+
+    let point1 = new LJCPoint(point.X + 0.4
+      , point.Y + 0.4);
+    g.Line(point, point1);
   }
 
   // Draw a rectangle.
@@ -67,9 +76,9 @@ class LJCGraphics
 
     ctx.beginPath();
     ctx.rect(beginPoint.X, beginPoint.Y, width, height);
-    ctx.stroke();
     ctx.fillStyle = fillStyle;
-    ctx.fill();
+    //ctx.stroke();
+    //ctx.fill();
   }
 
   // Draw text.
@@ -118,7 +127,7 @@ class LJCGraphics
   // Get Radius and Rotation Methods
   // ---------------
   // CrossProduct(point1, point2)
-  // Get3DRadius(point)
+  // GetPointRadius(point)
   // GetRadius(adjacent, opposite)
   // GetRotation(adjacent, opposite)
 
@@ -136,7 +145,7 @@ class LJCGraphics
   }
 
   // Get the radius with a point.
-  Get3DRadius(point)
+  GetPointRadius(point)
   {
     let retRadius = 0.0;
 

@@ -24,8 +24,6 @@
     gLJCGraphics.StrokeStyle = "cyan";
     gLJCGraphics.FillStyle = "cyan";
 
-    Test();
-
     let gScene = new LJCScene("Cube");
     gScene.AddCube(30);
     gScene.Show();
@@ -34,65 +32,8 @@
     let cube = gScene.Meshes[0];
     //cube.AddRotateXY(rotateXY);
     //gScene.Show();
-    cube.AddXZ = rotateXY;
+    cube.AddXY = rotateXY;
     cube.Animate();
-
-    function Test()
-    {
-      let g = gLJCGraphics;
-      let ctx = g.Context;
-
-      let point = new LJCPoint(0, 0, 10);
-      let first = true;
-      for (let degrees = 90; degrees < 360
-        ; degrees += 1)
-      {
-        let rotation = degrees * g.Radian;
-
-        if (first)
-        {
-          rotation = Math.PI;
-        }
-        first = false;
-        point.RotateXZ(rotation);
-
-        let textX = new LJCPoint(20, 20);
-        let font = "40px san-serif"
-        ctx.clearRect(point.X, point.Y, 200, 20);
-        //g.Text(`X: ${point.X}`, textX, null, "white");
-
-        tPoint = Translate(point);
-        DrawPoint(tPoint);
-      }
-    }
-
-    function Translate(point)
-    {
-      let tPoint = new LJCPoint(250, 125);
-      let retPoint = new LJCPoint();
-
-      retPoint.X = point.X + tPoint.X;
-      retPoint.Y = point.Y + tPoint.Y;
-      return retPoint;
-    }
-
-    function DrawPoint(point)
-    {
-      let g = gLJCGraphics;
-      let ctx = g.Context;
-
-      let point1 = new LJCPoint(point.X + 0.4
-        , point.Y + 0.4);
-      //g.StrokeStyle = "white";
-      g.Line(point, point1);
-      ctx.stroke();
-
-      //  ctx.strokeStyle = "cyan";
-      //  ctx.beginPath();
-      //  ctx.moveTo(point.X, point.Y);
-      //  ctx.lineTo(point.X + 0.4, point.Y + 0.4);
-      //  ctx.stroke();
-    }
   </script>
 </body>
 </html>

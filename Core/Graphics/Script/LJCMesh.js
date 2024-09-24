@@ -13,7 +13,7 @@ class LJCMesh
     let g = gLJCGraphics;
 
     this.MoveValue = 0;
-    this.AddXY = 5 * g.Radian;
+    this.AddXY = 0;
     this.AddXZ = 0;
     this.AddZY = 0;
     this.CloseType = "None";
@@ -59,12 +59,6 @@ class LJCMesh
   {
     let g = gLJCGraphics;
     let ctx = g.Context;
-    let front = 0;
-    let back = 1;
-    let left = 2;
-    let right = 3;
-    let top = 4;
-    let bottom = 5;
 
     if (this.PrevRect != null)
     {
@@ -79,19 +73,17 @@ class LJCMesh
     //ctx.strokeStyle = this.strokeStyle;
 
     let mesh = null;
-    let base = back;
 
     // Testing
-    //let rotate = "XY";
-    let rotate = "XYTip";
-    //let rotate = "XZ";
-    //let rotate = "ZY";
+    let rotate = "XY";
+    rotate = "XYTip";
+    //rotate = "XZ";
+    //rotate = "ZY";
     switch (rotate)
     {
       case "XY":
         // Rotate clockwise
         this.AddRotateXY(this.AddXY);
-        base = back;
         mesh = this.Clone();
         break;
 
@@ -99,7 +91,7 @@ class LJCMesh
         // Main Rotation accumulates.
         // Rotate clockwise
         this.AddRotateXY(this.AddXY);
-        base = back;
+
         // Tip Angle is one time.
         mesh = this.Clone();
         // Rotate counter
@@ -111,25 +103,15 @@ class LJCMesh
       case "XZ":
         // Rotate clockwise
         this.AddRotateXZ(this.AddXY);
-        base = bottom;
         mesh = this.Clone();
         break;
 
       case "ZY":
         // Rotate counter
         this.AddRotateZY(this.AddXY);
-        base = left;
         mesh = this.Clone();
         break;
     }
-
-    // Fill Base
-    ctx.fillStyle = "cyan";
-    let path = mesh.Paths[base];
-    // Debug
-    //path.FillStyle = "cyan";
-    //path.CloseType = "Fill";
-    //path.Show();
 
     this.PrevRect = mesh.GetRectangle();
     mesh.Show();
@@ -167,10 +149,8 @@ class LJCMesh
       radians += arc;
     }
 
-    // *** Begin *** Add
+    // *** Add ***
     retPath.Normal = new LJCPoint();
-    retPath.NormalTo = new LJCPoint(0, 0, 5);
-    // *** End ***
 
     // Get Cross Product
     if (retPath.PathPoints.length > 1)

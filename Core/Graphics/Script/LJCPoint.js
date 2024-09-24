@@ -31,11 +31,47 @@ class LJCPoint
 
   // Class Methods
   // ---------------
+  // AddRotateXY(addRadians)
+  // AddRotateXZ(addRadians)
+  // AddRotateZY(addRadians)
   // Move(x, y, z)
   // RotateXY(rotation)
   // RotateXZ(rotation)
   // RotateZY(rotation)
   // Translate()
+
+  // Create a rotated point.
+  AddRotateXY(addRadians)
+  {
+    let g = gLJCGraphics;
+
+    let rotation = g.GetRotation(this.X
+      , this.Y);
+    rotation += addRadians;
+    this.RotateXY(rotation);
+  }
+
+  // Create a rotated point.
+  AddRotateXZ(addRadians)
+  {
+    let g = gLJCGraphics;
+
+    let rotation = g.GetRotation(this.X
+      , this.Z);
+    rotation += addRadians;
+    this.RotateXZ(rotation);
+  }
+
+  // Create a rotated point.
+  AddRotateZY(addRadians)
+  {
+    let g = gLJCGraphics;
+
+    let rotation = g.GetRotation(this.Z
+      , this.Y);
+    rotation += addRadians;
+    this.RotateZY(rotation);
+  }
 
   // Moves the point.
   Move(x, y, z)
@@ -53,8 +89,6 @@ class LJCPoint
     this.X = calcPoint.X;
     this.Y = calcPoint.Y;
   }
-
-
 
   // Create a rotated point.
   RotateXZ(rotation)
@@ -121,7 +155,7 @@ class LJCPoint
     }
   }
 
-  // Compensate for undefined values and rotation.
+  // Calculate rotated point.
   #CalcPoint(rotation, adjacent, opposite)
   {
     let g = gLJCGraphics;
