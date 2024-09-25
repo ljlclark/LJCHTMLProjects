@@ -40,7 +40,7 @@ class LJCPoint
   // RotateZY(rotation)
   // Translate()
 
-  // Create a rotated point.
+  // Add rotation on the XY plane.
   AddRotateXY(addRadians)
   {
     let g = gLJCGraphics;
@@ -51,7 +51,7 @@ class LJCPoint
     this.RotateXY(rotation);
   }
 
-  // Create a rotated point.
+  // Add rotation on the XZ plane.
   AddRotateXZ(addRadians)
   {
     let g = gLJCGraphics;
@@ -62,7 +62,7 @@ class LJCPoint
     this.RotateXZ(rotation);
   }
 
-  // Create a rotated point.
+  // Add rotation on the ZY plane.
   AddRotateZY(addRadians)
   {
     let g = gLJCGraphics;
@@ -81,7 +81,7 @@ class LJCPoint
     this.Z += z;
   }
 
-  // Create a rotated point.
+  // Rotate from beginning on the XY plane.
   RotateXY(rotation)
   {
     let calcPoint = this.#CalcPoint(rotation
@@ -90,7 +90,7 @@ class LJCPoint
     this.Y = calcPoint.Y;
   }
 
-  // Create a rotated point.
+  // Rotate from beginning on the XZ plane.
   RotateXZ(rotation)
   {
     let calcPoint = this.#CalcPoint(rotation
@@ -99,7 +99,7 @@ class LJCPoint
     this.Z = calcPoint.Y;
   }
 
-  // Create a rotated point.
+  // Rotate from beginning on the ZY plane.
   RotateZY(rotation)
   {
     let calcPoint = this.#CalcPoint(rotation

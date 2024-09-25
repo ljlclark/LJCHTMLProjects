@@ -45,21 +45,21 @@ class LJCPathPoint
   // RotateZY(radians)
   // Translate()
 
-  // Create a rotated point.
+  // Add rotation on the XY plane.
   AddRotateXY(addRadians)
   {
     this.#Point.AddRotateXY(addRadians);
     this.Translate();
   }
 
-  // Create a rotated point.
+  // Add rotation on the XZ plane.
   AddRotateXZ(addRadians)
   {
     this.#Point.AddRotateXZ(addRadians);
     this.Translate();
   }
 
-  // Create a rotated point.
+  // Add rotation on the ZY plane.
   AddRotateZY(addRadians)
   {
     this.#Point.AddRotateZY(addRadians);
@@ -73,21 +73,21 @@ class LJCPathPoint
     this.Translate();
   }
 
-  // Rotate on the XY axis.
+  // Rotate from beginning on the XY plane.
   RotateXY(radians)
   {
     this.#Point.RotateXY(radians);
     this.Translate();
   }
 
-  // Rotate on the XZ axis.
+  // Rotate from beginning on the XZ plane.
   RotateXZ(radians)
   {
     this.#Point.RotateXZ(radians);
     this.Translate();
   }
 
-  // Rotate on the ZY axis.
+  // Rotate from beginning on the ZY plane.
   RotateZY(radians)
   {
     this.#Point.RotateZY(radians);

@@ -38,11 +38,12 @@ class LJCPath
     retPath.CloseType = this.CloseType;
     retPath.FillStyle = this.FillStyle;
     retPath.Normal = this.Normal.Clone();
-    retPath.PathRadius = this.PathRadius;
     for (let pathPoint of this.PathPoints)
     {
       retPath.PathPoints.push(pathPoint.Clone());
     }
+    retPath.PathRadius = this.PathRadius;
+    retPath.ScreenNormal = this.ScreenNormal;
     retPath.SrokeStyle = this.StrokeStyle;
     return retPath;
   }
@@ -107,7 +108,7 @@ class LJCPath
     this.Translate();
   }
 
-  // Rotation on the XY plane.
+  // Rotation from beginning on the XY plane.
   RotateXY(radians)
   {
     this.BeginPoint.RotateXY(radians);
@@ -119,7 +120,7 @@ class LJCPath
     this.Translate();
   }
 
-  // Rotation on the XZ plane.
+  // Rotation from beginning on the XZ plane.
   RotateXZ(radians)
   {
     this.BeginPoint.RotateXZ(radians);
@@ -131,7 +132,7 @@ class LJCPath
     this.Translate();
   }
 
-  // Rotation on the ZY plane.
+  // Rotation from beginning on the ZY plane.
   RotateZY(radians)
   {
     this.BeginPoint.RotateZY(radians);
