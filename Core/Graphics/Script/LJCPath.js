@@ -14,7 +14,7 @@ class LJCPath
     this.Name = name;
     this.Arc = 0;
     this.BeginPoint = beginPoint;
-    this.CloseType = "Close";
+    this.CloseType = "Close";  // or "Fill"
     this.FillStyle = "";
     this.Normal = new LJCPoint();
     this.PathPoints = [];
@@ -50,27 +50,15 @@ class LJCPath
 
   // Class Methods
   // ---------------
-  // Move(x, y, z)
   // AddRotateXY(addRadians);
   // AddRotateXZ(addRadians);
   // AddRotateZY(addRadians);
+  // Move(x, y, z)
   // RotateXY(radians);
   // RotateXZ(radians);
   // RotateZY(radians);
   // Show()
   // Translate()
-
-  // Moves the path.
-  Move(x, y, z)
-  {
-    this.BeginPoint.Move(x, y, z);
-    this.Normal.Move(x, y, z);
-    for (let pathPoint of this.PathPoints)
-    {
-      pathPoint.Move(x, y, z);
-    }
-    this.Translate();
-  }
 
   // Add rotation on the XY plane.
   AddRotateXY(addRadians)
@@ -104,6 +92,18 @@ class LJCPath
     for (let pathPoint of this.PathPoints)
     {
       pathPoint.AddRotateZY(addRadians);
+    }
+    this.Translate();
+  }
+
+  // Moves the path.
+  Move(x, y, z)
+  {
+    this.BeginPoint.Move(x, y, z);
+    this.Normal.Move(x, y, z);
+    for (let pathPoint of this.PathPoints)
+    {
+      pathPoint.Move(x, y, z);
     }
     this.Translate();
   }

@@ -92,7 +92,6 @@ class LJCGraphics
   // BeginPath()
   // ClosePath()
   // MoveTo(point)
-  // Square(value)
 
   // Performs the Ctx.beginPath() method.
   BeginPath()
@@ -112,19 +111,13 @@ class LJCGraphics
     this.Context.moveTo(point.X, point.Y);
   }
 
-  // Squares a value.
-  Square(value)
-  {
-    let retValue = Math.pow(value, 2);
-    return retValue;
-  }
-
   // Get Radius and Rotation Methods
   // ---------------
   // CrossProduct(point1, point2)
   // GetPointRadius(point)
   // GetRadius(adjacent, opposite)
   // GetRotation(adjacent, opposite)
+  // Square(value)
 
   // Get the cross product of two vectors.
   CrossProduct(point1, point2)
@@ -195,6 +188,13 @@ class LJCGraphics
       retRotation = Math.PI * 2 - retRotation;
     }
     return retRotation;
+  }
+
+  // Squares a value.
+  Square(value)
+  {
+    let retValue = Math.pow(value, 2);
+    return retValue;
   }
 
   // Fill and Stroke Methods
