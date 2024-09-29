@@ -166,6 +166,7 @@ class LJCMesh
     }
 
     retPath.Normal = new LJCPoint();
+    retPath.StrokeStyle = "cyan";
     retPath.Translate();
     return retPath;
   }
