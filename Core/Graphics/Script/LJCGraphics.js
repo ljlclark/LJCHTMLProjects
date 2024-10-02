@@ -94,7 +94,10 @@ class LJCGraphics
     ctx.rect(beginPoint.X, beginPoint.Y, width, height);
     if (LJC.HasValue(fillStyle))
     {
-      this.Fill(fillStyle);
+      //this.Fill(fillStyle);
+      ctx.fillStyle = fillStyle;
+      ctx.fillRect(beginPoint.X, beginPoint.Y, width
+        , height)
     }
     if (LJC.HasValue(strokeStyle))
     {
