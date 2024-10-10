@@ -152,9 +152,10 @@ class LJCGraphics
   // Get Radius and Rotation Methods
   // ---------------
   // CrossProduct(point1, point2)
-  // GetPointRadius(point)
-  // GetRadius(adjacent, opposite)
-  // GetRotation(adjacent, opposite)
+  // PointRadius(point)
+  // PointRotation()
+  // Radius(adjacent, opposite)
+  // Rotation(adjacent, opposite)
   // Square(value)
   // ToAngle(rotation)
 
@@ -167,14 +168,14 @@ class LJCGraphics
 
     retResult.X = a.Y * b.Z - a.Z * b.Y;
     // switch first and second multiplication to
-    // equal // negative.
+    // equal negative.
     retResult.Y = a.Z * b.X - a.X * b.Z;
     retResult.Z = a.X * b.Y - a.Y * b.X;
     return retResult;
   }
 
   // Gets the point radius.
-  GetPointRadius(point)
+  PointRadius(point)
   {
     let retRadius = 0.0;
 
@@ -186,17 +187,17 @@ class LJCGraphics
   }
 
   // Gets the point rotation in radians.
-  GetPointRotation()
+  PointRotation(point)
   {
     let retRotation = 0.0;
 
-    let zOpposite = this.GetRadius(point.Z, point.Y);
-    retRotation = this.GetRotation(point.X, zOpposite);
+    let zOpposite = this.Radius(point.Z, point.Y);
+    retRotation = this.Rotation(point.X, zOpposite);
     return retRotation;
   }
 
   // Gets the radius with sides.
-  GetRadius(adjacent, opposite)
+  Radius(adjacent, opposite)
   {
     let retRadius = 0.0;
 
@@ -208,7 +209,7 @@ class LJCGraphics
 
 
   // Get the rotation in radians with sides.
-  GetRotation(adjacent, opposite)
+  Rotation(adjacent, opposite)
   {
     let radian = gLJCGraphics.Radian;
     let retRotation = 0.0;
