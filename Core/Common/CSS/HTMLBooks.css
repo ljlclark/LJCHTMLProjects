@@ -1,0 +1,52 @@
+/* Copyright (c) Lester J. Clark and Contributors. */
+/* Licensed under the MIT License. */
+/* HTMLBooks.css */
+
+.bookHeading {
+  margin-top: 6px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.bookLeft {
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+}
+
+.book {
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+  text-indent: 25px;
+}
+
+.headingMargins {
+  margin-bottom: 5px;
+  margin-top: 6px;
+}
+
+.columns {
+  column-count: 2;
+  column-width: 250px;
+}
+
+.columnsAuto {
+  column-count: 2;
+  column-fill: auto;
+  column-width: 250px;
+}
+
+.listMargins {
+  margin-bottom: 4px;
+  margin-top: 4px;
+  padding-left: 25px;
+}
+
+.listMarginsNoDot {
+  list-style: none;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  padding-left: 15px;
+}
