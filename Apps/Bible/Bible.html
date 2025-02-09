@@ -11,6 +11,17 @@
   <script src="../../Core/Common/Script/LJCCommon.js"></script>
   <script src="../../Core/Common/Script/StringBuilder.js"></script>
   <script src="Script/HTMLBuilder.js"></script>
+  <script>
+    function download(dataurl, filename)
+    {
+      const link = document.createElement("a");
+      link.href = dataurl;
+      link.download = filename;
+      link.click();
+    }
+
+    //download("data:text/html,HelloWorld!", "HelloWorld.txt");
+  </script>>
 </head>
 <body>
   <div class="page">
@@ -18,6 +29,7 @@
       / NKJV
     </div>
     <br />
+    <a href="http://LocalHost/Bible/Bible.txt" download="Changes.txt">Changes</a>
     <table cellpadding="3" style="margin-left:20px">
       <tr>
         <th colspan="4">Old Testament</th>
