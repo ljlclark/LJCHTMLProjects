@@ -29,6 +29,11 @@ class John1
         retText = John1.Textb();
         break;
 
+      // John 1:23
+      case "c":
+        retText = "Psalms 40:3";
+        break;
+
       // John 1:19
       case "ra":
         retText = John1.Textra();
@@ -242,6 +247,7 @@ class John1
   {
     a.addEventListener("mouseover", this.ShowText.bind(this));
     b.addEventListener("mouseover", this.ShowText.bind(this));
+    c.addEventListener("mouseover", this.ShowText.bind(this));
     ra.addEventListener("mouseover", this.ShowText.bind(this));
     rb.addEventListener("mouseover", this.ShowText.bind(this));
     rc.addEventListener("mouseover", this.ShowText.bind(this));
@@ -334,6 +340,10 @@ class John1
         case "b":
           isContinue = false;
           eContainer.innerText = John1.Text("b");
+          break;
+        case "c":
+          isContinue = false;
+          eContainer.innerText = John1.Text("c");
           break;
       }
     }
