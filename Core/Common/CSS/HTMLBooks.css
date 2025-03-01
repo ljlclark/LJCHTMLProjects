@@ -24,20 +24,7 @@
 
 .hanging {
   margin: 0;
-  padding-left: 32px;
-  /*text-align: justify;*/
-  text-indent: -30px;
-}
-
-.hanging1 {
-  margin: 0;
-  padding-left: 20px;
-  /*text-align: justify;*/
-  text-indent: -18px;
-}
-
-.hanging2 {
-  margin: 0;
+  margin-top: 3px;
   padding-left: 20px;
   /*text-align: justify;*/
   text-indent: -18px;
