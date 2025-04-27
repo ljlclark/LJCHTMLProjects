@@ -34,13 +34,36 @@
   <script>
     function SetColumns(table)
     {
-      let tableWidth = Table.Width(cityList);
       let tableColumnCount = Table.ColumnCount(cityList);
-      let columnWidth = tableWidth / (tableColumnCount + 1);
+
+      // Add column to end of table.
       Table.AddColumn(cityList);
-      for (index = 0; index < tableColumnCount; index++)
+      let addColumnIndex = tableColumnCount;
+
+      // Insert column before last existing column.
+      //let insertColumnIndex = tableColumnCount - 1;
+      //Table.InsertColumn(cityList, insertColumnIndex);
+      //let addColumnIndex = insertColumnIndex;
+
+      // Evently distribute column width.
+      tableColumnCount = Table.ColumnCount(cityList);
+      let tableWidth = Table.Width(cityList);
+
+      // Allow for last column of 50 px.
+      let addColumnWidth = 50;
+      let adjustedWidth = tableWidth - addColumnWidth;
+      let columnWidth = adjustedWidth / tableColumnCount;
+
+      let fullRow = Table.FullRow(cityList);
+      let rowIndex = fullRow.rowIndex;
+      for (let columnIndex = 0; columnIndex < tableColumnCount; columnIndex++)
       {
-        Table.SetColumnWidth(cityList, index, columnWidth);
+        Table.SetColumnWidth(cityList, rowIndex, columnIndex, columnWidth);
+        if (columnIndex == addColumnIndex)
+        {
+          Table.SetColumnWidth(cityList, rowIndex, columnIndex
+            , addColumnWidth);
+        }
       }
     }
   </script>
