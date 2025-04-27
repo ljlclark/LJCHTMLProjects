@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Testing</title>
+  <link href="../../Core/Common/CSS/CodeDoc.css" rel="stylesheet"
+        type="text/css" />
+  <script src="../../Core/Common/script/LJCCommon.js"></script>
+  <script src="Table.js"></script>
+  <style>
+
+    table.List {
+      width: 100%;
+      border: 1px solid black;
+      border-spacing: 0px;
+    }
+
+    td.List {
+      border: 1px solid black;
+      padding: 2px;
+    }
+
+    th.List {
+      background-color: lavender;
+      border: 1px solid black;
+      padding: 2px;
+    }
+
+    .TableHeading {
+      background-color: lightskyblue;
+      border: 1px solid black;
+      padding: 2px;
+    }
+  </style>
+  <script>
+    function SetColumns(table)
+    {
+      let tableWidth = Table.Width(cityList);
+      let tableColumnCount = Table.ColumnCount(cityList);
+      let columnWidth = tableWidth / (tableColumnCount + 1);
+      Table.AddColumn(cityList);
+      for (index = 0; index < tableColumnCount; index++)
+      {
+        Table.SetColumnWidth(cityList, index, columnWidth);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="page">
+    <br />
+    <table id="cityList" class="List">
+      <tr>
+        <td class="TableHeading" colspan="3">City</td>
+      </tr>
+      <tr>
+        <th class="List">First</th>
+        <th class="List">Second</th>
+        <th class="List">Third</th>
+      </tr>
+      <tr>
+        <td class="List">One</td>
+        <td class="List">Two</td>
+        <td class="List">Three</td>
+      </tr>
+    </table>
+    <table class="List">
+      <tr class="TableHeading">
+        <td class="List" colspan="3">Barangay</td>
+      </tr>
+      <tr>
+        <th class="List">First</th>
+        <th class="List">Second</th>
+        <th class="List">Third</th>
+      </tr>
+      <tr>
+        <td class="List">One</td>
+        <td class="List">Two</td>
+        <td class="List">Three</td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    SetColumns();
+  </script>
+</body>
+</html>
