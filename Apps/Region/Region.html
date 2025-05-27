@@ -7,24 +7,27 @@
   <script src="../../Core/Common/script/LJCCommon.js"></script>
   <script src="Table.js"></script>
   <style>
-
+    /* List Table */
     table.List {
       width: 100%;
       border: 1px solid black;
       border-spacing: 0px;
     }
 
+    /* List Table Cell */
     td.List {
       border: 1px solid black;
       padding: 2px;
     }
 
+    /* List Table Heading Cell */
     th.List {
       background-color: lavender;
       border: 1px solid black;
       padding: 2px;
     }
 
+    /* Main Table Heading Cell (usually includes colspan) */
     .TableHeading {
       background-color: lightskyblue;
       border: 1px solid black;
@@ -34,44 +37,63 @@
   <script>
     function SetColumns(table)
     {
-      let tableColumnCount = Table.ColumnCount(cityList);
+      let cityColumnCount = Table.ColumnCount(cityTable);
 
       // Add column to end of table.
-      Table.AddColumn(cityList);
-      let addColumnIndex = tableColumnCount;
+      Table.AddColumn(cityTable);
+      let addColumnIndex = cityColumnCount;
 
       // Insert column before last existing column.
-      //let insertColumnIndex = tableColumnCount - 1;
-      //Table.InsertColumn(cityList, insertColumnIndex);
+      //let insertColumnIndex = cityColumnCount - 1;
+      //Table.InsertColumn(cityTable, insertColumnIndex);
       //let addColumnIndex = insertColumnIndex;
 
       // Evently distribute column width.
-      tableColumnCount = Table.ColumnCount(cityList);
-      let tableWidth = Table.Width(cityList);
+      cityColumnCount = Table.ColumnCount(cityTable);
+      let tableWidth = Table.Width(cityTable);
 
       // Allow for last column of 50 px.
       let addColumnWidth = 50;
       let adjustedWidth = tableWidth - addColumnWidth;
-      let columnWidth = adjustedWidth / tableColumnCount;
+      let columnWidth = adjustedWidth / cityColumnCount;
 
-      let fullRow = Table.FullRow(cityList);
+      // Set column widths for columns in a full row.
+      let fullRow = Table.FullRow(cityTable);
       let rowIndex = fullRow.rowIndex;
-      for (let columnIndex = 0; columnIndex < tableColumnCount; columnIndex++)
+      for (let columnIndex = 0; columnIndex < cityColumnCount; columnIndex++)
       {
-        Table.SetColumnWidth(cityList, rowIndex, columnIndex, columnWidth);
+        Table.SetColumnWidth(cityTable, rowIndex, columnIndex, columnWidth);
         if (columnIndex == addColumnIndex)
         {
-          Table.SetColumnWidth(cityList, rowIndex, columnIndex
+          // Set added column width.
+          Table.SetColumnWidth(cityTable, rowIndex, columnIndex
             , addColumnWidth);
         }
       }
+      let html = "";
+      html += "<table class=\"List\">";
+      html += "  <tr class=\"TableHeading\">";
+      html += "    <td class=\"List\" colspan=\"3\">Barangay</td>";
+      html += "  </tr>";
+      html += "  <tr>";
+      html += "    <th class=\"List\">First</th>";
+      html += "    <th class=\"List\">Second</th>";
+      html += "    <th class=\"List\">Third</th>";
+      html += "  </tr>";
+      html += "  <tr>";
+      html += "    <td class=\"List\">One</td>";
+      html += "    <td class=\"List\">Two</td>";
+      html += "    <td class=\"List\" > Three</td > ";
+      html += "  </tr>";
+      html += "</table>";
+      barangayTable.outerHTML = html;
     }
   </script>
 </head>
 <body>
   <div class="page">
     <br />
-    <table id="cityList" class="List">
+    <table id="cityTable" class="List">
       <tr>
         <td class="TableHeading" colspan="3">City</td>
       </tr>
@@ -86,20 +108,7 @@
         <td class="List">Three</td>
       </tr>
     </table>
-    <table class="List">
-      <tr class="TableHeading">
-        <td class="List" colspan="3">Barangay</td>
-      </tr>
-      <tr>
-        <th class="List">First</th>
-        <th class="List">Second</th>
-        <th class="List">Third</th>
-      </tr>
-      <tr>
-        <td class="List">One</td>
-        <td class="List">Two</td>
-        <td class="List">Three</td>
-      </tr>
+    <table id="barangayTable">
     </table>
   </div>
   <script>

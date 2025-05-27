@@ -10,14 +10,37 @@ class Table
   // *****************
 
   // Adds the selector classes.
-  static CopyClasses(fromItem, toItem)
+  static CopyClasses(eFrom, eTo)
   {
-    let classCount = fromItem.classList.length;
+    let fromClasses = eFrom.classList;
+    let toClasses = eTo.classList;
+    let classCount = fromClasses.length;
     for (let index = 0; index < classCount; index++)
     {
-      let fromClass = fromItem.classList[index];
-      toItem.classList.add(fromClass);
+      let fromClass = fromClasses[index];
+      if (!this.HasClass(toClasses, fromClass))
+      {
+        toClasses.add(fromClass);
+      }
     }
+  }
+
+  // Check if target class list has a class.
+  static HasClass(toClasses, classItem)
+  {
+    let retValue = false;
+
+    let classCount = toClasses.length;
+    for (let index = 0; index < classCount; index++)
+    {
+      let toClass = toClasses[index];
+      if (toClass.className == classItem.className)
+      {
+        retValue = true;
+        break;
+      }
+    }
+    return retValue;
   }
 
   // Table Functions
@@ -52,27 +75,6 @@ class Table
     return retWidth;
   }
 
-  // Get row with full column count.
-  static FullRow(eTable)
-  {
-    let retRow = null;
-
-    let prevCount = 0;
-    let rows = eTable.rows;
-    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++)
-    {
-      let row = rows[rowIndex];
-      let rowCellCount = this.RowCellCount(row);
-      if (rowCellCount == prevCount)
-      {
-        retRow = row;
-        break;
-      }
-      prevCount = rowCellCount;
-    }
-    return retRow;
-  }
-
   // Sets a column width.
   static SetColumnWidth(eTable, rowIndex, columnIndex, width)
   {
@@ -95,7 +97,7 @@ class Table
     return retValue;
   }
 
-  // Add Column Functions
+  // Add Table Column Functions
   // *********************
 
   // Adds a column to the table.
@@ -105,9 +107,10 @@ class Table
 
     let rows = eTable.rows;
 
-    if (rows.length > 0)
+    let rowCount = rows.length;
+    if (rowCount > 0)
     {
-      for (let index = 0; index < rows.length; index++)
+      for (let index = 0; index < rowCount; index++)
       {
         let row = rows[index];
         let cells = row.cells;
@@ -129,59 +132,113 @@ class Table
   }
 
   // Inserts a column into the table.
-  static InsertColumn(eTable, columnIndex)
+  static InsertColumn(eTable, insertIndex)
   {
     let retValue = 0;
 
     let rows = eTable.rows;
 
-    if (rows.length > 0)
+    let rowCount = rows.length;
+    if (rowsCount > 0)
     {
-      for (let index = 0; index < rows.length; index++)
+      for (let index = 0; index < rowCount; index++)
       {
         let row = rows[index];
         let cells = row.cells;
-        if (cells.length < columnIndex + 1)
+
+        // Row has less cells than insert index.
+        if (cells.length < insertIndex + 1)
         {
+          // Expand the last cell colSpan to fill in the row.
           var cell = cells[cells.length - 1];
-          cell.colSpan += columnIndex - cells.length;
+          cell.colSpan += insertIndex - cells.length;
           continue;
         }
-        let prevCell = cells[columnIndex];
-        let parent = prevCell.parentElement;
+
+        // Insert new cell.
+        let prevCell = cells[insertIndex];
+        let eRow = prevCell.parentElement;
         let newCell = null;
+        let cellType = "td";
         if ("TH" == prevCell.nodeName)
         {
-          newCell = document.createElement("th");
-          parent.insertBefore(newCell, prevCell);
+          cellType = "th";
         }
-        else
-        {
-          newCell = document.createElement("td");
-          parent.insertBefore(newCell, prevCell);
-        }
+        newCell = document.createElement(cellType);
+        eRow.insertBefore(newCell, prevCell);
         this.CopyClasses(prevCell, newCell);
       }
     }
     return retValue;
   }
 
-  // Row Functions
+  // Table Row Functions
   // *************
 
+  // Get row with full column count.
+  static FullRow(eTable)
+  {
+    let retRow = null;
+
+    let prevCellCount = 0;
+    let rows = eTable.rows;
+    let rowCount = rows.length;
+    for (let rowIndex = 0; rowIndex < rowCount; rowIndex++)
+    {
+      let row = rows[rowIndex];
+      let rowCellCount = this.RowCellCount(row);
+
+      // Assume a full row since cell count matches previous row count.
+      if (!this.RowHasColSpan(row)
+        && rowCellCount == prevCellCount)
+      {
+        retRow = row;
+        break;
+      }
+      prevCellCount = rowCellCount;
+    }
+    return retRow;
+  }
+
   // Gets the row column count.
-  static RowCellCount(row)
+  static RowCellCount(eRow)
   {
     let retCount = 0;
 
-    if (row != null)
+    if (eRow != null)
     {
-      retCount = row.cells.length;
+      //retCount = eRow.cells.length;
+      let cells = eRow.cells;
+      let cellCount = cells.length;
+      for (let index = 0; index < cellCount; index++)
+      {
+        let cell = cells[index];
+        retCount += cell.colSpan;
+      }
     }
     return retCount;
   }
 
-  // Cell Functions
+  // Check if any row cell has a colSpan.
+  static RowHasColSpan(eRow)
+  {
+    let retValue = false;
+
+    let cells = eRow.cells;
+    let cellCount = cells.length;
+    for (let index = 0; index < cellCount; index++)
+    {
+      let cell = cells[index];
+      if (cell.colSpan > 1)
+      {
+        retValue = true;
+        break;
+      }
+    }
+    return retValue;
+  }
+
+  // Table Cell Functions
   // ****************
 
   // Gets a table column.
