@@ -14,6 +14,8 @@ class MatcherEvents
   // #endregion
 
   // #region Private Properties
+
+  #selectedLeftItem = "";
   // #endregion
 
   // #region Constructor Methods
@@ -27,7 +29,7 @@ class MatcherEvents
   // Adds the HTML event listeners.
   #AddEvents()
   {
-    document.addEventListener("click", this.#DocumentClick, this);
+    document.addEventListener("click", this.#DocumentClick.bind(this));
   }
   // #endregion
 
@@ -35,6 +37,30 @@ class MatcherEvents
   #DocumentClick(event)
   {
     let target = event.target;
-    alert(target.tagName);
+
+    if (target.tagName == "IMG"
+      && LJC.HasText(target.id))
+    {
+      let id = target.id;
+      if (this.IsLeftItem(id))
+      {
+        alert(`Left Item: ${target.id}`)
+      }
+    }
+  }
+
+  // Checks if the clicked item is a left item.
+  IsLeftItem(itemID)
+  {
+    let retValue = false;
+
+    if ("pic1" == itemID
+      || "pic3" == itemID
+      || "pic5" == itemID
+      || "pic7" == itemID)
+    {
+      retValue = true;
+    }
+    return retValue;
   }
 }
