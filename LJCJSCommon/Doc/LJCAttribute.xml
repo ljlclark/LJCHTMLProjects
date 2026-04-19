@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCAttribute.xml -->
+<members>
+  <LJCAttribute>
+    <summary>
+      Represents a node or element attribute.
+    </summary>
+    <group name="Static">Static Methods</group>
+    <group name="Constructor">Constructor Methods</group>
+    <group name="Data">Data Class Methods</group>
+  </LJCAttribute>
+  
+  <!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a new object from simple object values.
+    </summary>
+    <param name="objItem">The simple object.</param>
+    <returns>The LJCAttribute object.</returns>
+    <ParentGroup>Static</ParentGroup>
+    <code>
+      // Create typed collection from deserialized JavasScript array.
+      Copy()
+      {
+        const simpleAttribute = {
+          "Name": "id",
+          "Value": "name",
+        };
+
+        const attribute = LJCAttribute.Copy(simpleAttribute);
+        const result = attribute.Name;
+        
+        // result:
+        // id
+      }
+    </code>
+  </Copy>
+  
+  <!-- Constructor Methods -->
+  <constructor>
+    <summary>
+      Initializes an object instance.
+    </summary>
+    <param name="name">The optional item name.</param>
+    <param name="value">The optional item value.</param>
+    <ParentGroup>Constructor</ParentGroup>
+    <code>
+      // Initializes an object instance.
+      Constructor()
+      {
+        const attribute = new LJCAttribute("id", "name");
+        const result = attribute.Name;
+      
+        // result:
+        // id
+      }
+    </code>
+  </constructor>
+  
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+    <returns>The cloned object.</returns>
+    <ParentGroup>Data</ParentGroup>
+    <code>
+      // Creates an object clone.
+      Clone()
+      {
+        const attribute = new LJCAttribute("id", "name");
+        const clone = attribute.Clone();
+        const result = clone.Name;
+        
+        // result:
+        // id
+      }
+    </code>
+  </Clone>
+</members>
