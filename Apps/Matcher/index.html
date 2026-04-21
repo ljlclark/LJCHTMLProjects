@@ -9,24 +9,57 @@
   <meta name="description" content="A Match Items page." />
   <meta name="author" content="Lester J. Clark" />
   <meta name="viewport" content="width=device-width initial-scale=1" />
-  <link rel="stylesheet" href="Matcher.css" />
+  <link rel="stylesheet" href="LJCMatcher.css" />
   <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-  <script src="MatcherEvents.js"></script>
+  <script src="LJCSetData.js"></script>
+  <script src="LJCMatcherData.js"></script>
+  <script src="LJCMatcherEvents.js"></script>
+  <script src="LJCAppMatch.js"></script>
+  <script src="LJCAppMatches.js"></script>
 </head>
 <body class="view-height">
-  <div class="grid-container">
+  <audio id="success" src="sounds/success1.mp3"></audio>
+  <audio id="error1" src="sounds/error1.mp3"></audio>
+  <div class="container">
     <!-- The grid items. -->
-    <img id="pic1" src="Submit1.jpg" alt="Image 1">
-    <img id="pic2" src="Submit2.jpg" alt="Image 2">
-    <img id="pic3" src="Submit3.jpg" alt="Image 3">
-    <img id="pic4" src="Submit4.jpg" alt="Image 4">
-    <img id="pic5" src="Submit5.jpg" alt="Image 5">
-    <img id="pic6" src="Submit6.jpg" alt="Image 6">
-    <img id="pic7" src="Submit5.jpg" alt="Image 7">
-    <img id="pic8" src="Submit6.jpg" alt="Image 8">
+    <div></div>
+    <img id="pic1" src="images/Crossing.jpg" alt="Image 1">
+    <div id="set1"></div>
+    <div id="text1">Wear a seat belt while in a car.</div>
+    <div></div>
+
+    <div></div>
+    <img id="pic2" src="images/GreenLight.jpg" alt="Image 3">
+    <div id="set2"></div>
+    <div id="text2">Cross the street at the zebra crossing.</div>
+    <div></div>
+
+    <div></div>
+    <img id="pic3" src="images/SeatBelt.jpg" alt="Image 5">
+    <div id="set3"></div>
+    <div id="text3">Wait for the green light before crossing.</div>
+    <div></div>
+
+    <div></div>
+    <img id="pic4" src="images/Helment.jpg" alt="Image 5">
+    <div id="set4"></div>
+    <div id="text4">Use the crosswalk and do not jaywalk.</div>
+    <div></div>
+
+    <div></div>
+    <img id="pic5" src="images/Traffic.jpg" alt="Image 5">
+    <div id="set5"></div>
+    <div id="text5">Wear a helmet when riding a bicycle.</div>
+    <div></div>
+
+    <div></div>
+    <img id="pic6" src="images/Jwalk.jpg" alt="Image 5">
+    <div id="set6"></div>
+    <div id="text6">Do not cross between moving vehicles.</div>
+    <div></div>
   </div>
   <script>
-    let matcherEvents = new MatcherEvents();
+    let matcherEvents = new LJCMatcherEvents();
   </script>
 </body>
 </html>
