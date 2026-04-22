@@ -71,9 +71,15 @@ class LJCAppMatches
   // <param name="item">The data object.</param>
   AddObject(appMatch)
   {
-    this.#Items.push(appMatch);
-    this.#ResetProperties();
-    return appMatch;
+    let retMatch = null;
+
+    if (appMatch instanceof LJCAppMatch)
+    {
+      retMatch = appMatch;
+      this.#Items.push(appMatch);
+      this.#ResetProperties();
+    }
+    return retMatch;
   }
 
   // Clears the collection list.

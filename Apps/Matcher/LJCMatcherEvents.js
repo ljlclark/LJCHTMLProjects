@@ -33,8 +33,9 @@ class LJCMatcherEvents
   // Initializes the object instance.
   constructor()
   {
-    this.AppMatches = new LJCMatcherData();
+    const matchItems = new LJCMatcherData();
     const setData = new LJCSetData();
+    this.AppMatches = setData.GetAppMatches(matchItems);
     setData.SetHTML(this.AppMatches);
     this.#AddEvents();
   }

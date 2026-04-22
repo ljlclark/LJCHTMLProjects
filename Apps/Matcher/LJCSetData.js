@@ -7,6 +7,28 @@
 /// <include path='items/LJCSetData/*' file='Doc/LJCSetData.xml'/>
 class LJCSetData
 {
+  // Creates AppMatches collection from a matchItem delimited string array.
+  GetAppMatches(matchItems)
+  {
+    let retMatches = new LJCAppMatches();
+
+    for (let index = 0; index < matchItems.length; index++)
+    {
+      const number = index + 1;
+      const leftID = `pic${number}`;
+      const setID = `set${number}`;
+      const textID = `text${number}`;
+      const item = matchItems[index];
+      const values = item.split(",");
+      let match = retMatches.Add(leftID, setID, textID);
+      match.PicSrc = values[1];
+      const value = values[2].trim();
+      match.MatchingLeftItemID = `pic${value}`;
+      match.Text = values[3].trim();
+    }
+    return retMatches;
+  }
+
   SetHTML(appMatches)
   {
     for (let index = 0; index < appMatches.Count; index++)
