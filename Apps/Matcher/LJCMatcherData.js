@@ -19,7 +19,7 @@ class LJCMatcherData
       "3, Images/SeatBelt.jpg, 1, Do not cross between moving vehicles.",
       "4, Images/Helment.jpg, 5, Use the crosswalk and do not jaywalk.",
       "5, Images/Traffic.jpg, 3, Wear a helmet when riding a bicycle.",
-      "6, Images/Jwalk.jpg, 4, Wait for the green light before crossing.",
+      "6, Images/JWalk.jpg, 4, Wait for the green light before crossing.",
     ];
     return retItems;
   }
